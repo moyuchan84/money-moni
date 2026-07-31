@@ -16,7 +16,7 @@ export function BuildingHotspot({ building, locked, completed, onSelect }: Build
       disabled={locked}
       onClick={() => onSelect(building.id)}
       className={`min-h-touch min-w-touch rounded-2xl px-4 py-3 text-left transition ${
-        locked ? "grayscale opacity-40" : "bg-white shadow hover:scale-105"
+        locked ? "grayscale opacity-40" : "bg-white text-gray-900 shadow hover:scale-105"
       }`}
     >
       <span className="block text-body font-heading">{building.titleKo}</span>
