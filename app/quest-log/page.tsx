@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 
+import { dailyQuests, weeklyQuests } from "@/data/quests";
 import { useGameStore } from "@/store/useGameStore";
 import { ProgressBadge } from "@/components/feedback/ProgressBadge";
 
 export default function QuestLogPage() {
   const daily = useGameStore((state) => state.quests.daily);
   const weekly = useGameStore((state) => state.quests.weekly);
+
+  const dailyTitles = new Map(dailyQuests.map((quest) => [quest.id, quest.titleKo]));
+  const weeklyTitles = new Map(weeklyQuests.map((quest) => [quest.id, quest.titleKo]));
 
   return (
     <main className="flex flex-1 flex-col gap-6 p-6">
@@ -16,12 +20,15 @@ export default function QuestLogPage() {
       <section>
         <h2 className="mb-2 text-body font-heading">오늘의 퀘스트</h2>
         {daily.length === 0 ? (
-          <p className="text-caption">아직 등록된 일일 퀘스트가 없어요. (Phase 1에서 추가돼요)</p>
+          <p className="text-caption">아직 등록된 일일 퀘스트가 없어요.</p>
         ) : (
           <ul className="flex flex-col gap-2">
             {daily.map((quest) => (
               <li key={quest.id}>
-                <ProgressBadge label={quest.id} completed={Boolean(quest.claimedAt)} />
+                <ProgressBadge
+                  label={`${dailyTitles.get(quest.id) ?? quest.id} (${quest.progress}/${quest.goal})`}
+                  completed={Boolean(quest.claimedAt)}
+                />
               </li>
             ))}
           </ul>
@@ -31,12 +38,15 @@ export default function QuestLogPage() {
       <section>
         <h2 className="mb-2 text-body font-heading">이번 주 퀘스트</h2>
         {weekly.length === 0 ? (
-          <p className="text-caption">아직 등록된 주간 퀘스트가 없어요. (Phase 1에서 추가돼요)</p>
+          <p className="text-caption">아직 등록된 주간 퀘스트가 없어요.</p>
         ) : (
           <ul className="flex flex-col gap-2">
             {weekly.map((quest) => (
               <li key={quest.id}>
-                <ProgressBadge label={quest.id} completed={Boolean(quest.claimedAt)} />
+                <ProgressBadge
+                  label={`${weeklyTitles.get(quest.id) ?? quest.id} (${quest.progress}/${quest.goal})`}
+                  completed={Boolean(quest.claimedAt)}
+                />
               </li>
             ))}
           </ul>
