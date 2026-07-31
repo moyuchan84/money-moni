@@ -33,7 +33,8 @@ Next.js(App Router, `output: 'export'`) + TypeScript + Tailwind CSS · 상태 Zu
 - `data/` — 모든 한글 카피와 콘텐츠 메타(건물 정보, 퀘스트, 용어집). **컴포넌트에 한글 문자열을 직접 하드코딩하지 않는다** — 내레이션 mp3와 텍스트를 1:1로 관리해야 하기 때문이다.
 - `store/useGameStore.ts` — 단일 진행 상태 소스. 스키마는 `docs/implementation.md` 6장 기준. 필드를 추가할 때는 반드시 기본값을 지정하고, 저장 스키마에 `version` 필드를 두어 증가시키고 마이그레이션 함수를 작성한다.
 - `components/` — `town/`, `hud/`, `dialogue/`, `minigame/`, `feedback/` 카테고리를 유지한다. 새 공통 UI가 필요하면 먼저 이 폴더에 이미 있는지 확인한 뒤 없을 때만 추가한다.
-- `content/audio/` — 사전 녹음 내레이션 mp3. 파일명은 `{buildingId}-{sceneKey}.mp3` 규칙을 고정한다.
+- `public/content/audio/` — 사전 녹음 내레이션 mp3. 파일명은 `{buildingId}-{sceneKey}.mp3` 규칙을 고정한다. **반드시 `public/` 밑에 둔다** — 정적 export는 `public/`만 사이트 루트로 서빙하므로, `content/`가 `public/` 밖에 있으면 브라우저에서 404가 난다. 코드에서 참조할 때는 항상 `/content/audio/...`처럼 슬래시로 시작하는 루트 상대 경로를 쓴다(슬래시 없이 쓰면 현재 라우트 기준 상대 경로로 잘못 풀린다).
+- `public/content/rive/` — Rive 상태 머신 `.riv` 파일(촌장 NPC, 저금통 펫 등). 파일명은 `{character}.riv` 규칙을 고정한다(예: `village-chief.riv`, `piggy-pet.riv`). 위와 같은 이유로 `public/` 밑에 두고 `/content/rive/...` 루트 상대 경로로 참조한다. 상태 머신 이름·input 이름은 `components/rive/` 프리셋 컴포넌트에 하드코딩되어 있으므로 실제 `.riv` 제작 시 그 값(`ChiefState`/`PetState`, input `mood`)에 맞춰야 한다.
 - **절대 규칙 6 예외**: `money-tree`(복리, 아바타 개인 마당 위젯)는 건물이 아니라 개인 위젯이라 `/building/[id]` 3-라우트 구조를 따르지 않고 `/money-tree` 단일 라우트만 갖는다(`data/buildings.ts`의 `routeKind: 'standalone'`).
 
 ## 절대 규칙 (린터가 잡아주지 않는 것들)
@@ -52,7 +53,7 @@ Next.js(App Router, `output: 'export'`) + TypeScript + Tailwind CSS · 상태 Zu
 2. `data/buildings.ts`에 메타데이터를 추가한다(id, district, 잠금 조건, 보상 코인).
 3. `app/building/[id]/page.tsx`, `minigame/page.tsx`, `result/page.tsx`를 생성한다.
 4. `store`의 `buildings` 레코드에 해당 필드가 없으면 기본값과 함께 추가한다.
-5. `content/audio/`에 내레이션 mp3 자리(제작 전이면 placeholder)를 추가한다.
+5. `public/content/audio/`에 내레이션 mp3 자리(제작 전이면 placeholder)를 추가한다.
 6. `docs/phases.md`의 모듈 체크리스트에 완료 표시를 남긴다.
 
 ## 코드 스타일

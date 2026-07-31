@@ -12,7 +12,7 @@ export interface AvatarPartPickerProps {
 export function AvatarPartPicker({ label, options, selectedId, onSelect }: AvatarPartPickerProps) {
   return (
     <fieldset className="flex flex-col items-center gap-2">
-      <legend className="text-caption font-heading">{label}</legend>
+      <legend className="text-caption font-semibold text-ink">{label}</legend>
       <div className="flex gap-2">
         {options.map((option) => (
           <button
@@ -21,10 +21,10 @@ export function AvatarPartPicker({ label, options, selectedId, onSelect }: Avata
             onClick={() => onSelect(option.id)}
             aria-pressed={selectedId === option.id}
             aria-label={option.labelKo}
-            className={`flex min-h-touch min-w-touch items-center justify-center rounded-2xl px-3 py-2 text-heading transition ${
+            className={`flex min-h-touch min-w-touch items-center justify-center rounded-control px-3 py-2 text-heading transition ${
               selectedId === option.id
-                ? "bg-district1-primary text-white"
-                : "bg-white shadow hover:scale-105"
+                ? "bg-primary text-white"
+                : "bg-surface shadow-card hover:scale-105"
             }`}
           >
             <span aria-hidden>{option.emoji}</span>

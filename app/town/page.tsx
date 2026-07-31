@@ -4,10 +4,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { buildingList, type BuildingId } from "@/data/buildings";
+import { townContent } from "@/data/townContent";
 import { useGameStore } from "@/store/useGameStore";
 import { TownMap } from "@/components/town/TownMap";
+import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
+import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 
 export default function TownPage() {
+  useDistrictBgm("town");
   const router = useRouter();
   const districts = useGameStore((state) => state.districts);
   const buildingProgress = useGameStore((state) => state.buildings);
@@ -31,6 +35,11 @@ export default function TownPage() {
         <Link href="/glossary">용어 사전</Link>
         <Link href="/parent">보호자용</Link>
       </nav>
+      <NpcDialogue
+        speakerName="촌장님"
+        message={townContent.introMessageKo}
+        narrationSrc={townContent.narrationSrc.intro}
+      />
       <TownMap
         buildings={buildingList}
         unlockedDistricts={{

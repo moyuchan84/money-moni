@@ -60,7 +60,7 @@ export function MuseumTimelineStrip({ eras, activeEraIndex }: MuseumTimelineStri
   }, [activeEraIndex, eras]);
 
   return (
-    <div ref={containerRef} className="flex gap-4 overflow-x-auto rounded-2xl bg-white/60 p-4 text-gray-900">
+    <div ref={containerRef} className="flex gap-4 overflow-x-auto rounded-card bg-surface-muted p-4 text-ink">
       {eras.map((era, index) => (
         <div
           key={era.id}
@@ -68,16 +68,16 @@ export function MuseumTimelineStrip({ eras, activeEraIndex }: MuseumTimelineStri
           ref={(el) => {
             cardRefs.current[era.id] = el;
           }}
-          className={`flex min-w-28 shrink-0 flex-col items-center gap-1 rounded-2xl border-2 p-3 transition-colors ${
+          className={`flex min-w-28 shrink-0 flex-col items-center gap-1 rounded-control border-2 p-3 transition-colors ${
             index === activeEraIndex
-              ? "border-district1-primary bg-district1-primary-light"
-              : "border-transparent bg-white"
+              ? "border-primary bg-primary-light"
+              : "border-transparent bg-surface"
           }`}
         >
           <span aria-hidden className="text-heading">
             {era.currencyEmoji}
           </span>
-          <span className="text-caption">{era.eraLabelKo}</span>
+          <span className="text-caption text-muted">{era.eraLabelKo}</span>
         </div>
       ))}
     </div>

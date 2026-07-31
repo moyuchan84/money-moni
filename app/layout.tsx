@@ -4,7 +4,8 @@ import "./globals.css";
 import { HydrationGuard } from "@/components/providers/HydrationGuard";
 import { SoundProvider } from "@/components/providers/SoundProvider";
 
-// 헤드라인용 라운드형 한글 폰트 — docs/implementation.md 4장
+// "머니타운" 워드마크 전용 라운드형 한글 폰트(components/hud/GameLogo.tsx에서만 사용) —
+// 그 외 헤딩/본문은 전부 Noto Sans KR로 통일한다(DESIGN.md 참고 디자인 개편, app/globals.css 참고).
 const jua = Jua({
   weight: "400",
   variable: "--font-jua",

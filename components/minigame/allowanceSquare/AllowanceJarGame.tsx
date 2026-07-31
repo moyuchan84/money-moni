@@ -23,7 +23,7 @@ function DraggableCoin({ id }: { id: string }) {
       {...attributes}
       type="button"
       aria-label="용돈 동전"
-      className={`flex h-11 w-11 min-h-touch min-w-touch touch-none items-center justify-center rounded-full bg-district1-secondary text-heading shadow transition ${
+      className={`flex h-11 w-11 min-h-touch min-w-touch touch-none items-center justify-center rounded-pill bg-primary text-heading text-white shadow-card transition ${
         isDragging ? "opacity-50" : ""
       }`}
     >
@@ -94,15 +94,15 @@ function JarDropZone({
   return (
     <div
       ref={setNodeRef}
-      className={`flex min-h-touch flex-col items-center gap-1 rounded-2xl border-2 border-dashed p-2 transition ${
-        isOver ? "border-district1-primary bg-district1-primary-light text-gray-900" : "border-transparent"
+      className={`flex min-h-touch flex-col items-center gap-1 rounded-control border-2 border-dashed p-2 transition ${
+        isOver ? "border-primary bg-primary-light text-ink" : "border-transparent"
       }`}
     >
       <JarVisual jarId={id} colorHex={colorHex} heightRatio={count / TOTAL_COINS} reducedMotion={reducedMotion} />
       <span aria-hidden className="text-body">
         {emoji}
       </span>
-      <span className="text-caption">
+      <span className="text-caption text-muted">
         {labelKo} ({count})
       </span>
     </div>
@@ -152,9 +152,9 @@ export function AllowanceJarGame({ onComplete }: AllowanceJarGameProps) {
   return (
     <div className="flex w-full flex-col items-center gap-6">
       <DndContext onDragEnd={handleDragEnd}>
-        <div className="flex min-h-touch min-w-full flex-wrap justify-center gap-2 rounded-2xl bg-white/60 p-3 text-gray-900">
+        <div className="flex min-h-touch min-w-full flex-wrap justify-center gap-2 rounded-card bg-surface-muted p-3 text-ink">
           {trayCoins.length === 0 ? (
-            <p className="text-caption">동전을 다 나눠 담았어요!</p>
+            <p className="text-caption text-muted">동전을 다 나눠 담았어요!</p>
           ) : (
             trayCoins.map((coinId) => <DraggableCoin key={coinId} id={coinId} />)
           )}
@@ -176,7 +176,7 @@ export function AllowanceJarGame({ onComplete }: AllowanceJarGameProps) {
       </DndContext>
 
       {eventMessage && (
-        <div className="rounded-3xl bg-white p-4 text-center text-gray-900 shadow">
+        <div className="rounded-card bg-surface p-4 text-center text-ink shadow-card">
           <p className="text-body">{eventMessage}</p>
         </div>
       )}

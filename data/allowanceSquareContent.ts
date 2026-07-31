@@ -12,7 +12,7 @@ export interface AllowanceJar {
 
 export const allowanceSquareContent = {
   narrationSrc: {
-    intro: "content/audio/allowance-square-intro.mp3",
+    intro: "/content/audio/allowance-square-intro.mp3",
   },
   introMessageKo:
     "매주 들어오는 용돈을 소비, 위시리스트, 저축, 기부 항아리에 나눠 담아보자. 한 곳에만 몰아 담으면 다음 주에 곤란해질 수도 있어!",

@@ -25,7 +25,7 @@ function DraggableItem({ id, emoji, label }: { id: string; emoji: string; label:
       {...attributes}
       type="button"
       aria-label={label}
-      className={`flex h-20 w-20 min-h-touch min-w-touch touch-none items-center justify-center rounded-2xl bg-white text-display shadow transition ${
+      className={`flex h-20 w-20 min-h-touch min-w-touch touch-none items-center justify-center rounded-control bg-surface text-display shadow-card transition ${
         isDragging ? "opacity-60" : ""
       }`}
     >
@@ -40,14 +40,14 @@ function DroppableZone({ id, label, emoji }: { id: string; label: string; emoji:
   return (
     <div
       ref={setNodeRef}
-      className={`flex min-h-touch w-28 flex-col items-center gap-1 rounded-2xl border-2 border-dashed p-4 text-center text-gray-900 transition ${
-        isOver ? "border-district1-primary bg-district1-primary-light" : "border-district1-secondary bg-white/60"
+      className={`flex min-h-touch w-28 flex-col items-center gap-1 rounded-control border-2 border-dashed p-4 text-center text-ink transition ${
+        isOver ? "border-primary bg-primary-light" : "border-border bg-surface-muted"
       }`}
     >
       <span aria-hidden className="text-heading">
         {emoji}
       </span>
-      <span className="text-caption">{label}</span>
+      <span className="text-caption text-muted">{label}</span>
     </div>
   );
 }

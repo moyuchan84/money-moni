@@ -1,7 +1,8 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { buildingList, buildings } from "@/data/buildings";
 import { dailyQuests } from "@/data/quests";
+import { moneyTreeContent } from "@/data/moneyTreeContent";
 import { useGameStore } from "./useGameStore";
 
 describe("useGameStore", () => {
@@ -84,5 +85,107 @@ describe("useGameStore", () => {
   it("setBuildingReflectionAnswer로 회고 답변이 저장된다", () => {
     useGameStore.getState().setBuildingReflectionAnswer("museum", "fun-tap");
     expect(useGameStore.getState().buildings.museum.reflectionAnswer).toBe("fun-tap");
+  });
+
+  describe("growMoneyTree", () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("replant는 원금에 이자를 재투자하고 stage를 늘린다", () => {
+      const before = useGameStore.getState().moneyTree;
+      useGameStore.getState().growMoneyTree("replant");
+
+      const after = useGameStore.getState().moneyTree;
+      const expectedInterest = Math.round(before.principal * moneyTreeContent.dailyInterestRate);
+      expect(after.principal).toBe(before.principal + expectedInterest);
+      expect(after.stage).toBe(before.stage + 1);
+      expect(after.history).toHaveLength(1);
+      expect(after.lastActionType).toBe("replant");
+    });
+
+    it("harvest는 원금은 그대로 두고 이자만큼 코인을 지갑에 지급한다", () => {
+      const before = useGameStore.getState().moneyTree;
+      const expectedInterest = Math.round(before.principal * moneyTreeContent.dailyInterestRate);
+
+      useGameStore.getState().growMoneyTree("harvest");
+
+      expect(useGameStore.getState().moneyTree.principal).toBe(before.principal);
+      expect(useGameStore.getState().wallet.coins).toBe(expectedInterest);
+    });
+
+    it("같은 날 두 번째 호출은 아무 것도 바꾸지 않는다(하루 1회 제한)", () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-07-31T09:00:00.000Z"));
+
+      useGameStore.getState().growMoneyTree("replant");
+      const afterFirst = useGameStore.getState().moneyTree;
+
+      vi.setSystemTime(new Date("2026-07-31T15:00:00.000Z"));
+      useGameStore.getState().growMoneyTree("replant");
+      const afterSecond = useGameStore.getState().moneyTree;
+      expect(afterSecond).toEqual(afterFirst);
+
+      // 다음 날로 이동하면 다시 실행된다.
+      vi.setSystemTime(new Date("2026-08-01T09:00:00.000Z"));
+      useGameStore.getState().growMoneyTree("replant");
+      expect(useGameStore.getState().moneyTree.stage).toBe(afterFirst.stage + 1);
+    });
+  });
+
+  describe("purchaseShopItem", () => {
+    it("코인이 충분하면 코인을 차감하고 보유 목록·아바타 파츠에 반영한다", () => {
+      useGameStore.getState().addCoins(100, "테스트 적립");
+      useGameStore.getState().purchaseShopItem("gold-suit", "outfit", 60);
+
+      const state = useGameStore.getState();
+      expect(state.wallet.coins).toBe(40);
+      expect(state.shop.ownedItemIds).toContain("gold-suit");
+      expect(state.avatar.look.outfit).toBe("gold-suit");
+    });
+
+    it("코인이 부족하면 아무 것도 바뀌지 않는다", () => {
+      useGameStore.getState().purchaseShopItem("gold-suit", "outfit", 60);
+
+      const state = useGameStore.getState();
+      expect(state.wallet.coins).toBe(0);
+      expect(state.shop.ownedItemIds).not.toContain("gold-suit");
+    });
+
+    it("이미 보유한 아이템은 다시 구매해도 코인을 중복 차감하지 않는다", () => {
+      useGameStore.getState().addCoins(200, "테스트 적립");
+      useGameStore.getState().purchaseShopItem("gold-suit", "outfit", 60);
+      useGameStore.getState().purchaseShopItem("gold-suit", "outfit", 60);
+
+      expect(useGameStore.getState().wallet.coins).toBe(140);
+      expect(useGameStore.getState().shop.ownedItemIds).toHaveLength(1);
+    });
+  });
+
+  it("v1 저장 스키마를 v2로 마이그레이션하면 moneyTree.principal/shop이 기본값으로 채워진다", async () => {
+    localStorage.setItem(
+      "moneymoni-save",
+      JSON.stringify({
+        state: {
+          avatar: { nickname: "옛날몽이", look: { skin: "light", hair: "brown", outfit: "default", pet: "piggy" }, level: 1, exp: 0 },
+          wallet: { coins: 30, history: [] },
+          districts: { 1: { unlocked: true }, 2: { unlocked: false }, 3: { unlocked: false } },
+          buildings: {},
+          moneyTree: { stage: 2, history: ["harvest", "replant"] },
+          quests: { daily: [], weekly: [] },
+          settings: { soundOn: true, narrationOn: true, reducedMotion: false },
+        },
+        version: 1,
+      }),
+    );
+
+    await useGameStore.persist.rehydrate();
+
+    const state = useGameStore.getState();
+    expect(state.avatar.nickname).toBe("옛날몽이");
+    expect(state.moneyTree.stage).toBe(2);
+    expect(state.moneyTree.principal).toBe(moneyTreeContent.startingPrincipal);
+    expect(state.moneyTree.history).toEqual([]);
+    expect(state.shop.ownedItemIds).toEqual([]);
   });
 });

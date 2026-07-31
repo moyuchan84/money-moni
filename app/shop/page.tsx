@@ -2,23 +2,52 @@
 
 import Link from "next/link";
 
+import { shopContent } from "@/data/shopContent";
+import { shopItems } from "@/data/shopItems";
 import { useGameStore } from "@/store/useGameStore";
+import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 import { CoinWallet } from "@/components/hud/CoinWallet";
+import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
+import { ShopItemCard } from "@/components/shop/ShopItemCard";
 
 export default function ShopPage() {
+  useDistrictBgm("town");
   const coins = useGameStore((state) => state.wallet.coins);
+  const ownedItemIds = useGameStore((state) => state.shop.ownedItemIds);
+  const look = useGameStore((state) => state.avatar.look);
+  const purchaseShopItem = useGameStore((state) => state.purchaseShopItem);
 
   return (
     <main className="flex flex-1 flex-col gap-6 p-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-heading font-heading">상점</h1>
+        <h1 className="text-heading font-bold text-ink">상점</h1>
         <CoinWallet coins={coins} />
       </div>
-      <p className="text-body">
-        아직 판매 중인 아이템이 없어요. 게임 안에서만 쓰는 머니타운 코인으로, 실제 돈과는 관계가
-        없어요.
-      </p>
-      <Link href="/town" className="min-h-touch min-w-touch self-start text-body underline">
+
+      <NpcDialogue
+        speakerName="촌장님"
+        message={shopContent.introMessageKo}
+        narrationSrc={shopContent.narrationSrc.intro}
+      />
+
+      {shopItems.length === 0 ? (
+        <p className="text-body text-fg">{shopContent.emptyStateKo}</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {shopItems.map((item) => (
+            <ShopItemCard
+              key={item.id}
+              item={item}
+              owned={ownedItemIds.includes(item.id)}
+              equipped={look[item.partKey] === item.id}
+              canAfford={coins >= item.priceCoins}
+              onPurchase={() => purchaseShopItem(item.id, item.partKey, item.priceCoins)}
+            />
+          ))}
+        </div>
+      )}
+
+      <Link href="/town" className="min-h-touch min-w-touch self-start text-body text-primary underline">
         마을로 돌아가기
       </Link>
     </main>

@@ -16,6 +16,7 @@ import { MuseumTimelineGame } from "@/components/minigame/museum/MuseumTimelineG
 import { LedgerSortingGame } from "@/components/minigame/ledgerHouse/LedgerSortingGame";
 import { AllowanceJarGame } from "@/components/minigame/allowanceSquare/AllowanceJarGame";
 import { RewardCelebration } from "@/components/feedback/RewardCelebration";
+import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 
 // Phase 2에서 실제 미니게임이 완성된 3개 건물만 전용 컴포넌트를 쓰고,
 // 나머지 건물은 Phase 1의 범용 "탭해서 완료" 게임으로 계속 배선한다.
@@ -39,6 +40,7 @@ function MinigameByBuilding({ buildingId, onComplete }: { buildingId: BuildingId
 }
 
 export function BuildingMinigameView({ building }: { building: BuildingMeta }) {
+  useDistrictBgm(building.district);
   const router = useRouter();
   const completeBuilding = useGameStore((state) => state.completeBuilding);
   const wasAlreadyCompleted = useGameStore((state) =>
@@ -65,7 +67,7 @@ export function BuildingMinigameView({ building }: { building: BuildingMeta }) {
       </MiniGameShell>
       <Link
         href={`/building/${building.id}`}
-        className="min-h-touch min-w-touch self-start rounded-full bg-white px-6 py-2 text-body text-gray-900 shadow"
+        className="min-h-touch min-w-touch self-start rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
       >
         뒤로가기
       </Link>
