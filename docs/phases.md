@@ -71,13 +71,14 @@
 
 **목표**: 검증된 패턴을 재사용하며 개발 속도를 낸다. 새 패턴은 이자율 슬라이더 연동 정도.
 
-- [ ] `bank`(저축·이자) — 슬라이더 값과 GSAP `timeScale()` 바인딩
-- [ ] `job-center`(소득의 종류) — `AnimatePresence` 기반 장면 전환
-- [ ] `market`(인플레이션) — PixiJS 파티클 이벤트 연출 + 숫자 카운트업
-- [ ] `capital-warehouse`(자본) — 정적 갤러리 + Motion stagger
-- [ ] 2구역 잠금 해제 조건(1구역 진행도 기준) 실제 로직 연결 및 테스트
+- [x] `bank`(저축·이자) — 슬라이더 값과 GSAP `timeScale()` 바인딩
+- [x] `job-center`(소득의 종류) — `AnimatePresence` 기반 장면 전환
+- [x] `market`(인플레이션) — PixiJS 파티클 이벤트 연출 + 숫자 카운트업
+- [x] `capital-warehouse`(자본) — 맨손 vs 사다리(자본) 제한시간 비교 미니게임(idea.md 6-15 채택)
+- [x] 2구역 잠금 해제 조건(1구역 진행도 기준) 실제 로직 연결 및 테스트 — 1구역 3개 건물(`museum`/`ledger-house`/`allowance-square`) 모두 완료 시 `districts[2].unlocked`가 `true`로 전환되도록 `store/useGameStore.ts`의 `completeBuilding`에 `isDistrictFullyCompleted` 판정을 추가하고 단위 테스트로 검증(2개만 완료 시 잠김 유지, 3개 완료 시 해제, 재완료해도 퇴행 없음). `/parent`에 개발용 임시 "2구역 열기" 버튼(`debugUnlockDistrict2`)도 추가해 실제 플레이 없이 확인 가능하게 함.
+- [ ] 실제 내레이션 mp3 4개 건물분 연동 — **코드 배선은 완료**(1구역과 동일한 패턴으로 `narrationSrc` 연결)했지만, 이 세션에서는 실제 녹음본을 만들 수 없어 `public/content/audio/`에는 0바이트 placeholder만 있다.
 
-**종료 조건**: 2구역 4개 건물 완성, 1구역 완료 후 2구역이 실제로 열리는 잠금 해제 플로우가 검증된다.
+**종료 조건**: 2구역 4개 건물 완성, 1구역 완료 후 2구역이 실제로 열리는 잠금 해제 플로우가 검증된다. — 완료.
 
 ---
 
@@ -146,11 +147,11 @@
 | 1구역 | 화폐의 역사 | `museum` | 완료 |
 | 1구역 | 가계부 | `ledger-house` | 완료 |
 | 1구역 | 용돈 배분 | `allowance-square` | 완료 |
-| 2구역 | 저축·이자 | `bank` | 대기 |
-| 2구역 | 복리(개인 위젯) | `money-tree` | 대기 |
-| 2구역 | 소득의 종류 | `job-center` | 대기 |
-| 2구역 | 인플레이션 | `market` | 대기 |
-| 2구역 | 자본 | `capital-warehouse` | 대기 |
+| 2구역 | 저축·이자 | `bank` | 완료 |
+| 2구역 | 복리(개인 위젯) | `money-tree` | 완료 |
+| 2구역 | 소득의 종류 | `job-center` | 완료 |
+| 2구역 | 인플레이션 | `market` | 완료 |
+| 2구역 | 자본 | `capital-warehouse` | 완료 |
 | 3구역 | 투자란 | `seed-field` | 대기 |
 | 3구역 | 주식 | `stock-street` | 대기 |
 | 3구역 | ETF/ETN | `etf-lab` | 대기 |
