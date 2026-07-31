@@ -29,7 +29,8 @@
 *.pem
 
 # Claude Code local runtime state
-/.claude/
+/.claude/*
+!/.claude/skills/
 
 # debug
 npm-debug.log*
