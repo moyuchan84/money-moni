@@ -3,6 +3,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 import { buildings, buildingList, type BuildingId } from "@/data/buildings";
 import { dailyQuests, weeklyQuests, type QuestDefinition } from "@/data/quests";
+import { moneyTreeContent } from "@/data/moneyTreeContent";
+import type { AvatarPartKey } from "@/data/avatarOptions";
 
 export interface AvatarLook {
   skin: string;
@@ -31,6 +33,12 @@ export interface QuestProgress {
   claimedAt?: string;
 }
 
+export interface MoneyTreeHistoryEntry {
+  type: "harvest" | "replant";
+  amount: number;
+  at: string;
+}
+
 export interface GameState {
   hasHydrated: boolean;
 
@@ -56,8 +64,14 @@ export interface GameState {
 
   moneyTree: {
     stage: number;
-    lastWateredAt?: string;
-    history: ("harvest" | "replant")[];
+    principal: number;
+    lastActionAt?: string;
+    lastActionType?: "harvest" | "replant";
+    history: MoneyTreeHistoryEntry[];
+  };
+
+  shop: {
+    ownedItemIds: string[];
   };
 
   quests: {
@@ -79,6 +93,8 @@ export interface GameState {
   spendCoins: (amount: number, reason: string) => void;
   completeBuilding: (buildingId: BuildingId, options?: { score?: number }) => void;
   setBuildingReflectionAnswer: (buildingId: BuildingId, optionId: string) => void;
+  growMoneyTree: (action: "harvest" | "replant") => void;
+  purchaseShopItem: (itemId: string, partKey: AvatarPartKey, priceCoins: number) => void;
   setSoundOn: (value: boolean) => void;
   setNarrationOn: (value: boolean) => void;
   setReducedMotion: (value: boolean) => void;
@@ -134,7 +150,11 @@ function createInitialState() {
     buildings: createInitialBuildingProgress(),
     moneyTree: {
       stage: 0,
+      principal: moneyTreeContent.startingPrincipal,
       history: [],
+    },
+    shop: {
+      ownedItemIds: [],
     },
     quests: {
       daily: createQuestProgressList(dailyQuests),
@@ -149,7 +169,7 @@ function createInitialState() {
 }
 
 // 저장 스키마 버전. 필드 구조를 바꿀 때마다 올리고 아래 migrate에 변환 로직을 추가한다.
-const STORE_VERSION = 1;
+const STORE_VERSION = 2;
 
 export const useGameStore = create<GameState>()(
   persist(
@@ -261,6 +281,70 @@ export const useGameStore = create<GameState>()(
           },
         })),
 
+      growMoneyTree: (action) =>
+        set((state) => {
+          const now = new Date().toISOString();
+          const today = now.slice(0, 10);
+          // 하루 1회 제한의 단일 진실 소스 — 오늘 이미 실행했으면 아무 것도 하지 않는다.
+          if (state.moneyTree.lastActionAt?.slice(0, 10) === today) return state;
+
+          const interest = Math.round(state.moneyTree.principal * moneyTreeContent.dailyInterestRate);
+          const historyEntry: MoneyTreeHistoryEntry = { type: action, amount: interest, at: now };
+
+          if (action === "harvest") {
+            return {
+              moneyTree: {
+                ...state.moneyTree,
+                lastActionAt: now,
+                lastActionType: action,
+                history: [...state.moneyTree.history, historyEntry],
+              },
+              wallet: {
+                coins: state.wallet.coins + interest,
+                history: [
+                  ...state.wallet.history,
+                  { amount: interest, reason: moneyTreeContent.harvestRewardReasonKo, at: now },
+                ],
+              },
+            };
+          }
+
+          return {
+            moneyTree: {
+              ...state.moneyTree,
+              principal: state.moneyTree.principal + interest,
+              stage: Math.min(state.moneyTree.stage + 1, moneyTreeContent.maxStage),
+              lastActionAt: now,
+              lastActionType: action,
+              history: [...state.moneyTree.history, historyEntry],
+            },
+          };
+        }),
+
+      purchaseShopItem: (itemId, partKey, priceCoins) =>
+        set((state) => {
+          if (state.shop.ownedItemIds.includes(itemId)) return state;
+          if (state.wallet.coins < priceCoins) return state;
+          const now = new Date().toISOString();
+
+          return {
+            wallet: {
+              coins: state.wallet.coins - priceCoins,
+              history: [
+                ...state.wallet.history,
+                { amount: -priceCoins, reason: "상점 아이템 구매", at: now },
+              ],
+            },
+            shop: {
+              ownedItemIds: [...state.shop.ownedItemIds, itemId],
+            },
+            avatar: {
+              ...state.avatar,
+              look: { ...state.avatar.look, [partKey]: itemId },
+            },
+          };
+        }),
+
       setSoundOn: (value) =>
         set((state) => ({ settings: { ...state.settings, soundOn: value } })),
 
@@ -281,13 +365,25 @@ export const useGameStore = create<GameState>()(
         districts: state.districts,
         buildings: state.buildings,
         moneyTree: state.moneyTree,
+        shop: state.shop,
         quests: state.quests,
         settings: state.settings,
       }),
-      migrate: (persistedState) => {
-        // STORE_VERSION이 1이므로 아직 변환할 이전 버전이 없다.
-        // 향후 스키마가 바뀌면 여기서 persistedState.version별 분기 처리를 추가한다.
-        return persistedState as GameState;
+      migrate: (persistedState, version) => {
+        const state = persistedState as Partial<GameState> & Record<string, unknown>;
+
+        if (version < 2) {
+          // v1의 moneyTree.history: ("harvest"|"replant")[]에는 amount/at 정보가 없어
+          // 복원할 수 없으므로 초기화하고, principal은 기본 원금으로 새로 시작한다.
+          state.moneyTree = {
+            stage: (state.moneyTree as { stage?: number } | undefined)?.stage ?? 0,
+            principal: moneyTreeContent.startingPrincipal,
+            history: [],
+          };
+          state.shop = { ownedItemIds: [] };
+        }
+
+        return state as GameState;
       },
       // 퀘스트 정의(data/quests.ts)가 바뀌어도 저장된 진행도와 항상 맞도록 병합 시점에 재조정한다.
       merge: (persistedState, currentState) => {

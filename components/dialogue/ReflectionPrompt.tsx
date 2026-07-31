@@ -16,15 +16,15 @@ export interface ReflectionPromptProps {
 
 export function ReflectionPrompt({ question, options, onAnswer }: ReflectionPromptProps) {
   return (
-    <div className="rounded-3xl bg-white p-4 text-gray-900 shadow">
-      <p className="text-body font-heading">{question}</p>
+    <div className="rounded-card bg-surface p-4 text-ink shadow-card">
+      <p className="text-body font-semibold text-ink">{question}</p>
       <div className="mt-3 flex flex-col gap-2">
         {options.map((option) => (
           <button
             key={option.id}
             type="button"
             onClick={() => onAnswer(option.id)}
-            className="min-h-touch rounded-2xl bg-district2-primary-light px-4 py-2 text-left text-body text-gray-900"
+            className="min-h-touch rounded-control bg-primary-light px-4 py-2 text-left text-body text-primary"
           >
             {option.label}
           </button>

@@ -3,10 +3,11 @@
 import type { BuildingId, BuildingMeta, District } from "@/data/buildings";
 import { BuildingHotspot } from "./BuildingHotspot";
 
+// 구역 웨이파인딩 전용 배경 톤 — CTA/버튼에는 쓰지 않는다(app/globals.css 참고).
 const DISTRICT_BG: Record<District, string> = {
-  1: "bg-district1-primary-light",
-  2: "bg-district2-primary-light",
-  3: "bg-district3-primary-light",
+  1: "bg-district-1-light",
+  2: "bg-district-2-light",
+  3: "bg-district-3-light",
 };
 
 export interface DistrictLayerProps {
@@ -25,8 +26,8 @@ export function DistrictLayer({
   onSelectBuilding,
 }: DistrictLayerProps) {
   return (
-    <section className={`rounded-3xl p-4 ${DISTRICT_BG[district]} ${unlocked ? "" : "grayscale"}`}>
-      <h2 className="mb-2 text-heading font-heading">{district}구역</h2>
+    <section className={`rounded-card p-4 ${DISTRICT_BG[district]} ${unlocked ? "" : "grayscale"}`}>
+      <h2 className="mb-2 text-heading font-bold text-ink">{district}구역</h2>
       <div className="flex flex-wrap gap-3">
         {buildings.map((building) => (
           <BuildingHotspot

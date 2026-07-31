@@ -16,11 +16,11 @@ export function DndTargetZone({ id, label, isOver, children }: DndTargetZoneProp
   return (
     <div
       data-zone-id={id}
-      className={`min-h-touch rounded-2xl border-2 border-dashed p-4 text-center ${
-        isOver ? "border-district2-primary bg-district2-primary-light" : "border-district2-secondary"
+      className={`min-h-touch rounded-control border-2 border-dashed p-4 text-center ${
+        isOver ? "border-primary bg-primary-light" : "border-border"
       }`}
     >
-      <p className="text-caption">{label}</p>
+      <p className="text-caption text-muted">{label}</p>
       {children}
     </div>
   );

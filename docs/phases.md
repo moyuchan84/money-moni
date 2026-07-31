@@ -46,7 +46,7 @@
 - [x] `ledger-house`(가계부) — PixiJS 낙하 기반 분류 미니게임 (통은 문서 설계의 DOM 오버레이 대신, 좌표계 변환 없이 더 단순·견고하도록 Pixi Graphics로 같은 스테이지에 그림 — `components/minigame/ledgerHouse/LedgerSortingCanvas.tsx` 주석 참고)
 - [x] `allowance-square`(용돈 배분) — dnd-kit 4항아리 드래그, SVG `clipPath` 액체 차오름 애니메이션(Motion 트윈)
 - [x] 위 3개에 사용된 애니메이션 유틸을 공용으로 추출: `hooks/useGsapContext.ts`(GSAP 컨텍스트 생성/해제), `hooks/useReducedMotion.ts`, `components/minigame/PixiStage.tsx`(PixiJS Application 생성·리사이즈·해제 래퍼)
-- [ ] 실제 내레이션 mp3 3개 건물분 연동 — **코드 배선은 완료**(`narrationSrc` 경로를 `content/audio/{buildingId}-{sceneKey}.mp3` 규칙으로 연결, 사운드 온/오프는 정상 동작)했지만, 실제 사람이 녹음한 음원 파일은 이 세션에서 만들 수 없어 `content/audio/`에는 0바이트 placeholder만 있다. 실제 녹음본이 준비되면 같은 경로에 덮어쓰기만 하면 됨.
+- [ ] 실제 내레이션 mp3 3개 건물분 연동 — **코드 배선은 완료**(`narrationSrc` 경로를 `public/content/audio/{buildingId}-{sceneKey}.mp3` 규칙으로 연결, 사운드 온/오프는 정상 동작)했지만, 실제 사람이 녹음한 음원 파일은 이 세션에서 만들 수 없어 `public/content/audio/`에는 0바이트 placeholder만 있다. 실제 녹음본이 준비되면 같은 경로에 덮어쓰기만 하면 됨. (Phase 3에서 `content/audio/`가 `public/content/audio/`로 이동함 — 정적 export는 `public/` 밖의 파일을 서빙하지 않아 브라우저에서 404가 나던 문제를 수정.)
 - [x] 1구역 한정 접근성 점검: 터치 타겟(`min-h-touch`/`min-w-touch`, Pixi 동전은 지름 44px로 통일), 색 대비(흰/연한 배경 카드에 다크모드에서도 고정된 어두운 텍스트색 강제 — Phase 0/1부터 있던 대비 문제를 1구역 화면들에서 함께 수정), `reducedMotion` 옵션 동작(`/parent`에 토글 추가, 3개 미니게임 모두 반영)
 
 **종료 조건**: 1구역 3개 건물이 기획안(`docs/idea.md` 6-1~6-3) 수준의 완성도로 플레이 가능하고, 초기 로드 시간·FPS가 목표치(모바일 중급기기 기준 미니게임 55fps 이상, 건물 진입 화면 로드 2초 이내 목표— 실측 후 조정) 안에 있다.
@@ -57,13 +57,13 @@
 
 **목표**: Phase 2에서 임시로 둔 요소(정적 SVG 캐릭터, 부분 사운드)를 최종 품질로 끌어올려 이후 구역에 바로 적용할 수 있게 한다.
 
-- [ ] Rive로 촌장 NPC / 저금통 펫 상태 머신 제작 및 통합(정적 SVG 대체)
-- [ ] `money-tree`(복리, 개인 마당) 완성 — GSAP 경로 애니메이션, 일 1회 제한 로직
-- [ ] BGM/SFX 풀 세트 연동, 구역별 BGM 전환
-- [ ] 내레이션 커버리지를 허브 화면(마을 지도, 퀘스트 로그, 상점)까지 확대
-- [ ] 상점 실제 아이템 카탈로그 연결(구매 → 아바타 반영)
+- [ ] Rive로 촌장 NPC / 저금통 펫 상태 머신 제작 및 통합(정적 SVG 대체) — **코드 파이프라인은 완료**(`@rive-app/react-canvas` 설치, `components/rive/*`에 `next/dynamic(ssr:false)` 래퍼·`mood`(happy/neutral/worried) 상태 머신 input 연동·로드 실패 시 기존 이모지 자동 폴백까지 구현하고 `NpcDialogue`/`money-tree`에 통합함)했지만, 실제 `.riv` 상태 머신 파일은 Rive 에디터로 제작해야 하는 디자인 자산이라 이 세션에서 만들 수 없어 `public/content/rive/`에는 0바이트 placeholder(`village-chief.riv`, `piggy-pet.riv`)만 있다. 실제 파일이 준비되면 같은 경로에 덮어쓰기만 하면 되고, 상태 머신 이름은 `ChiefState`/`PetState`, input 이름은 `mood`(0=worried/1=neutral/2=happy)로 맞춰야 한다.
+- [x] `money-tree`(복리, 개인 마당) 완성 — GSAP 경로 애니메이션(가지 성장 strokeDashoffset 트윈), 하루 1회 제한 로직(store `growMoneyTree`, 날짜 비교) 구현 및 검증 완료.
+- [ ] BGM/SFX 풀 세트 연동, 구역별 BGM 전환 — **코드 배선은 완료**(`SoundProvider`에 `playBgm`/`stopBgm` 크로스페이드 추가, `hooks/useDistrictBgm.ts`로 마을/건물/머니나무/상점 전 화면에 배선, `RewardCelebration`/머니나무/상점 구매에 SFX 연결)했지만, 실제 작곡·녹음된 BGM·SFX 음원은 이 세션에서 만들 수 없어 `public/content/audio/`의 `bgm-*.mp3`/`sfx-*.mp3`는 0바이트 placeholder다. 실제 음원이 준비되면 같은 경로에 덮어쓰기만 하면 됨.
+- [ ] 내레이션 커버리지를 허브 화면(마을 지도, 퀘스트 로그, 상점)까지 확대 — **코드 배선은 완료**(세 화면 모두 `NpcDialogue` + 전용 `narrationSrc` 연결)했지만, Phase 2와 동일한 이유로 실제 녹음 음원은 placeholder 상태다.
+- [x] 상점 실제 아이템 카탈로그 연결(구매 → 아바타 반영) — `data/shopItems.ts`(`data/avatarOptions.ts`의 유료 옵션에서 파생), 구매 시 코인 차감 + 즉시 장착까지 구현 및 검증 완료.
 
-**종료 조건**: 최종 비주얼/사운드 톤이 확정되고, 이후 구역 개발자가 "새 화면을 어떻게 만드는지" 스스로 참고할 수 있는 레퍼런스 화면 세트가 1구역에 완성돼 있다.
+**종료 조건**: 최종 비주얼/사운드 톤이 확정되고, 이후 구역 개발자가 "새 화면을 어떻게 만드는지" 스스로 참고할 수 있는 레퍼런스 화면 세트가 1구역에 완성돼 있다. **현재 상태**: 코드 레퍼런스(Rive 폴백 패턴, BGM 크로스페이드 훅, 상점/머니나무 화면 구성)는 1구역에 전부 완성되어 이후 구역 개발자가 그대로 재사용할 수 있다. 다만 실제 `.riv` 아트·BGM/SFX 음원·나머지 내레이션 녹음본은 외부 제작이 필요해 여전히 placeholder이므로, "최종 비주얼/사운드 톤 확정"은 그 자산들이 준비된 뒤에 완료로 봐야 한다.
 
 ---
 

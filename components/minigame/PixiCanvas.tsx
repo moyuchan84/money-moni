@@ -12,7 +12,7 @@ export function PixiCanvas({ width = 480, height = 320 }: PixiCanvasProps) {
   return (
     <div
       style={{ width, height }}
-      className="flex items-center justify-center rounded-2xl border-2 border-dashed border-district1-secondary bg-white/50 text-caption text-gray-900"
+      className="flex items-center justify-center rounded-control border-2 border-dashed border-border bg-surface-muted text-caption text-muted"
     >
       미니게임을 준비하고 있어요
     </div>

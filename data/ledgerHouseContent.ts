@@ -2,7 +2,7 @@
 
 export const ledgerHouseContent = {
   narrationSrc: {
-    intro: "content/audio/ledger-house-intro.mp3",
+    intro: "/content/audio/ledger-house-intro.mp3",
   },
   introMessageKo:
     "용돈을 받으면 들어오는 돈, 간식을 사 먹으면 나가는 돈이야. 떨어지는 동전을 알맞은 통에 담아서 가계부를 채워보자!",

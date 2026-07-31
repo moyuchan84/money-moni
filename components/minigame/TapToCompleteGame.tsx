@@ -27,11 +27,11 @@ export function TapToCompleteGame({ targetTaps, onComplete }: TapToCompleteGameP
         onClick={handleTap}
         disabled={done}
         aria-label="코인 모으기"
-        className="flex h-32 w-32 items-center justify-center rounded-full bg-district1-secondary text-display shadow-lg transition active:scale-95 disabled:opacity-60"
+        className="flex h-32 w-32 items-center justify-center rounded-pill bg-primary text-display text-white shadow-card transition active:scale-95 disabled:opacity-60"
       >
         <span aria-hidden>{done ? "✅" : "🪙"}</span>
       </button>
-      <p className="text-caption">
+      <p className="text-caption text-muted">
         {taps} / {targetTaps}
       </p>
     </div>

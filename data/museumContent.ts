@@ -13,8 +13,8 @@ export interface MuseumEra {
 
 export const museumContent = {
   narrationSrc: {
-    intro: "content/audio/museum-intro.mp3",
-    fail: "content/audio/museum-fail.mp3",
+    intro: "/content/audio/museum-intro.mp3",
+    fail: "/content/audio/museum-fail.mp3",
   },
   introMessageKo:
     "옛날 사람들은 조개껍데기랑 소금으로 물건을 샀대! 시대를 옆으로 넘기면서 돈이 어떻게 바뀌어왔는지 같이 알아보자.",

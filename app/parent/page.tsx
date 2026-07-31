@@ -16,11 +16,11 @@ export default function ParentPage() {
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-6">
-      <h1 className="text-heading font-heading">보호자용 요약</h1>
-      <p className="text-body">
+      <h1 className="text-heading font-bold text-ink">보호자용 요약</h1>
+      <p className="text-body text-fg">
         {nickname || "우리 아이"}가 지금까지 완료한 건물: {completedCount}개
       </p>
-      <p className="text-caption">
+      <p className="text-caption text-muted">
         이름과 학습 진행도(완료한 건물, 회고 답변) 외의 개인정보는 저장하지 않아요.
       </p>
 

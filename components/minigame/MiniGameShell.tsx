@@ -14,15 +14,15 @@ export function MiniGameShell({ title, instructions, children, onRetry }: MiniGa
   return (
     <div className="flex flex-col gap-4">
       <header>
-        <h1 className="text-heading font-heading">{title}</h1>
-        <p className="text-body">{instructions}</p>
+        <h1 className="text-heading font-bold text-ink">{title}</h1>
+        <p className="text-body text-fg">{instructions}</p>
       </header>
       <div className="flex justify-center">{children}</div>
       {onRetry && (
         <button
           type="button"
           onClick={onRetry}
-          className="min-h-touch self-center rounded-full bg-district1-primary px-6 py-2 text-body text-white"
+          className="min-h-touch self-center rounded-control bg-primary px-6 py-2 text-body text-white"
         >
           다시 하기
         </button>
