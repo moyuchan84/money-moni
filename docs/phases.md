@@ -10,14 +10,14 @@
 
 **목표**: 아무 콘텐츠 없이도 프로젝트의 뼈대와 규칙이 전부 자리 잡게 한다.
 
-- [ ] Next.js + TypeScript + Tailwind 스캐폴딩, `output: 'export'` 설정 및 더미 빌드 확인
-- [ ] ESLint/Prettier, `npm run lint` / `npm run typecheck` 스크립트 확정
-- [ ] 디자인 토큰: 구역별 색상(1구역 노랑/주황, 2구역 파랑/초록, 3구역 보라/청록), 타이포 스케일, `min-h-touch` 등 터치 크기 토큰을 Tailwind 테마로 구현
-- [ ] `store/useGameStore.ts` 스키마 초안 구현(`docs/implementation.md` 6장) + `hasHydrated` 가드 + `persist` + `version` 필드
-- [ ] `data/buildings.ts`, `data/quests.ts`, `data/glossary.ts` 타입 정의 및 15개 모듈 placeholder 엔트리(제목만 있고 콘텐츠는 비어 있어도 됨)
-- [ ] `app/` 라우트 스켈레톤 전체 생성(`docs/implementation.md` 5장 트리 그대로, 각 페이지는 "준비 중" 정도만 표시)
-- [ ] 공통 컴포넌트 셸: `TownMap`, `NpcDialogue`, `MiniGameShell`, `RewardCelebration`, `CoinWallet`, `QuestBadge`, `SoundToggle` — 비주얼은 거칠어도 되지만 props 인터페이스는 확정
-- [ ] Howler 기반 사운드 프로바이더 배선(자산 없이 무음이어도 동작만 확인)
+- [x] Next.js + TypeScript + Tailwind 스캐폴딩, `output: 'export'` 설정 및 더미 빌드 확인
+- [x] ESLint/Prettier, `npm run lint` / `npm run typecheck` 스크립트 확정
+- [x] 디자인 토큰: 구역별 색상(1구역 노랑/주황, 2구역 파랑/초록, 3구역 보라/청록), 타이포 스케일, `min-h-touch` 등 터치 크기 토큰을 Tailwind 테마로 구현
+- [x] `store/useGameStore.ts` 스키마 초안 구현(`docs/implementation.md` 6장) + `hasHydrated` 가드 + `persist` + `version` 필드
+- [x] `data/buildings.ts`, `data/quests.ts`, `data/glossary.ts` 타입 정의 및 15개 모듈 placeholder 엔트리(제목만 있고 콘텐츠는 비어 있어도 됨)
+- [x] `app/` 라우트 스켈레톤 전체 생성(`docs/implementation.md` 5장 트리 그대로, 각 페이지는 "준비 중" 정도만 표시)
+- [x] 공통 컴포넌트 셸: `TownMap`, `NpcDialogue`, `MiniGameShell`, `RewardCelebration`, `CoinWallet`, `QuestBadge`, `SoundToggle` — 비주얼은 거칠어도 되지만 props 인터페이스는 확정
+- [x] Howler 기반 사운드 프로바이더 배선(자산 없이 무음이어도 동작만 확인)
 
 **종료 조건**: `npm run build`로 정적 export가 성공하고, 온보딩 → 마을 지도(placeholder) → 임의의 건물 stub 페이지 → 뒤로가기가 클릭으로 오류 없이 동작하며, 새로고침해도 저장된 상태(닉네임 등)가 유지된다.
 

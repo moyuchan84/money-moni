@@ -18,15 +18,14 @@ Next.js(App Router, `output: 'export'`) + TypeScript + Tailwind CSS · 상태 Zu
 
 ## 명령어
 
-프로젝트 스캐폴딩 완료 후 아래 명령어를 실제 `package.json` 스크립트와 일치시키고 이 섹션을 갱신한다. 지금은 목표 명령어만 명시한다.
-
 - 개발 서버: `npm run dev`
-- 정적 빌드(반드시 `output:'export'`로 빌드되는지 확인): `npm run build`
-- 린트: `npm run lint`
+- 정적 빌드(`output:'export'`, `out/` 생성 확인): `npm run build`
+- 린트: `npm run lint` (Next 16부터 `next lint`가 제거되어 ESLint CLI를 직접 호출한다)
 - 타입체크: `npm run typecheck`
-- 테스트: `npm run test` (store 로직은 Vitest, 온보딩→마을→건물→미니게임→보상 크리티컬 플로우는 Playwright)
+- 단위 테스트(Vitest, store 로직): `npm run test`
+- E2E 테스트(Playwright, 온보딩→마을→건물→미니게임→보상 크리티컬 플로우): `npm run test:e2e` — 정적 export 산출물(`out/`)을 `serve`로 서빙해 검증한다.
 
-**각 Phase를 완료로 표시하기 전 위 4개 명령어가 모두 통과해야 한다.**
+**각 Phase를 완료로 표시하기 전 위 4개 명령어(`build`/`lint`/`typecheck`/`test`)가 모두 통과해야 한다. `test:e2e`는 Phase 0에서는 스모크 수준 1개만 두고, 실제 크리티컬 플로우 커버리지는 Phase 1부터 확장한다.**
 
 ## 아키텍처 맵
 
@@ -35,6 +34,7 @@ Next.js(App Router, `output: 'export'`) + TypeScript + Tailwind CSS · 상태 Zu
 - `store/useGameStore.ts` — 단일 진행 상태 소스. 스키마는 `docs/implementation.md` 6장 기준. 필드를 추가할 때는 반드시 기본값을 지정하고, 저장 스키마에 `version` 필드를 두어 증가시키고 마이그레이션 함수를 작성한다.
 - `components/` — `town/`, `hud/`, `dialogue/`, `minigame/`, `feedback/` 카테고리를 유지한다. 새 공통 UI가 필요하면 먼저 이 폴더에 이미 있는지 확인한 뒤 없을 때만 추가한다.
 - `content/audio/` — 사전 녹음 내레이션 mp3. 파일명은 `{buildingId}-{sceneKey}.mp3` 규칙을 고정한다.
+- **절대 규칙 6 예외**: `money-tree`(복리, 아바타 개인 마당 위젯)는 건물이 아니라 개인 위젯이라 `/building/[id]` 3-라우트 구조를 따르지 않고 `/money-tree` 단일 라우트만 갖는다(`data/buildings.ts`의 `routeKind: 'standalone'`).
 
 ## 절대 규칙 (린터가 잡아주지 않는 것들)
 
