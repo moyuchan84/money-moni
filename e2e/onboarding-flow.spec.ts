@@ -38,6 +38,11 @@ test("온보딩 → 마을 → 건물 stub → 뒤로가기 → 새로고침 후
   await museumHotspot.click();
 
   await page.waitForURL("**/building/museum");
+
+  // 최초 진입 시 뜨는 이야기 씬은 이 테스트의 관심사가 아니므로 건너뛰기로 넘긴다.
+  await page.getByRole("button", { name: "건너뛰기" }).click();
+  await page.getByRole("button", { name: "네, 건너뛸게요" }).click();
+
   await expect(page.getByRole("heading", { name: "박물관 (화폐의 역사)" })).toBeVisible();
 
   await page.getByRole("link", { name: "마을로 돌아가기" }).click();
@@ -67,6 +72,18 @@ test("museum 타임라인 미니게임 완료 시 코인 적립·퀘스트 진�
 
   await page.getByRole("button", { name: "박물관 (화폐의 역사)" }).click();
   await page.waitForURL("**/building/museum");
+
+  // 최초 진입 시 이야기 씬을 먼저 끝까지 넘긴 뒤 미니게임을 시작한다.
+  while (
+    !(await page
+      .getByRole("button", { name: "시작하기", exact: true })
+      .isVisible()
+      .catch(() => false))
+  ) {
+    await page.getByRole("button", { name: "다음" }).click();
+  }
+  await page.getByRole("button", { name: "시작하기", exact: true }).click();
+
   await page.getByRole("link", { name: "미니게임 시작하기" }).click();
   await page.waitForURL("**/building/museum/minigame");
 
@@ -127,6 +144,18 @@ test("allowance-square 항아리 배분 게임 완료 시 코인 적립·완료 
 
   await page.getByRole("button", { name: "용돈 배분 광장" }).click();
   await page.waitForURL("**/building/allowance-square");
+
+  // 최초 진입 시 이야기 씬을 먼저 끝까지 넘긴 뒤 미니게임을 시작한다.
+  while (
+    !(await page
+      .getByRole("button", { name: "시작하기", exact: true })
+      .isVisible()
+      .catch(() => false))
+  ) {
+    await page.getByRole("button", { name: "다음" }).click();
+  }
+  await page.getByRole("button", { name: "시작하기", exact: true }).click();
+
   await page.getByRole("link", { name: "미니게임 시작하기" }).click();
   await page.waitForURL("**/building/allowance-square/minigame");
 

@@ -14,6 +14,7 @@ import { capitalWarehouseContent } from "@/data/capitalWarehouseContent";
 import { marketContent } from "@/data/marketContent";
 import { useGameStore } from "@/store/useGameStore";
 import { ReflectionPrompt } from "@/components/dialogue/ReflectionPrompt";
+import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 
 // Phase 2에서 실제 콘텐츠가 채워진 3개 건물은 건물 맞춤 회고 질문을 쓴다.
@@ -30,6 +31,17 @@ const REFLECTION_CONTENT: Partial<
   market: marketContent.reflection,
 };
 
+// recap 대사가 준비된 건물(1~2구역)만 값이 존재한다. 3구역 7개 건물은 키가 없다.
+const RECAP_CONTENT: Partial<Record<BuildingId, string>> = {
+  museum: museumContent.recapLineKo,
+  "ledger-house": ledgerHouseContent.recapLineKo,
+  "allowance-square": allowanceSquareContent.recapLineKo,
+  bank: bankContent.recapLineKo,
+  "job-center": jobCenterContent.recapLineKo,
+  "capital-warehouse": capitalWarehouseContent.recapLineKo,
+  market: marketContent.recapLineKo,
+};
+
 export function BuildingResultView({ building }: { building: BuildingMeta }) {
   useDistrictBgm(building.district);
   const coins = useGameStore((state) => state.wallet.coins);
@@ -41,6 +53,7 @@ export function BuildingResultView({ building }: { building: BuildingMeta }) {
     questionKo: genericMinigameCopy.reflectionQuestionKo,
     options: genericMinigameCopy.reflectionOptions,
   };
+  const recap = RECAP_CONTENT[building.id];
 
   function handleAnswer(optionId: string) {
     setBuildingReflectionAnswer(building.id, optionId);
@@ -54,6 +67,8 @@ export function BuildingResultView({ building }: { building: BuildingMeta }) {
       </p>
       <h1 className="text-heading font-bold text-ink">수고했어요!</h1>
       <p className="text-body text-fg">지금 가진 코인은 {coins}개예요!</p>
+
+      {recap && <NpcDialogue speakerName="촌장님" message={recap} character="none" />}
 
       {reflectionAnswer ? (
         <p className="text-body text-fg">

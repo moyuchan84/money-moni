@@ -243,7 +243,49 @@ describe("useGameStore", () => {
 
     const state = useGameStore.getState();
     expect(state.buildings.museum.completedAt).toBe("2026-01-01T00:00:00.000Z");
-    expect(state.buildings.bank).toEqual({ introSeen: false });
+    expect(state.buildings.bank).toEqual({ introSeen: false, storySeen: false });
     expect(Object.keys(state.buildings)).toHaveLength(buildingList.length);
+  });
+
+  it("새 스토어의 모든 건물은 storySeen: false로 시작한다", () => {
+    const state = useGameStore.getState();
+
+    expect(state.buildings.museum.storySeen).toBe(false);
+    expect(state.buildings.bank.storySeen).toBe(false);
+  });
+
+  it("setBuildingStorySeen을 호출하면 해당 건물만 storySeen이 true가 되고 다른 상태는 변하지 않는다", () => {
+    useGameStore.getState().setBuildingStorySeen("bank");
+
+    const state = useGameStore.getState();
+    expect(state.buildings.bank.storySeen).toBe(true);
+    expect(state.buildings.museum.storySeen).toBe(false);
+    expect(state.wallet.coins).toBe(0);
+  });
+
+  it("v2 저장 스키마를 v3로 마이그레이션하면 storySeen이 없는 건물에 false가 채워진다", async () => {
+    localStorage.setItem(
+      "moneymoni-save",
+      JSON.stringify({
+        state: {
+          avatar: { nickname: "몽이", look: { skin: "light", hair: "brown", outfit: "default", pet: "piggy" }, level: 1, exp: 0 },
+          wallet: { coins: 30, history: [] },
+          districts: { 1: { unlocked: true }, 2: { unlocked: false }, 3: { unlocked: false } },
+          // v2 저장분이라 museum에 storySeen 키가 아예 없다.
+          buildings: { museum: { introSeen: true, completedAt: "2026-01-01T00:00:00.000Z" } },
+          moneyTree: { stage: 0, principal: moneyTreeContent.startingPrincipal, history: [] },
+          shop: { ownedItemIds: [] },
+          quests: { daily: [], weekly: [] },
+          settings: { soundOn: true, narrationOn: true, reducedMotion: false },
+        },
+        version: 2,
+      }),
+    );
+
+    await useGameStore.persist.rehydrate();
+
+    const state = useGameStore.getState();
+    expect(state.buildings.museum.storySeen).toBe(false);
+    expect(state.buildings.museum.completedAt).toBe("2026-01-01T00:00:00.000Z");
   });
 });

@@ -1,5 +1,6 @@
 // museum(화폐의 역사) 건물 전용 카피. docs/idea.md 6-1, docs/implementation.md 8-2 참고.
 // 컴포넌트에 한글 문자열을 직접 하드코딩하지 않기 위해 이 파일을 통해서만 참조한다.
+// docs/concept-story.md 7-1 참고.
 
 export interface MuseumEra {
   id: string;
@@ -19,6 +20,17 @@ export const museumContent = {
   introMessageKo:
     "옛날 사람들은 조개껍데기랑 소금으로 물건을 샀대! 시대를 옆으로 넘기면서 돈이 어떻게 바뀌어왔는지 같이 알아보자.",
   instructionsKo: "타임라인을 옆으로 밀어보고, 그 시대에 맞는 돈으로 물건을 바꿔보자!",
+  storyScenes: [
+    { id: "scene-1", speaker: "narrator", textKo: "아주 먼 옛날, 사람들은 조개껍데기로 물건을 바꿨어요." },
+    { id: "scene-2", speaker: "npc", textKo: "근데 내가 조개 10개를 줘도, 상대방이 조개 말고 생선을 원하면 어떡하지? 못 바꾸는 거야!" },
+    { id: "scene-3", speaker: "narrator", textKo: "그래서 사람들은 누구나 좋아하는 동전, 그다음엔 지폐를 만들었어요. 요즘은 카드나 폰으로도 돈을 내죠." },
+    { id: "scene-4", speaker: "npc", textKo: "돈이 바뀐 이유는 딱 하나야 — \"더 편하게 바꾸려고\"!" },
+  ],
+  metaphorLineKo: "돈은 '내가 가진 것'과 '내가 원하는 것'을 편하게 바꿔주는 마법의 다리야.",
+  realExampleKo:
+    "마트에서 카드 한 장으로 뭐든지 살 수 있는 것처럼, 옛날엔 그 '한 장'이 조개, 동전, 지폐로 계속 바뀌어온 것뿐이다.",
+  bridgeLineKo: "그럼 우리도 옛날 시장에 가서 직접 물건을 바꿔볼까?",
+  recapLineKo: "아까 봤지? 돈은 계속 '더 편한 모습'으로 바뀌어왔다는 거!",
   eras: [
     {
       id: "shell",
