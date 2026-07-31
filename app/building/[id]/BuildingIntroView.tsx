@@ -7,6 +7,10 @@ import { genericMinigameCopy } from "@/data/genericMinigame";
 import { museumContent } from "@/data/museumContent";
 import { ledgerHouseContent } from "@/data/ledgerHouseContent";
 import { allowanceSquareContent } from "@/data/allowanceSquareContent";
+import { bankContent } from "@/data/bankContent";
+import { jobCenterContent } from "@/data/jobCenterContent";
+import { capitalWarehouseContent } from "@/data/capitalWarehouseContent";
+import { marketContent } from "@/data/marketContent";
 import { useGameStore } from "@/store/useGameStore";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
@@ -23,6 +27,16 @@ const INTRO_CONTENT: Partial<Record<BuildingId, { messageKo: string; narrationSr
     messageKo: allowanceSquareContent.introMessageKo,
     narrationSrc: allowanceSquareContent.narrationSrc.intro,
   },
+  bank: { messageKo: bankContent.introMessageKo, narrationSrc: bankContent.narrationSrc.intro },
+  "job-center": {
+    messageKo: jobCenterContent.introMessageKo,
+    narrationSrc: jobCenterContent.narrationSrc.intro,
+  },
+  "capital-warehouse": {
+    messageKo: capitalWarehouseContent.introMessageKo,
+    narrationSrc: capitalWarehouseContent.narrationSrc.intro,
+  },
+  market: { messageKo: marketContent.introMessageKo, narrationSrc: marketContent.narrationSrc.intro },
 };
 
 export function BuildingIntroView({ building }: { building: BuildingMeta }) {

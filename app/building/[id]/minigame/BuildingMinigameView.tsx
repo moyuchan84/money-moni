@@ -9,12 +9,20 @@ import { genericMinigameCopy } from "@/data/genericMinigame";
 import { museumContent } from "@/data/museumContent";
 import { ledgerHouseContent } from "@/data/ledgerHouseContent";
 import { allowanceSquareContent } from "@/data/allowanceSquareContent";
+import { bankContent } from "@/data/bankContent";
+import { jobCenterContent } from "@/data/jobCenterContent";
+import { capitalWarehouseContent } from "@/data/capitalWarehouseContent";
+import { marketContent } from "@/data/marketContent";
 import { useGameStore } from "@/store/useGameStore";
 import { MiniGameShell } from "@/components/minigame/MiniGameShell";
 import { TapToCompleteGame } from "@/components/minigame/TapToCompleteGame";
 import { MuseumTimelineGame } from "@/components/minigame/museum/MuseumTimelineGame";
 import { LedgerSortingGame } from "@/components/minigame/ledgerHouse/LedgerSortingGame";
 import { AllowanceJarGame } from "@/components/minigame/allowanceSquare/AllowanceJarGame";
+import { BankInterestGame } from "@/components/minigame/bank/BankInterestGame";
+import { JobCenterDayGame } from "@/components/minigame/jobCenter/JobCenterDayGame";
+import { AppleHarvestRaceGame } from "@/components/minigame/capitalWarehouse/AppleHarvestRaceGame";
+import { MarketPriceGame } from "@/components/minigame/market/MarketPriceGame";
 import { RewardCelebration } from "@/components/feedback/RewardCelebration";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 
@@ -24,6 +32,10 @@ const MINIGAME_INSTRUCTIONS: Partial<Record<BuildingId, string>> = {
   museum: museumContent.instructionsKo,
   "ledger-house": ledgerHouseContent.instructionsKo,
   "allowance-square": allowanceSquareContent.instructionsKo,
+  bank: bankContent.instructionsKo,
+  "job-center": jobCenterContent.instructionsKo,
+  "capital-warehouse": capitalWarehouseContent.instructionsKo,
+  market: marketContent.instructionsKo,
 };
 
 function MinigameByBuilding({ buildingId, onComplete }: { buildingId: BuildingId; onComplete: (score: number) => void }) {
@@ -34,6 +46,14 @@ function MinigameByBuilding({ buildingId, onComplete }: { buildingId: BuildingId
       return <LedgerSortingGame onComplete={onComplete} />;
     case "allowance-square":
       return <AllowanceJarGame onComplete={onComplete} />;
+    case "bank":
+      return <BankInterestGame onComplete={onComplete} />;
+    case "job-center":
+      return <JobCenterDayGame onComplete={onComplete} />;
+    case "capital-warehouse":
+      return <AppleHarvestRaceGame onComplete={onComplete} />;
+    case "market":
+      return <MarketPriceGame onComplete={onComplete} />;
     default:
       return <TapToCompleteGame targetTaps={genericMinigameCopy.targetTaps} onComplete={onComplete} />;
   }

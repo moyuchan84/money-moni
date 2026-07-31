@@ -8,6 +8,10 @@ import { genericMinigameCopy } from "@/data/genericMinigame";
 import { museumContent } from "@/data/museumContent";
 import { ledgerHouseContent } from "@/data/ledgerHouseContent";
 import { allowanceSquareContent } from "@/data/allowanceSquareContent";
+import { bankContent } from "@/data/bankContent";
+import { jobCenterContent } from "@/data/jobCenterContent";
+import { capitalWarehouseContent } from "@/data/capitalWarehouseContent";
+import { marketContent } from "@/data/marketContent";
 import { useGameStore } from "@/store/useGameStore";
 import { ReflectionPrompt } from "@/components/dialogue/ReflectionPrompt";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
@@ -20,6 +24,10 @@ const REFLECTION_CONTENT: Partial<
   museum: museumContent.reflection,
   "ledger-house": ledgerHouseContent.reflection,
   "allowance-square": allowanceSquareContent.reflection,
+  bank: bankContent.reflection,
+  "job-center": jobCenterContent.reflection,
+  "capital-warehouse": capitalWarehouseContent.reflection,
+  market: marketContent.reflection,
 };
 
 export function BuildingResultView({ building }: { building: BuildingMeta }) {

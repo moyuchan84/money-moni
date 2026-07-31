@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { buildings, buildingList, type BuildingId } from "@/data/buildings";
+import { buildings, buildingList, type BuildingId, type District } from "@/data/buildings";
 import { dailyQuests, weeklyQuests, type QuestDefinition } from "@/data/quests";
 import { moneyTreeContent } from "@/data/moneyTreeContent";
 import type { AvatarPartKey } from "@/data/avatarOptions";
@@ -98,6 +98,9 @@ export interface GameState {
   setSoundOn: (value: boolean) => void;
   setNarrationOn: (value: boolean) => void;
   setReducedMotion: (value: boolean) => void;
+  // 개발용 임시 액션 — 1구역을 실제로 플레이하지 않고도 2구역 콘텐츠를 확인할 수 있게 한다.
+  // Phase 6에서 실사용자 배포 전 유지 여부를 재검토한다.
+  debugUnlockDistrict2: () => void;
 }
 
 const defaultAvatarLook: AvatarLook = {
@@ -113,8 +116,30 @@ function createInitialBuildingProgress(): Record<BuildingId, BuildingProgress> {
   ) as Record<BuildingId, BuildingProgress>;
 }
 
+// 어떤 구역의 건물이 전부 완료됐는지 판정한다 — 2구역 잠금 해제 조건(1구역 3개 건물 모두 완료)의
+// 단일 진실 소스. 3구역도 같은 방식(2구역 모두 완료)으로 재사용할 수 있다.
+function isDistrictFullyCompleted(
+  buildingsProgress: Record<BuildingId, BuildingProgress>,
+  district: District,
+): boolean {
+  return buildingList
+    .filter((meta) => meta.district === district)
+    .every((meta) => Boolean(buildingsProgress[meta.id]?.completedAt));
+}
+
 function createQuestProgressList(defs: QuestDefinition[]): QuestProgress[] {
   return defs.map((def) => ({ id: def.id, progress: 0, goal: def.goal }));
+}
+
+// 저장된 건물 진행도를 최신 건물 목록(data/buildings.ts)과 맞춘다. quests와 동일한 이유 —
+// 저장 이후 새로 추가된 건물 id(예: Phase 4의 bank 등)가 기존 저장분에는 없으므로,
+// 병합 시점에 기본값으로 채워 넣지 않으면 새 건물 화면에서 undefined 참조 오류가 난다.
+function reconcileBuildingProgress(
+  existing: Partial<Record<BuildingId, BuildingProgress>> | undefined,
+): Record<BuildingId, BuildingProgress> {
+  return Object.fromEntries(
+    buildingList.map((building) => [building.id, existing?.[building.id] ?? { introSeen: false }]),
+  ) as Record<BuildingId, BuildingProgress>;
 }
 
 // 저장된 퀘스트 진행도를 최신 퀘스트 정의(data/quests.ts)와 맞춘다.
@@ -240,9 +265,15 @@ export const useGameStore = create<GameState>()(
             },
           };
 
+          // 구역 잠금 해제는 false -> true로만 갱신한다(한 번 열리면 다시 잠기지 않음).
+          const nextDistricts = { ...state.districts };
+          if (!nextDistricts[2].unlocked && isDistrictFullyCompleted(nextBuildings, 1)) {
+            nextDistricts[2] = { unlocked: true };
+          }
+
           // 이미 완료된 건물을 다시 클리어해도 코인·퀘스트를 중복 지급하지 않는다.
           if (alreadyCompleted) {
-            return { buildings: nextBuildings };
+            return { buildings: nextBuildings, districts: nextDistricts };
           }
 
           const nextDaily = state.quests.daily.map((quest) => {
@@ -259,6 +290,7 @@ export const useGameStore = create<GameState>()(
 
           return {
             buildings: nextBuildings,
+            districts: nextDistricts,
             wallet: {
               coins: state.wallet.coins + building.rewardCoins,
               history: [
@@ -353,6 +385,9 @@ export const useGameStore = create<GameState>()(
 
       setReducedMotion: (value) =>
         set((state) => ({ settings: { ...state.settings, reducedMotion: value } })),
+
+      debugUnlockDistrict2: () =>
+        set((state) => ({ districts: { ...state.districts, 2: { unlocked: true } } })),
     }),
     {
       name: "moneymoni-save",
@@ -385,12 +420,14 @@ export const useGameStore = create<GameState>()(
 
         return state as GameState;
       },
-      // 퀘스트 정의(data/quests.ts)가 바뀌어도 저장된 진행도와 항상 맞도록 병합 시점에 재조정한다.
+      // 퀘스트/건물 정의(data/quests.ts, data/buildings.ts)가 바뀌어도 저장된 진행도와
+      // 항상 맞도록 병합 시점에 재조정한다.
       merge: (persistedState, currentState) => {
         const persisted = (persistedState ?? {}) as Partial<GameState>;
         return {
           ...currentState,
           ...persisted,
+          buildings: reconcileBuildingProgress(persisted.buildings),
           quests: {
             daily: reconcileQuestProgress(dailyQuests, persisted.quests?.daily),
             weekly: reconcileQuestProgress(weeklyQuests, persisted.quests?.weekly),

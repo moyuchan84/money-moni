@@ -70,6 +70,37 @@ describe("useGameStore", () => {
     expect(state.wallet.history).toHaveLength(1);
   });
 
+  describe("2구역 잠금 해제", () => {
+    it("1구역 건물 3개 중 2개만 완료하면 아직 잠겨 있다", () => {
+      useGameStore.getState().completeBuilding("museum", { score: 1 });
+      useGameStore.getState().completeBuilding("ledger-house", { score: 1 });
+
+      expect(useGameStore.getState().districts[2].unlocked).toBe(false);
+    });
+
+    it("1구역 건물 3개를 모두 완료하면 2구역이 열린다", () => {
+      useGameStore.getState().completeBuilding("museum", { score: 1 });
+      useGameStore.getState().completeBuilding("ledger-house", { score: 1 });
+      useGameStore.getState().completeBuilding("allowance-square", { score: 1 });
+
+      expect(useGameStore.getState().districts[2].unlocked).toBe(true);
+    });
+
+    it("2구역이 열린 뒤 건물을 다시 클리어해도 잠금 상태로 되돌아가지 않는다", () => {
+      useGameStore.getState().completeBuilding("museum", { score: 1 });
+      useGameStore.getState().completeBuilding("ledger-house", { score: 1 });
+      useGameStore.getState().completeBuilding("allowance-square", { score: 1 });
+      useGameStore.getState().completeBuilding("museum", { score: 1 });
+
+      expect(useGameStore.getState().districts[2].unlocked).toBe(true);
+    });
+
+    it("debugUnlockDistrict2로 즉시 2구역을 열 수 있다", () => {
+      useGameStore.getState().debugUnlockDistrict2();
+      expect(useGameStore.getState().districts[2].unlocked).toBe(true);
+    });
+  });
+
   it("addCoins/spendCoins가 지갑 잔액과 내역을 갱신한다", () => {
     useGameStore.getState().addCoins(20, "테스트 적립");
     expect(useGameStore.getState().wallet.coins).toBe(20);
@@ -187,5 +218,32 @@ describe("useGameStore", () => {
     expect(state.moneyTree.principal).toBe(moneyTreeContent.startingPrincipal);
     expect(state.moneyTree.history).toEqual([]);
     expect(state.shop.ownedItemIds).toEqual([]);
+  });
+
+  it("저장분에 없던 건물 id(예: 나중에 추가된 2구역 건물)는 병합 시 기본값으로 채워진다", async () => {
+    localStorage.setItem(
+      "moneymoni-save",
+      JSON.stringify({
+        state: {
+          avatar: { nickname: "몽이", look: { skin: "light", hair: "brown", outfit: "default", pet: "piggy" }, level: 1, exp: 0 },
+          wallet: { coins: 30, history: [] },
+          districts: { 1: { unlocked: true }, 2: { unlocked: false }, 3: { unlocked: false } },
+          // 오래된 저장분이라 museum만 있고, 이후 추가된 bank 등은 아예 키 자체가 없다.
+          buildings: { museum: { introSeen: true, completedAt: "2026-01-01T00:00:00.000Z" } },
+          moneyTree: { stage: 0, principal: moneyTreeContent.startingPrincipal, history: [] },
+          shop: { ownedItemIds: [] },
+          quests: { daily: [], weekly: [] },
+          settings: { soundOn: true, narrationOn: true, reducedMotion: false },
+        },
+        version: 2,
+      }),
+    );
+
+    await useGameStore.persist.rehydrate();
+
+    const state = useGameStore.getState();
+    expect(state.buildings.museum.completedAt).toBe("2026-01-01T00:00:00.000Z");
+    expect(state.buildings.bank).toEqual({ introSeen: false });
+    expect(Object.keys(state.buildings)).toHaveLength(buildingList.length);
   });
 });
