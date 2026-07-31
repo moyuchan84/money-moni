@@ -13,7 +13,7 @@ export function NpcDialogue({ speakerName, message, narrationSrc, onNext }: NpcD
   const { playNarration } = useSound();
 
   return (
-    <div className="flex items-start gap-3 rounded-3xl bg-white p-4 shadow">
+    <div className="flex items-start gap-3 rounded-3xl bg-white p-4 text-gray-900 shadow">
       <div
         aria-hidden
         className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-district1-secondary-light text-heading"

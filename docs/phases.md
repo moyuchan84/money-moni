@@ -42,12 +42,12 @@
 
 **목표**: 실제 비주얼/애니메이션/사운드 수준으로 3개 건물을 완성해, 이후 모든 구역이 재사용할 컴포넌트와 패턴을 이 단계에서 확립한다.
 
-- [ ] `museum`(화폐의 역사) — GSAP `ScrollTrigger` 타임라인, dnd-kit 교환 매칭 미니게임
-- [ ] `ledger-house`(가계부) — PixiJS 낙하 물리 기반 분류 미니게임
-- [ ] `allowance-square`(용돈 배분) — dnd-kit 4항아리 드래그, SVG `clipPath` 액체 차오름 애니메이션
-- [ ] 위 3개에 사용된 애니메이션 유틸(GSAP 컨텍스트 관리 훅, PixiJS Stage 래퍼 등)을 공용 훅/컴포넌트로 추출해 문서화
-- [ ] 실제 내레이션 mp3 3개 건물분 연동, 사운드 온/오프 동작 확인
-- [ ] 1구역 한정 접근성 점검: 터치 타겟, 색 대비, `reducedMotion` 옵션 동작
+- [x] `museum`(화폐의 역사) — GSAP `ScrollTrigger` 타임라인, dnd-kit 교환 매칭 미니게임
+- [x] `ledger-house`(가계부) — PixiJS 낙하 기반 분류 미니게임 (통은 문서 설계의 DOM 오버레이 대신, 좌표계 변환 없이 더 단순·견고하도록 Pixi Graphics로 같은 스테이지에 그림 — `components/minigame/ledgerHouse/LedgerSortingCanvas.tsx` 주석 참고)
+- [x] `allowance-square`(용돈 배분) — dnd-kit 4항아리 드래그, SVG `clipPath` 액체 차오름 애니메이션(Motion 트윈)
+- [x] 위 3개에 사용된 애니메이션 유틸을 공용으로 추출: `hooks/useGsapContext.ts`(GSAP 컨텍스트 생성/해제), `hooks/useReducedMotion.ts`, `components/minigame/PixiStage.tsx`(PixiJS Application 생성·리사이즈·해제 래퍼)
+- [ ] 실제 내레이션 mp3 3개 건물분 연동 — **코드 배선은 완료**(`narrationSrc` 경로를 `content/audio/{buildingId}-{sceneKey}.mp3` 규칙으로 연결, 사운드 온/오프는 정상 동작)했지만, 실제 사람이 녹음한 음원 파일은 이 세션에서 만들 수 없어 `content/audio/`에는 0바이트 placeholder만 있다. 실제 녹음본이 준비되면 같은 경로에 덮어쓰기만 하면 됨.
+- [x] 1구역 한정 접근성 점검: 터치 타겟(`min-h-touch`/`min-w-touch`, Pixi 동전은 지름 44px로 통일), 색 대비(흰/연한 배경 카드에 다크모드에서도 고정된 어두운 텍스트색 강제 — Phase 0/1부터 있던 대비 문제를 1구역 화면들에서 함께 수정), `reducedMotion` 옵션 동작(`/parent`에 토글 추가, 3개 미니게임 모두 반영)
 
 **종료 조건**: 1구역 3개 건물이 기획안(`docs/idea.md` 6-1~6-3) 수준의 완성도로 플레이 가능하고, 초기 로드 시간·FPS가 목표치(모바일 중급기기 기준 미니게임 55fps 이상, 건물 진입 화면 로드 2초 이내 목표— 실측 후 조정) 안에 있다.
 
@@ -143,9 +143,9 @@
 
 | 구역 | 모듈 | 라우트 id | 상태 |
 |---|---|---|---|
-| 1구역 | 화폐의 역사 | `museum` | 대기 |
-| 1구역 | 가계부 | `ledger-house` | 대기 |
-| 1구역 | 용돈 배분 | `allowance-square` | 대기 |
+| 1구역 | 화폐의 역사 | `museum` | 완료 |
+| 1구역 | 가계부 | `ledger-house` | 완료 |
+| 1구역 | 용돈 배분 | `allowance-square` | 완료 |
 | 2구역 | 저축·이자 | `bank` | 대기 |
 | 2구역 | 복리(개인 위젯) | `money-tree` | 대기 |
 | 2구역 | 소득의 종류 | `job-center` | 대기 |

@@ -11,7 +11,7 @@ export function RewardCelebration({ coins, visible, onDone }: RewardCelebrationP
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="flex flex-col items-center gap-3 rounded-3xl bg-white p-6 text-center shadow-xl">
+      <div className="flex flex-col items-center gap-3 rounded-3xl bg-white p-6 text-center text-gray-900 shadow-xl">
         <p aria-hidden className="text-display">
           🎉
         </p>
