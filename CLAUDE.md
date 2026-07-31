@@ -11,6 +11,7 @@
 - `docs/idea.md` — 기획안: 세계관, 3구역 15개 모듈, 게임 루프 컨셉
 - `docs/implementation.md` — 기술 리서치와 화면/모듈별 구현 상세(라이브러리 선정 근거, 라우팅, 상태 스키마)
 - `docs/phases.md` — 개발 Phase별 범위, 종료 조건, 모듈 체크리스트. **작업을 시작하기 전 지금 어느 Phase인지, 무엇이 종료 조건인지 반드시 이 파일에서 확인한다.**
+- `docs/concept-story.md` — 미니게임 전(후)에 이야기·비유·실생활 예시로 개념을 먼저 이해시키는 "개념 스토리 레이어" 요구사양과 15개 모듈 스토리 콘텐츠 초안. 건물 모듈을 만들 때 반드시 참조한다.
 
 ## 기술 스택 (요약 — 선정 근거는 `docs/implementation.md` 2장)
 
@@ -30,9 +31,9 @@ Next.js(App Router, `output: 'export'`) + TypeScript + Tailwind CSS · 상태 Zu
 ## 아키텍처 맵
 
 - `app/` — 라우트. 트리 구조는 `docs/implementation.md` 5장을 그대로 따른다(임의 변경 금지, 변경 시 그 문서도 함께 갱신).
-- `data/` — 모든 한글 카피와 콘텐츠 메타(건물 정보, 퀘스트, 용어집). **컴포넌트에 한글 문자열을 직접 하드코딩하지 않는다** — 내레이션 mp3와 텍스트를 1:1로 관리해야 하기 때문이다.
+- `data/` — 모든 한글 카피와 콘텐츠 메타(건물 정보, 퀘스트, 용어집). **컴포넌트에 한글 문자열을 직접 하드코딩하지 않는다** — 내레이션 mp3와 텍스트를 1:1로 관리해야 하기 때문이다. 건물별 개념 스토리 씬 데이터 타입은 `data/storyScene.ts`에 정의한다.
 - `store/useGameStore.ts` — 단일 진행 상태 소스. 스키마는 `docs/implementation.md` 6장 기준. 필드를 추가할 때는 반드시 기본값을 지정하고, 저장 스키마에 `version` 필드를 두어 증가시키고 마이그레이션 함수를 작성한다.
-- `components/` — `town/`, `hud/`, `dialogue/`, `minigame/`, `feedback/` 카테고리를 유지한다. 새 공통 UI가 필요하면 먼저 이 폴더에 이미 있는지 확인한 뒤 없을 때만 추가한다.
+- `components/` — `town/`, `hud/`, `dialogue/`, `minigame/`, `feedback/` 카테고리를 유지한다. 새 공통 UI가 필요하면 먼저 이 폴더에 이미 있는지 확인한 뒤 없을 때만 추가한다. 개념 스토리 씬 뷰어는 `components/dialogue/StorySceneViewer.tsx`로 공용화되어 있다.
 - `public/content/audio/` — 사전 녹음 내레이션 mp3. 파일명은 `{buildingId}-{sceneKey}.mp3` 규칙을 고정한다. **반드시 `public/` 밑에 둔다** — 정적 export는 `public/`만 사이트 루트로 서빙하므로, `content/`가 `public/` 밖에 있으면 브라우저에서 404가 난다. 코드에서 참조할 때는 항상 `/content/audio/...`처럼 슬래시로 시작하는 루트 상대 경로를 쓴다(슬래시 없이 쓰면 현재 라우트 기준 상대 경로로 잘못 풀린다).
 - `public/content/rive/` — Rive 상태 머신 `.riv` 파일(촌장 NPC, 저금통 펫 등). 파일명은 `{character}.riv` 규칙을 고정한다(예: `village-chief.riv`, `piggy-pet.riv`). 위와 같은 이유로 `public/` 밑에 두고 `/content/rive/...` 루트 상대 경로로 참조한다. 상태 머신 이름·input 이름은 `components/rive/` 프리셋 컴포넌트에 하드코딩되어 있으므로 실제 `.riv` 제작 시 그 값(`ChiefState`/`PetState`, input `mood`)에 맞춰야 한다.
 - **절대 규칙 6 예외**: `money-tree`(복리, 아바타 개인 마당 위젯)는 건물이 아니라 개인 위젯이라 `/building/[id]` 3-라우트 구조를 따르지 않고 `/money-tree` 단일 라우트만 갖는다(`data/buildings.ts`의 `routeKind: 'standalone'`).
@@ -44,17 +45,18 @@ Next.js(App Router, `output: 'export'`) + TypeScript + Tailwind CSS · 상태 Zu
 3. PixiJS·Rive·Matter.js는 `next/dynamic(..., { ssr: false })`로만 임포트한다 — 마을 지도/허브 화면의 초기 번들에 섞이면 안 된다.
 4. 터치/클릭 가능한 요소는 Tailwind의 `min-h-touch`(최소 44px, 아동 기준 2cm 상당) 토큰을 사용하고 임의 px 값을 쓰지 않는다.
 5. 이름(닉네임) 외의 개인식별정보를 수집하지 않고, 외부로 데이터를 전송하는 코드를 추가하지 않는다.
-6. 신규 건물 모듈은 `/building/[id]`, `/building/[id]/minigame`, `/building/[id]/result` 3-라우트 구조를 따른다. 예외가 필요하면 이 문서에 사유를 기록한다.
+6. 신규 건물 모듈은 `/building/[id]`(개념 스토리 씬 뷰어 겸 진입 화면), `/building/[id]/minigame`, `/building/[id]/result`(recap 대사 포함) 3-라우트 구조를 따른다. 예외가 필요하면 이 문서에 사유를 기록한다.
 7. 정치적으로 민감한 모듈("세 갈래 실험마을" — 자본주의/사회주의/공산주의)은 정답·우열 판정 로직을 추가하지 않는다. `<ReflectionPrompt />`로만 마무리한다.
 
 ## 신규 건물 모듈 추가 절차
 
 1. `docs/implementation.md` 8장에서 해당 모듈의 설계(라이브러리, 인터랙션)를 확인한다.
-2. `data/buildings.ts`에 메타데이터를 추가한다(id, district, 잠금 조건, 보상 코인).
-3. `app/building/[id]/page.tsx`, `minigame/page.tsx`, `result/page.tsx`를 생성한다.
-4. `store`의 `buildings` 레코드에 해당 필드가 없으면 기본값과 함께 추가한다.
-5. `public/content/audio/`에 내레이션 mp3 자리(제작 전이면 placeholder)를 추가한다.
-6. `docs/phases.md`의 모듈 체크리스트에 완료 표시를 남긴다.
+2. `docs/concept-story.md` 7장에서 해당 모듈의 스토리 초안(상황/비유/실생활 예시/컷별 대사/게임 연결/회고)을 확인한다.
+3. `data/buildings.ts`에 메타데이터를 추가한다(id, district, 잠금 조건, 보상 코인). 콘텐츠 파일(`data/{building}Content.ts`)에는 `data/storyScene.ts`의 `BuildingStoryContent` 타입에 맞춰 `storyScenes`, `metaphorLineKo`, `realExampleKo`, `bridgeLineKo`, `recapLineKo`를 추가한다.
+4. `app/building/[id]/page.tsx`, `minigame/page.tsx`, `result/page.tsx`(recap 대사 + `<ReflectionPrompt />` 포함)를 생성한다.
+5. `store`의 `buildings` 레코드에 `storySeen` 등 필요한 필드가 없으면 기본값과 함께 추가한다.
+6. `public/content/audio/`에 내레이션 mp3 자리(제작 전이면 placeholder)를 추가한다.
+7. `docs/phases.md`의 모듈 체크리스트에 완료 표시를 남긴다.
 
 ## 코드 스타일
 

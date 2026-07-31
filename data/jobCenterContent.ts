@@ -1,4 +1,5 @@
 // job-center(직업소개소 · 소득의 종류) 건물 전용 카피. docs/idea.md 6-6, docs/implementation.md 8-3 참고.
+// docs/concept-story.md 7-6 참고.
 // 컴포넌트에 한글 문자열을 직접 하드코딩하지 않기 위해 이 파일을 통해서만 참조한다.
 
 export type JobCenterCharacterId = "worker" | "business" | "farmer";
@@ -19,6 +20,30 @@ export const jobCenterContent = {
   },
   introMessageKo:
     "일꾼, 사장님, 농장주 중 한 명을 골라서 하루를 살아보자. 저녁이 되면 세 사람이 얼마나 벌었는지 함께 비교해볼 거야!",
+  storyScenes: [
+    { id: "scene-1", speaker: "npc", textKo: "나는 오늘도 마을 청소를 해야 돈을 벌어. 안 하면 한 푼도 못 벌지." },
+    {
+      id: "scene-2",
+      speaker: "npc",
+      textKo: "나는 레모네이드 가판대를 운영해. 잘 팔리면 많이 벌고, 안 팔리면 적게 벌어.",
+    },
+    {
+      id: "scene-3",
+      speaker: "npc",
+      textKo: "나는… 씨앗을 심어놨더니, 오늘은 낮잠만 자도 나무가 알아서 열매를 만들어줘!",
+    },
+    {
+      id: "scene-4",
+      speaker: "narrator",
+      textKo:
+        "몸을 움직여 버는 돈, 내가 사장이 되어 버는 돈, 내 재산이 스스로 벌어다 주는 돈 — 셋 다 다른 종류의 소득이에요.",
+    },
+  ],
+  metaphorLineKo: "일꾼은 몸으로, 사장님은 아이디어로, 농장주는 심어둔 나무로 돈을 벌어.",
+  realExampleKo:
+    "부모님이 회사에 다니며 월급을 받는 것(근로소득), 작은 가게를 운영하는 것(사업소득), 은행에 맡긴 돈이 이자를 버는 것(자본소득)이 모두 이 세 가지 예다.",
+  bridgeLineKo: "오늘 하루, 셋 중 한 명이 되어서 직접 살아볼까?",
+  recapLineKo: "똑같이 하루를 보냈는데 버는 방법이 다 달랐지? 나중엔 이 세 가지를 다 가질 수도 있어.",
   instructionsKo: "캐릭터를 골라 하루 장면을 넘겨보고, 저녁에 번 돈을 비교해보자.",
   characters: [
     {

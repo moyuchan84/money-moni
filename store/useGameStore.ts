@@ -21,6 +21,7 @@ export interface WalletHistoryEntry {
 
 export interface BuildingProgress {
   introSeen: boolean;
+  storySeen: boolean;
   minigameBestScore?: number;
   completedAt?: string;
   reflectionAnswer?: string;
@@ -93,6 +94,7 @@ export interface GameState {
   spendCoins: (amount: number, reason: string) => void;
   completeBuilding: (buildingId: BuildingId, options?: { score?: number }) => void;
   setBuildingReflectionAnswer: (buildingId: BuildingId, optionId: string) => void;
+  setBuildingStorySeen: (buildingId: BuildingId) => void;
   growMoneyTree: (action: "harvest" | "replant") => void;
   purchaseShopItem: (itemId: string, partKey: AvatarPartKey, priceCoins: number) => void;
   setSoundOn: (value: boolean) => void;
@@ -112,7 +114,7 @@ const defaultAvatarLook: AvatarLook = {
 
 function createInitialBuildingProgress(): Record<BuildingId, BuildingProgress> {
   return Object.fromEntries(
-    buildingList.map((building) => [building.id, { introSeen: false }]),
+    buildingList.map((building) => [building.id, { introSeen: false, storySeen: false }]),
   ) as Record<BuildingId, BuildingProgress>;
 }
 
@@ -138,7 +140,10 @@ function reconcileBuildingProgress(
   existing: Partial<Record<BuildingId, BuildingProgress>> | undefined,
 ): Record<BuildingId, BuildingProgress> {
   return Object.fromEntries(
-    buildingList.map((building) => [building.id, existing?.[building.id] ?? { introSeen: false }]),
+    buildingList.map((building) => [
+      building.id,
+      existing?.[building.id] ?? { introSeen: false, storySeen: false },
+    ]),
   ) as Record<BuildingId, BuildingProgress>;
 }
 
@@ -194,7 +199,7 @@ function createInitialState() {
 }
 
 // 저장 스키마 버전. 필드 구조를 바꿀 때마다 올리고 아래 migrate에 변환 로직을 추가한다.
-const STORE_VERSION = 2;
+const STORE_VERSION = 3;
 
 export const useGameStore = create<GameState>()(
   persist(
@@ -313,6 +318,14 @@ export const useGameStore = create<GameState>()(
           },
         })),
 
+      setBuildingStorySeen: (buildingId) =>
+        set((state) => ({
+          buildings: {
+            ...state.buildings,
+            [buildingId]: { ...state.buildings[buildingId], storySeen: true },
+          },
+        })),
+
       growMoneyTree: (action) =>
         set((state) => {
           const now = new Date().toISOString();
@@ -416,6 +429,20 @@ export const useGameStore = create<GameState>()(
             history: [],
           };
           state.shop = { ownedItemIds: [] };
+        }
+
+        if (version < 3) {
+          // v2까지의 BuildingProgress에는 storySeen이 없으므로 false로 백필한다.
+          const existingBuildings = (state.buildings ?? {}) as Record<
+            string,
+            Partial<BuildingProgress>
+          >;
+          state.buildings = Object.fromEntries(
+            Object.entries(existingBuildings).map(([id, progress]) => [
+              id,
+              { ...progress, storySeen: progress.storySeen ?? false },
+            ]),
+          ) as Record<BuildingId, BuildingProgress>;
         }
 
         return state as GameState;

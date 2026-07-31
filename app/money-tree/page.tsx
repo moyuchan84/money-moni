@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 import { moneyTreeContent } from "@/data/moneyTreeContent";
+import type { StoryScene } from "@/data/storyScene";
 import { useGameStore } from "@/store/useGameStore";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
+import { StorySceneViewer } from "@/components/dialogue/StorySceneViewer";
 import { PiggyPetCharacter } from "@/components/rive/PiggyPetCharacter";
 import { MoneyTreeScene } from "@/components/moneyTree/MoneyTreeScene";
 import type { CharacterMood } from "@/components/rive/RiveCharacter";
@@ -22,10 +25,33 @@ function computeMood(lastActionAt: string | undefined, alreadyActedToday: boolea
 export default function MoneyTreePage() {
   useDistrictBgm(2);
   const lastActionAt = useGameStore((state) => state.moneyTree.lastActionAt);
+  const storySeen = useGameStore((state) => state.buildings["money-tree"].storySeen);
+  const setBuildingStorySeen = useGameStore((state) => state.setBuildingStorySeen);
+  const [replaying, setReplaying] = useState(false);
 
   const today = new Date().toISOString().slice(0, 10);
   const alreadyActedToday = lastActionAt?.slice(0, 10) === today;
   const mood = computeMood(lastActionAt, alreadyActedToday);
+
+  if (!storySeen || replaying) {
+    return (
+      <main className="flex flex-1 flex-col p-6">
+        <StorySceneViewer
+          scenes={moneyTreeContent.storyScenes as StoryScene[]}
+          metaphorLineKo={moneyTreeContent.metaphorLineKo}
+          bridgeLineKo={moneyTreeContent.bridgeLineKo}
+          onComplete={() => {
+            if (!storySeen) setBuildingStorySeen("money-tree");
+            setReplaying(false);
+          }}
+          onSkip={() => {
+            if (!storySeen) setBuildingStorySeen("money-tree");
+            setReplaying(false);
+          }}
+        />
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-1 flex-col items-center gap-6 p-6 text-center">
@@ -39,12 +65,21 @@ export default function MoneyTreePage() {
       />
       <PiggyPetCharacter mood={mood} />
       <MoneyTreeScene alreadyActedToday={alreadyActedToday} />
-      <Link
-        href="/town"
-        className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
-      >
-        마을로 돌아가기
-      </Link>
+      <div className="flex gap-3">
+        <Link
+          href="/town"
+          className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
+        >
+          마을로 돌아가기
+        </Link>
+        <button
+          type="button"
+          onClick={() => setReplaying(true)}
+          className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
+        >
+          이야기 다시보기
+        </button>
+      </div>
     </main>
   );
 }

@@ -9,6 +9,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { useGsapContext } from "@/hooks/useGsapContext";
 import { useSound } from "@/components/providers/SoundProvider";
 import { RewardCelebration } from "@/components/feedback/RewardCelebration";
+import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 
 const BRANCH_COUNT = moneyTreeContent.maxStage;
 
@@ -26,6 +27,7 @@ export function MoneyTreeScene({ alreadyActedToday }: MoneyTreeSceneProps) {
   const growMoneyTree = useGameStore((state) => state.growMoneyTree);
   const { playSfx } = useSound();
   const [celebrationCoins, setCelebrationCoins] = useState<number | null>(null);
+  const [justActed, setJustActed] = useState(false);
 
   const branchRefs = useRef<(SVGPathElement | null)[]>([]);
   const interest = Math.round(principal * moneyTreeContent.dailyInterestRate);
@@ -58,12 +60,14 @@ export function MoneyTreeScene({ alreadyActedToday }: MoneyTreeSceneProps) {
     if (alreadyActedToday) return;
     growMoneyTree("replant");
     playSfx(sfxSrc.treeGrow);
+    setJustActed(true);
   }
 
   function handleHarvest() {
     if (alreadyActedToday) return;
     growMoneyTree("harvest");
     setCelebrationCoins(interest);
+    setJustActed(true);
   }
 
   return (
@@ -90,6 +94,15 @@ export function MoneyTreeScene({ alreadyActedToday }: MoneyTreeSceneProps) {
       <p className="text-body text-fg">
         {moneyTreeContent.stageLabelsKo[stage]} · 원금 {principal}코인 · 오늘 이자 {interest}코인
       </p>
+
+      {justActed && (
+        <NpcDialogue
+          speakerName="촌장님"
+          message={moneyTreeContent.recapLineKo}
+          character="none"
+          onNext={() => setJustActed(false)}
+        />
+      )}
 
       {alreadyActedToday ? (
         <p className="text-caption text-muted">{moneyTreeContent.alreadyActedTodayKo}</p>
