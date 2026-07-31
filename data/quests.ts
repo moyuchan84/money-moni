@@ -11,6 +11,12 @@ export interface QuestDefinition {
   relatedBuilding?: BuildingId;
 }
 
-export const dailyQuests: QuestDefinition[] = [];
+export const dailyQuests: QuestDefinition[] = [
+  {
+    id: "daily-clear-any-building",
+    titleKo: "오늘의 건물 아무 곳이나 클리어하기",
+    goal: 1,
+  },
+];
 
 export const weeklyQuests: QuestDefinition[] = [];
