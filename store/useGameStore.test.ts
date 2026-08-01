@@ -101,6 +101,44 @@ describe("useGameStore", () => {
     });
   });
 
+  describe("3구역 잠금 해제", () => {
+    // 2구역의 routeKind: "building" 건물은 bank/job-center/market/capital-warehouse 4개다.
+    // money-tree(routeKind: "standalone")는 completeBuilding을 호출하지 않으므로 판정에서 제외되어야 한다.
+    it("2구역 건물 4개 중 3개만 완료하면 3구역은 아직 잠겨 있다", () => {
+      useGameStore.getState().completeBuilding("bank", { score: 1 });
+      useGameStore.getState().completeBuilding("job-center", { score: 1 });
+      useGameStore.getState().completeBuilding("market", { score: 1 });
+
+      expect(useGameStore.getState().districts[3].unlocked).toBe(false);
+    });
+
+    it("2구역 building 건물 4개를 모두 완료하면 3구역이 열린다(money-tree는 건드리지 않아도 된다)", () => {
+      useGameStore.getState().completeBuilding("bank", { score: 1 });
+      useGameStore.getState().completeBuilding("job-center", { score: 1 });
+      useGameStore.getState().completeBuilding("market", { score: 1 });
+      useGameStore.getState().completeBuilding("capital-warehouse", { score: 1 });
+
+      expect(useGameStore.getState().districts[3].unlocked).toBe(true);
+    });
+
+    it("3구역이 열린 뒤 건물을 다시 클리어해도 잠금 상태로 되돌아가지 않는다", () => {
+      useGameStore.getState().completeBuilding("bank", { score: 1 });
+      useGameStore.getState().completeBuilding("job-center", { score: 1 });
+      useGameStore.getState().completeBuilding("market", { score: 1 });
+      useGameStore.getState().completeBuilding("capital-warehouse", { score: 1 });
+      useGameStore.getState().completeBuilding("bank", { score: 1 });
+
+      expect(useGameStore.getState().districts[3].unlocked).toBe(true);
+    });
+
+    it("1구역이나 3구역 건물을 완료해도 3구역 잠금 해제 판정에는 영향이 없다", () => {
+      useGameStore.getState().completeBuilding("museum", { score: 1 });
+      useGameStore.getState().completeBuilding("seed-field", { score: 1 });
+
+      expect(useGameStore.getState().districts[3].unlocked).toBe(false);
+    });
+  });
+
   it("addCoins/spendCoins가 지갑 잔액과 내역을 갱신한다", () => {
     useGameStore.getState().addCoins(20, "테스트 적립");
     expect(useGameStore.getState().wallet.coins).toBe(20);

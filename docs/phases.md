@@ -86,16 +86,17 @@
 
 **목표**: 가장 새로운 기술 패턴이 몰려 있는 구역이므로, 위험한 것부터 먼저 스파이크한다.
 
-- [ ] (선행 스파이크) `loan-counter`(대출/레버리지) — Matter.js + PixiJS 물리 저울 프로토타입을 구역 개발 초반에 먼저 검증
-- [ ] (선행 스파이크) `triple-village`(세 갈래 실험마을) — Motion `drag="x"` 스와이프 병렬 씬 + 결과 분배 함수 분리 설계 프로토타입
-- [ ] `seed-field`(투자란) — 확률 룰렛(결과 역산 방식)
-- [ ] `stock-street`(주식) — 투표 → 주가 변화 2단계 화면
-- [ ] `etf-lab`(ETF/ETN) — dnd-kit 다중 드롭존, 변동폭 비교 차트
-- [ ] `gold-vault`(금) — GSAP 자동 재생 스토리 시퀀스
-- [ ] `coin-station`(코인/스테이블코인) — PixiJS 웨이브 경로 비교
-- [ ] 3구역 잠금 해제 조건(2구역 진행도 기준) 연결
+- [x] (선행 스파이크) `loan-counter`(대출/레버리지) — Matter.js + PixiJS 물리 저울. 추(무게)를 자유낙하시키지 않고 `Matter.Constraint`(stiffness 1, length 0)로 막대에 강체 결합해 결정론적으로 동작하게 구현(`components/minigame/loanCounter/`). 별도 `Matter.Runner` 없이 Pixi `app.ticker` 콜백 하나에서 물리 업데이트와 그래픽 동기화를 함께 처리.
+- [x] (선행 스파이크) `triple-village`(세 갈래 실험마을) — Motion `drag="x"` 스와이프 + 화살표/점 버튼 탭 대안(`components/minigame/tripleVillage/`). 결과 분배 로직은 `distributeResult()` 순수 함수로 분리(자본주의/사회주의/공산주의 3모드, 우열 판정 없음 — CLAUDE.md 절대 규칙 7 준수).
+- [x] `seed-field`(투자란) — 확률 룰렛(결과 역산 방식). `rouletteMath.ts`에 `pickWeightedOutcome`/`computeStopAngle` 순수 함수 분리.
+- [x] `stock-street`(주식) — 투표 → 주가(케이크 크기) 변화 2단계 화면(Motion `scale` 트윈).
+- [x] `etf-lab`(ETF/ETN) — dnd-kit 단일 드롭존(바구니) + 신규 공용 컴포넌트 `components/minigame/ComparisonBarChart.tsx`로 변동폭 비교.
+- [x] `gold-vault`(금) — `useGsapContext` 재사용, 시대별 카드 GSAP 페이드인 자동 재생 시퀀스.
+- [x] `coin-station`(코인/스테이블코인) — PixiJS 웨이브 경로 비교(코인=큰 진폭, 스테이블코인=작은 진폭) + DOM 소지금 카운터.
+- [x] 3구역 잠금 해제 조건(2구역 진행도 기준) 연결 — `isDistrictFullyCompleted`에 `routeKind === "building"` 필터를 추가해 `money-tree`(standalone 예외)를 판정에서 제외하고, `completeBuilding`에 2구역 완료 → 3구역 해금 체크를 추가. 단위테스트로 검증(3/4 완료 시 잠김 유지, 4/4 완료 시 해제, 재완료해도 퇴행 없음).
+- [ ] 실제 내레이션 mp3 7개 건물분 연동 — **코드 배선은 완료**(기존 8개 건물과 동일한 `narrationSrc` 패턴)했지만, 이 세션에서는 실제 녹음본을 만들 수 없어 `public/content/audio/`에는 0바이트 placeholder만 있다.
 
-**종료 조건**: 3구역 7개 건물 완성. 이 시점에 15개 모듈 전체와 3구역 모두가 콘텐츠 100% 커버리지에 도달한다.
+**종료 조건**: 3구역 7개 건물 완성. 이 시점에 15개 모듈 전체와 3구역 모두가 콘텐츠 100% 커버리지에 도달한다. — 완료. `npm run lint`/`typecheck`/`test`(49개 테스트 통과)/`build` 모두 통과 확인했고, `matter-js`(loan-counter 전용) 청크가 정적 export 산출물의 어떤 HTML에도 직접 참조되지 않고(= `next/dynamic(ssr:false)`로만 지연 로드) `/town`·건물 인트로 화면 번들과 분리되어 있음을 빌드 산출물에서 직접 확인했다(CLAUDE.md 절대 규칙 3).
 
 ---
 
@@ -153,10 +154,10 @@
 | 2구역 | 소득의 종류 | `job-center` | 완료 | 개념 스토리 씬(7-6) 추가 완료 |
 | 2구역 | 인플레이션 | `market` | 완료 | 개념 스토리 씬(7-7) 추가 완료 |
 | 2구역 | 자본 | `capital-warehouse` | 완료 | 개념 스토리 씬(7-8) 추가 완료 |
-| 3구역 | 투자란 | `seed-field` | 대기 | 콘텐츠 파일 미작성(개념 스토리 씬 포함 이후 작업) |
-| 3구역 | 주식 | `stock-street` | 대기 | 콘텐츠 파일 미작성(개념 스토리 씬 포함 이후 작업) |
-| 3구역 | ETF/ETN | `etf-lab` | 대기 | 콘텐츠 파일 미작성(개념 스토리 씬 포함 이후 작업) |
-| 3구역 | 금 | `gold-vault` | 대기 | 콘텐츠 파일 미작성(개념 스토리 씬 포함 이후 작업) |
-| 3구역 | 코인/스테이블코인 | `coin-station` | 대기 | 콘텐츠 파일 미작성(개념 스토리 씬 포함 이후 작업) |
-| 3구역 | 대출/레버리지 | `loan-counter` | 대기 | 콘텐츠 파일 미작성(개념 스토리 씬 포함 이후 작업) |
-| 3구역 | 자본주의/사회주의/공산주의 | `triple-village` | 대기 | 콘텐츠 파일 미작성(개념 스토리 씬 포함 이후 작업) |
+| 3구역 | 투자란 | `seed-field` | 완료 | 개념 스토리 씬(7-9) 추가 완료. PixiJS 확률 룰렛(`rouletteMath.ts` 순수 함수) |
+| 3구역 | 주식 | `stock-street` | 완료 | 개념 스토리 씬(7-10) 추가 완료. 투표→주가변화 2단계, Motion만 사용(Pixi 불필요) |
+| 3구역 | ETF/ETN | `etf-lab` | 완료 | 개념 스토리 씬(7-11) 추가 완료. dnd-kit 바구니 + 공용 `ComparisonBarChart` |
+| 3구역 | 금 | `gold-vault` | 완료 | 개념 스토리 씬(7-12) 추가 완료. `useGsapContext` 재사용 자동 재생 시퀀스 |
+| 3구역 | 코인/스테이블코인 | `coin-station` | 완료 | 개념 스토리 씬(7-13) 추가 완료. PixiJS 웨이브 비교 |
+| 3구역 | 대출/레버리지 | `loan-counter` | 완료 | 개념 스토리 씬(7-14) 추가 완료. 선행 스파이크 — Matter.js + PixiJS 물리 저울(`tiltMath.ts` 순수 함수) |
+| 3구역 | 자본주의/사회주의/공산주의 | `triple-village` | 완료 | 개념 스토리 씬(7-15) 추가 완료. 선행 스파이크 — Motion 스와이프 + `distributeResult()` 순수 함수(절대 규칙 7 준수, 우열 판정 없음) |

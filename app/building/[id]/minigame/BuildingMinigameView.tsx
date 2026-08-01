@@ -13,6 +13,13 @@ import { bankContent } from "@/data/bankContent";
 import { jobCenterContent } from "@/data/jobCenterContent";
 import { capitalWarehouseContent } from "@/data/capitalWarehouseContent";
 import { marketContent } from "@/data/marketContent";
+import { loanCounterContent } from "@/data/loanCounterContent";
+import { tripleVillageContent } from "@/data/tripleVillageContent";
+import { seedFieldContent } from "@/data/seedFieldContent";
+import { stockStreetContent } from "@/data/stockStreetContent";
+import { etfLabContent } from "@/data/etfLabContent";
+import { goldVaultContent } from "@/data/goldVaultContent";
+import { coinStationContent } from "@/data/coinStationContent";
 import { useGameStore } from "@/store/useGameStore";
 import { MiniGameShell } from "@/components/minigame/MiniGameShell";
 import { TapToCompleteGame } from "@/components/minigame/TapToCompleteGame";
@@ -23,11 +30,18 @@ import { BankInterestGame } from "@/components/minigame/bank/BankInterestGame";
 import { JobCenterDayGame } from "@/components/minigame/jobCenter/JobCenterDayGame";
 import { AppleHarvestRaceGame } from "@/components/minigame/capitalWarehouse/AppleHarvestRaceGame";
 import { MarketPriceGame } from "@/components/minigame/market/MarketPriceGame";
+import { LoanCounterGame } from "@/components/minigame/loanCounter/LoanCounterGame";
+import { TripleVillageGame } from "@/components/minigame/tripleVillage/TripleVillageGame";
+import { SeedFieldGame } from "@/components/minigame/seedField/SeedFieldGame";
+import { StockStreetGame } from "@/components/minigame/stockStreet/StockStreetGame";
+import { EtfBasketGame } from "@/components/minigame/etfLab/EtfBasketGame";
+import { GoldVaultGame } from "@/components/minigame/goldVault/GoldVaultGame";
+import { CoinStationGame } from "@/components/minigame/coinStation/CoinStationGame";
 import { RewardCelebration } from "@/components/feedback/RewardCelebration";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 
-// Phase 2에서 실제 미니게임이 완성된 3개 건물만 전용 컴포넌트를 쓰고,
-// 나머지 건물은 Phase 1의 범용 "탭해서 완료" 게임으로 계속 배선한다.
+// 15개 건물(1~3구역) 모두 전용 미니게임 컴포넌트를 쓴다. TapToCompleteGame/genericMinigameCopy는
+// switch의 default 분기(정상 흐름에서는 도달하지 않음)를 위해 남겨둔다.
 const MINIGAME_INSTRUCTIONS: Partial<Record<BuildingId, string>> = {
   museum: museumContent.instructionsKo,
   "ledger-house": ledgerHouseContent.instructionsKo,
@@ -36,6 +50,13 @@ const MINIGAME_INSTRUCTIONS: Partial<Record<BuildingId, string>> = {
   "job-center": jobCenterContent.instructionsKo,
   "capital-warehouse": capitalWarehouseContent.instructionsKo,
   market: marketContent.instructionsKo,
+  "loan-counter": loanCounterContent.instructionsKo,
+  "triple-village": tripleVillageContent.instructionsKo,
+  "seed-field": seedFieldContent.instructionsKo,
+  "stock-street": stockStreetContent.instructionsKo,
+  "etf-lab": etfLabContent.instructionsKo,
+  "gold-vault": goldVaultContent.instructionsKo,
+  "coin-station": coinStationContent.instructionsKo,
 };
 
 function MinigameByBuilding({ buildingId, onComplete }: { buildingId: BuildingId; onComplete: (score: number) => void }) {
@@ -54,6 +75,20 @@ function MinigameByBuilding({ buildingId, onComplete }: { buildingId: BuildingId
       return <AppleHarvestRaceGame onComplete={onComplete} />;
     case "market":
       return <MarketPriceGame onComplete={onComplete} />;
+    case "loan-counter":
+      return <LoanCounterGame onComplete={onComplete} />;
+    case "triple-village":
+      return <TripleVillageGame onComplete={onComplete} />;
+    case "seed-field":
+      return <SeedFieldGame onComplete={onComplete} />;
+    case "stock-street":
+      return <StockStreetGame onComplete={onComplete} />;
+    case "etf-lab":
+      return <EtfBasketGame onComplete={onComplete} />;
+    case "gold-vault":
+      return <GoldVaultGame onComplete={onComplete} />;
+    case "coin-station":
+      return <CoinStationGame onComplete={onComplete} />;
     default:
       return <TapToCompleteGame targetTaps={genericMinigameCopy.targetTaps} onComplete={onComplete} />;
   }
