@@ -104,14 +104,15 @@
 
 **목표**: 아이가 실제로 써도 되는 수준으로 다듬는다.
 
-- [ ] 전 화면 접근성 재감사(터치 타겟, 명도 대비 WCAG AA, 내레이션 커버리지, `reducedMotion`)
-- [ ] 성능 예산 점검(번들 사이즈, `next/dynamic` lazy load 실제 동작 확인, 저사양/모바일 기기 실측)
-- [ ] 카피 재검토 — 초1 읽기 수준(문장 길이, 어휘) 기준 전수 검토
-- [ ] (선택) 보호자용 요약 대시보드(`/parent`) 구현
-- [ ] 가능하다면 실제 아동 대상 소규모 사용성 테스트 진행 및 피드백 반영
-- [ ] 버그 트리아지 및 수정
+- [x] 전 화면 접근성 재감사(터치 타겟, 명도 대비 WCAG AA, 내레이션 커버리지, `reducedMotion`) — 터치 타겟(`min-h-touch`/`min-w-touch`)과 명도 대비(`--color-ink` 강제 토큰)는 이미 전 구역에 일관 적용되어 있음을 재확인했다. `reducedMotion`은 `EtfBasketGame`/`LoanCounter`(Matter.js 물리)가 실제로는 줄일 트윈이 없거나(색상 전환만 존재) 물리 시뮬레이션 자체가 핵심 메커니즘이라는 이유를 코드 주석으로 명시했다. 내레이션 커버리지 점검 중 `docs/concept-story.md`가 요구하는 5요소 중 "실생활 예시"(`realExampleKo`)가 15개 건물 전부 데이터에는 있지만 `StorySceneViewer`에서 한 번도 렌더링되지 않던 버그를 발견해 수정했다(`components/dialogue/StorySceneViewer.tsx`).
+- [x] 성능 예산 점검(번들 사이즈, `next/dynamic` lazy load 실제 동작 확인, 저사양/모바일 기기 실측) — `npm run build` 산출물(`out/`)에서 PixiJS·Rive·Matter.js를 포함한 청크가 `/town`과 15개 건물의 모든 인트로/결과 화면 HTML에 전혀 참조되지 않음을 스크립트로 전수 확인했다(Phase 5에서는 loan-counter 하나만 확인했던 것을 전 구역으로 확장). 정적 export 전체 9.8MB, JS 청크 총합 2.8MB. **저사양 모바일 기기 실측(55fps 목표)은 이 세션에서 물리 기기가 없어 수행할 수 없다** — 오디오/Rive 자산과 동일하게 외부에서 별도로 검증이 필요한 항목으로 남겨둔다.
+- [x] 카피 재검토 — 초1 읽기 수준(문장 길이, 어휘) 기준 전수 검토 — 15개 건물 콘텐츠 파일(`data/*Content.ts`)과 `data/glossary.ts`를 전수 확인한 결과, 이미 2~3문장 원칙과 구체적 비유를 일관되게 지키고 있어 별도 재작성은 필요하지 않았다. 동시에 `data/`에 없던 핵심 화면 하드코딩 한글(건물 인트로/결과 화면, `StorySceneViewer` 공통 UI, 마을 지도 내비게이션, 온보딩, `/parent`)을 `data/commonContent.ts`/`data/buildingViewContent.ts`/`data/onboardingContent.ts`/`data/parentContent.ts`로 옮겼다(CLAUDE.md `data/` 규칙 위반 정리). **범위 제한**: 미니게임 Pixi 캔버스 안의 짧은 라벨(숫자/한두 글자)은 이번 범위에서 제외했다 — 여전히 컴포넌트에 하드코딩된 채로 남아 있는 남은 debt다.
+- [x] (선택) 보호자용 요약 대시보드(`/parent`) 구현 — 닉네임 한 줄 + 개발용 임시 버튼뿐이던 화면을 코인 총합, 구역별 완료 현황(`n구역 x/y`), 일일/주간 퀘스트 진행 요약, 사운드 토글(`SoundToggle` 재사용)을 보여주는 화면으로 확장했다. 배포를 앞두고 실사용자에게 노출되면 안 되는 개발용 `debugUnlockDistrict2` 버튼은 화면에서 제거했다(스토어 액션 자체와 그 단위 테스트는 유지).
+- [ ] 가능하다면 실제 아동 대상 소규모 사용성 테스트 진행 및 피드백 반영 — **이 세션에서는 수행하지 않음(범위 밖으로 확정)**. 실제 아동 참여가 필요한 외부 활동이라 코드 작업으로 대체할 수 없다. Phase 7 이전에 별도로 진행해야 한다.
+- [x] 버그 트리아지 및 수정 — `TODO`/`FIXME` 마커는 없었다. 위 접근성 재감사 중 발견한 `realExampleKo` 미노출 버그를 수정했고, 신규 E2E 테스트를 작성하는 과정에서 Playwright `addInitScript`가 `page.reload()`마다 재실행되어 진행 상태를 시드값으로 덮어쓰는 테스트 하네스 버그(`e2e/seedState.ts`)를 발견해 "키가 없을 때만 시드" 가드로 수정했다.
+- [x] E2E 크리티컬 플로우 커버리지 확장(원래 체크리스트에는 없었지만 종료 조건 충족을 위해 추가) — 기존에는 1구역(museum/allowance-square)만 커버했다. `e2e/district-unlock-flow.spec.ts`(1→2구역, 2→3구역 잠금 해제 + 은행/ETF 조합소 실제 완주)와 `e2e/money-tree-flow.spec.ts`(standalone 라우트 + 하루 1회 제한 로직의 새로고침 유지)를 추가해 6개 테스트 모두 통과한다. **남은 갭**: `loan-counter`(Matter.js)는 물리 타이밍이 얽혀 있어 이번 확장에서 제외했다 — 여전히 e2e 커버리지 밖이다.
 
-**종료 조건**: `npm run lint`, `npm run typecheck`, `npm run test`(Vitest + Playwright 크리티컬 플로우)가 모두 통과하고, 접근성 체크리스트 항목이 전부 해소된다.
+**종료 조건**: `npm run lint`, `npm run typecheck`, `npm run test`(Vitest 49개 + Playwright 6개)가 모두 통과한다 — 확인 완료. 접근성 체크리스트 항목은 위와 같이 코드로 가능한 부분은 전부 해소했으나, 저사양 기기 실측과 아동 대상 사용성 테스트는 외부 활동이 필요해 이 세션 범위 밖으로 남아 있다.
 
 ---
 

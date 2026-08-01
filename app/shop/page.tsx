@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { shopContent } from "@/data/shopContent";
 import { shopItems } from "@/data/shopItems";
+import { commonContent } from "@/data/commonContent";
 import { useGameStore } from "@/store/useGameStore";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 import { CoinWallet } from "@/components/hud/CoinWallet";
@@ -20,12 +21,12 @@ export default function ShopPage() {
   return (
     <main className="flex flex-1 flex-col gap-6 p-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-heading font-bold text-ink">상점</h1>
+        <h1 className="text-heading font-bold text-ink">{commonContent.pageTitles.shop}</h1>
         <CoinWallet coins={coins} />
       </div>
 
       <NpcDialogue
-        speakerName="촌장님"
+        speakerName={commonContent.villageChiefSpeakerKo}
         message={shopContent.introMessageKo}
         narrationSrc={shopContent.narrationSrc.intro}
       />
@@ -48,7 +49,7 @@ export default function ShopPage() {
       )}
 
       <Link href="/town" className="min-h-touch min-w-touch self-start text-body text-primary underline">
-        마을로 돌아가기
+        {commonContent.backToTownKo}
       </Link>
     </main>
   );

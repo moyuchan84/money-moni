@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { dailyQuests, weeklyQuests } from "@/data/quests";
 import { questLogContent } from "@/data/questLogContent";
+import { commonContent } from "@/data/commonContent";
 import { useGameStore } from "@/store/useGameStore";
 import { ProgressBadge } from "@/components/feedback/ProgressBadge";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
@@ -19,17 +20,17 @@ export default function QuestLogPage() {
 
   return (
     <main className="flex flex-1 flex-col gap-6 p-6">
-      <h1 className="text-heading font-bold text-ink">퀘스트 로그</h1>
+      <h1 className="text-heading font-bold text-ink">{commonContent.pageTitles.questLog}</h1>
       <NpcDialogue
-        speakerName="촌장님"
+        speakerName={commonContent.villageChiefSpeakerKo}
         message={questLogContent.introMessageKo}
         narrationSrc={questLogContent.narrationSrc.intro}
       />
 
       <section>
-        <h2 className="mb-2 text-body font-semibold text-ink">오늘의 퀘스트</h2>
+        <h2 className="mb-2 text-body font-semibold text-ink">{questLogContent.dailySectionTitleKo}</h2>
         {daily.length === 0 ? (
-          <p className="text-caption">아직 등록된 일일 퀘스트가 없어요.</p>
+          <p className="text-caption">{questLogContent.dailyEmptyKo}</p>
         ) : (
           <ul className="flex flex-col gap-2">
             {daily.map((quest) => (
@@ -45,9 +46,9 @@ export default function QuestLogPage() {
       </section>
 
       <section>
-        <h2 className="mb-2 text-body font-semibold text-ink">이번 주 퀘스트</h2>
+        <h2 className="mb-2 text-body font-semibold text-ink">{questLogContent.weeklySectionTitleKo}</h2>
         {weekly.length === 0 ? (
-          <p className="text-caption">아직 등록된 주간 퀘스트가 없어요.</p>
+          <p className="text-caption">{questLogContent.weeklyEmptyKo}</p>
         ) : (
           <ul className="flex flex-col gap-2">
             {weekly.map((quest) => (
@@ -63,7 +64,7 @@ export default function QuestLogPage() {
       </section>
 
       <Link href="/town" className="min-h-touch min-w-touch self-start text-body underline">
-        마을로 돌아가기
+        {commonContent.backToTownKo}
       </Link>
     </main>
   );
