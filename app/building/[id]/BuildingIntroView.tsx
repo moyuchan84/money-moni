@@ -12,14 +12,21 @@ import { bankContent } from "@/data/bankContent";
 import { jobCenterContent } from "@/data/jobCenterContent";
 import { capitalWarehouseContent } from "@/data/capitalWarehouseContent";
 import { marketContent } from "@/data/marketContent";
+import { loanCounterContent } from "@/data/loanCounterContent";
+import { tripleVillageContent } from "@/data/tripleVillageContent";
+import { seedFieldContent } from "@/data/seedFieldContent";
+import { stockStreetContent } from "@/data/stockStreetContent";
+import { etfLabContent } from "@/data/etfLabContent";
+import { goldVaultContent } from "@/data/goldVaultContent";
+import { coinStationContent } from "@/data/coinStationContent";
 import type { BuildingStoryContent, StoryScene } from "@/data/storyScene";
 import { useGameStore } from "@/store/useGameStore";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { StorySceneViewer } from "@/components/dialogue/StorySceneViewer";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 
-// Phase 2에서 실제 콘텐츠가 채워진 3개 건물은 전용 인트로 대사·내레이션을 쓴다.
-// 나머지 건물은 Phase 1의 범용 카피를 그대로 유지한다.
+// 15개 건물(1~3구역) 모두 전용 인트로 대사·내레이션을 쓴다. genericMinigameCopy는 이 맵에 없는
+// (정상 흐름에서는 없을) buildingId를 위한 fallback으로만 남겨둔다.
 const INTRO_CONTENT: Partial<Record<BuildingId, { messageKo: string; narrationSrc?: string }>> = {
   museum: { messageKo: museumContent.introMessageKo, narrationSrc: museumContent.narrationSrc.intro },
   "ledger-house": {
@@ -40,10 +47,37 @@ const INTRO_CONTENT: Partial<Record<BuildingId, { messageKo: string; narrationSr
     narrationSrc: capitalWarehouseContent.narrationSrc.intro,
   },
   market: { messageKo: marketContent.introMessageKo, narrationSrc: marketContent.narrationSrc.intro },
+  "loan-counter": {
+    messageKo: loanCounterContent.introMessageKo,
+    narrationSrc: loanCounterContent.narrationSrc.intro,
+  },
+  "triple-village": {
+    messageKo: tripleVillageContent.introMessageKo,
+    narrationSrc: tripleVillageContent.narrationSrc.intro,
+  },
+  "seed-field": {
+    messageKo: seedFieldContent.introMessageKo,
+    narrationSrc: seedFieldContent.narrationSrc.intro,
+  },
+  "stock-street": {
+    messageKo: stockStreetContent.introMessageKo,
+    narrationSrc: stockStreetContent.narrationSrc.intro,
+  },
+  "etf-lab": {
+    messageKo: etfLabContent.introMessageKo,
+    narrationSrc: etfLabContent.narrationSrc.intro,
+  },
+  "gold-vault": {
+    messageKo: goldVaultContent.introMessageKo,
+    narrationSrc: goldVaultContent.narrationSrc.intro,
+  },
+  "coin-station": {
+    messageKo: coinStationContent.introMessageKo,
+    narrationSrc: coinStationContent.narrationSrc.intro,
+  },
 };
 
-// 개념 스토리 레이어(docs/concept-story.md)가 준비된 7개 건물의 스토리 콘텐츠.
-// 3구역 7개 건물은 아직 스토리가 없으므로 이 맵에 키가 존재하지 않는다 — 기존 동작 그대로 유지된다.
+// 개념 스토리 레이어(docs/concept-story.md)가 준비된 15개 건물(1~3구역 전체)의 스토리 콘텐츠.
 const STORY_CONTENT: Partial<Record<BuildingId, BuildingStoryContent>> = {
   museum: {
     storyScenes: museumContent.storyScenes as StoryScene[],
@@ -93,6 +127,55 @@ const STORY_CONTENT: Partial<Record<BuildingId, BuildingStoryContent>> = {
     realExampleKo: marketContent.realExampleKo,
     bridgeLineKo: marketContent.bridgeLineKo,
     recapLineKo: marketContent.recapLineKo,
+  },
+  "loan-counter": {
+    storyScenes: loanCounterContent.storyScenes as StoryScene[],
+    metaphorLineKo: loanCounterContent.metaphorLineKo,
+    realExampleKo: loanCounterContent.realExampleKo,
+    bridgeLineKo: loanCounterContent.bridgeLineKo,
+    recapLineKo: loanCounterContent.recapLineKo,
+  },
+  "triple-village": {
+    storyScenes: tripleVillageContent.storyScenes as StoryScene[],
+    metaphorLineKo: tripleVillageContent.metaphorLineKo,
+    realExampleKo: tripleVillageContent.realExampleKo,
+    bridgeLineKo: tripleVillageContent.bridgeLineKo,
+    recapLineKo: tripleVillageContent.recapLineKo,
+  },
+  "seed-field": {
+    storyScenes: seedFieldContent.storyScenes as StoryScene[],
+    metaphorLineKo: seedFieldContent.metaphorLineKo,
+    realExampleKo: seedFieldContent.realExampleKo,
+    bridgeLineKo: seedFieldContent.bridgeLineKo,
+    recapLineKo: seedFieldContent.recapLineKo,
+  },
+  "stock-street": {
+    storyScenes: stockStreetContent.storyScenes as StoryScene[],
+    metaphorLineKo: stockStreetContent.metaphorLineKo,
+    realExampleKo: stockStreetContent.realExampleKo,
+    bridgeLineKo: stockStreetContent.bridgeLineKo,
+    recapLineKo: stockStreetContent.recapLineKo,
+  },
+  "etf-lab": {
+    storyScenes: etfLabContent.storyScenes as StoryScene[],
+    metaphorLineKo: etfLabContent.metaphorLineKo,
+    realExampleKo: etfLabContent.realExampleKo,
+    bridgeLineKo: etfLabContent.bridgeLineKo,
+    recapLineKo: etfLabContent.recapLineKo,
+  },
+  "gold-vault": {
+    storyScenes: goldVaultContent.storyScenes as StoryScene[],
+    metaphorLineKo: goldVaultContent.metaphorLineKo,
+    realExampleKo: goldVaultContent.realExampleKo,
+    bridgeLineKo: goldVaultContent.bridgeLineKo,
+    recapLineKo: goldVaultContent.recapLineKo,
+  },
+  "coin-station": {
+    storyScenes: coinStationContent.storyScenes as StoryScene[],
+    metaphorLineKo: coinStationContent.metaphorLineKo,
+    realExampleKo: coinStationContent.realExampleKo,
+    bridgeLineKo: coinStationContent.bridgeLineKo,
+    recapLineKo: coinStationContent.recapLineKo,
   },
 };
 

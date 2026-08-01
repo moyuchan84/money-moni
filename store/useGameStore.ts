@@ -119,13 +119,16 @@ function createInitialBuildingProgress(): Record<BuildingId, BuildingProgress> {
 }
 
 // 어떤 구역의 건물이 전부 완료됐는지 판정한다 — 2구역 잠금 해제 조건(1구역 3개 건물 모두 완료)의
-// 단일 진실 소스. 3구역도 같은 방식(2구역 모두 완료)으로 재사용할 수 있다.
+// 단일 진실 소스. 3구역도 같은 방식(2구역 모두 완료)으로 재사용한다.
+// routeKind: "building"만 포함한다 — money-tree(district: 2, routeKind: "standalone")는
+// completeBuilding을 호출하는 미니게임 플로우가 없는 개인 위젯(CLAUDE.md 절대 규칙 6 예외)이라
+// completedAt이 채워질 일이 없다. 판정에 포함시키면 3구역이 영원히 열리지 않는다.
 function isDistrictFullyCompleted(
   buildingsProgress: Record<BuildingId, BuildingProgress>,
   district: District,
 ): boolean {
   return buildingList
-    .filter((meta) => meta.district === district)
+    .filter((meta) => meta.district === district && meta.routeKind === "building")
     .every((meta) => Boolean(buildingsProgress[meta.id]?.completedAt));
 }
 
@@ -274,6 +277,9 @@ export const useGameStore = create<GameState>()(
           const nextDistricts = { ...state.districts };
           if (!nextDistricts[2].unlocked && isDistrictFullyCompleted(nextBuildings, 1)) {
             nextDistricts[2] = { unlocked: true };
+          }
+          if (!nextDistricts[3].unlocked && isDistrictFullyCompleted(nextBuildings, 2)) {
+            nextDistricts[3] = { unlocked: true };
           }
 
           // 이미 완료된 건물을 다시 클리어해도 코인·퀘스트를 중복 지급하지 않는다.

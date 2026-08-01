@@ -12,13 +12,20 @@ import { bankContent } from "@/data/bankContent";
 import { jobCenterContent } from "@/data/jobCenterContent";
 import { capitalWarehouseContent } from "@/data/capitalWarehouseContent";
 import { marketContent } from "@/data/marketContent";
+import { loanCounterContent } from "@/data/loanCounterContent";
+import { tripleVillageContent } from "@/data/tripleVillageContent";
+import { seedFieldContent } from "@/data/seedFieldContent";
+import { stockStreetContent } from "@/data/stockStreetContent";
+import { etfLabContent } from "@/data/etfLabContent";
+import { goldVaultContent } from "@/data/goldVaultContent";
+import { coinStationContent } from "@/data/coinStationContent";
 import { useGameStore } from "@/store/useGameStore";
 import { ReflectionPrompt } from "@/components/dialogue/ReflectionPrompt";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 
-// Phase 2에서 실제 콘텐츠가 채워진 3개 건물은 건물 맞춤 회고 질문을 쓴다.
-// 나머지 건물은 Phase 1의 범용 회고 질문을 유지한다.
+// 15개 건물(1~3구역) 모두 건물 맞춤 회고 질문을 쓴다. genericMinigameCopy는 이 맵에 없는
+// (정상 흐름에서는 없을) buildingId를 위한 fallback으로만 남겨둔다.
 const REFLECTION_CONTENT: Partial<
   Record<BuildingId, { questionKo: string; options: { id: string; label: string }[] }>
 > = {
@@ -29,9 +36,18 @@ const REFLECTION_CONTENT: Partial<
   "job-center": jobCenterContent.reflection,
   "capital-warehouse": capitalWarehouseContent.reflection,
   market: marketContent.reflection,
+  "loan-counter": loanCounterContent.reflection,
+  // triple-village의 질문은 "어떤 마을이 기억에 남았는지"만 묻는다 — 어느 체제가 낫다는 판정이 아니다
+  // (CLAUDE.md 절대 규칙 7).
+  "triple-village": tripleVillageContent.reflection,
+  "seed-field": seedFieldContent.reflection,
+  "stock-street": stockStreetContent.reflection,
+  "etf-lab": etfLabContent.reflection,
+  "gold-vault": goldVaultContent.reflection,
+  "coin-station": coinStationContent.reflection,
 };
 
-// recap 대사가 준비된 건물(1~2구역)만 값이 존재한다. 3구역 7개 건물은 키가 없다.
+// recap 대사가 준비된 15개 건물(1~3구역 전체) 모두 값이 존재한다.
 const RECAP_CONTENT: Partial<Record<BuildingId, string>> = {
   museum: museumContent.recapLineKo,
   "ledger-house": ledgerHouseContent.recapLineKo,
@@ -40,6 +56,13 @@ const RECAP_CONTENT: Partial<Record<BuildingId, string>> = {
   "job-center": jobCenterContent.recapLineKo,
   "capital-warehouse": capitalWarehouseContent.recapLineKo,
   market: marketContent.recapLineKo,
+  "loan-counter": loanCounterContent.recapLineKo,
+  "triple-village": tripleVillageContent.recapLineKo,
+  "seed-field": seedFieldContent.recapLineKo,
+  "stock-street": stockStreetContent.recapLineKo,
+  "etf-lab": etfLabContent.recapLineKo,
+  "gold-vault": goldVaultContent.recapLineKo,
+  "coin-station": coinStationContent.recapLineKo,
 };
 
 export function BuildingResultView({ building }: { building: BuildingMeta }) {
