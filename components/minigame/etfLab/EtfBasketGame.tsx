@@ -36,9 +36,12 @@ function DraggableSnackCard({ snack }: { snack: EtfSnackCard }) {
 function BasketDropZone({ items }: { items: EtfSnackCard[] }) {
   const { setNodeRef, isOver } = useDroppable({ id: "basket" });
 
+  // reducedMotion 예외: 이 화면은 GSAP/Motion 트윈 없이 dnd-kit 드래그 위치와 아래 색상 하이라이트뿐이라
+  // 줄일 대상 트윈이 없다(카드 등장/비교 전환도 즉시 상태 전환이라 지속시간 개념이 없음).
   return (
     <div
       ref={setNodeRef}
+      aria-label="과자 바구니"
       className={`flex min-h-touch min-w-full flex-wrap justify-center gap-2 rounded-card border-2 border-dashed p-3 transition ${
         isOver ? "border-primary bg-primary-light" : "border-border bg-surface-muted"
       }`}

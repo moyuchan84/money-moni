@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 
 import type { BuildingId, BuildingMeta } from "@/data/buildings";
+import { commonContent } from "@/data/commonContent";
+import { buildingViewContent } from "@/data/buildingViewContent";
 import { genericMinigameCopy } from "@/data/genericMinigame";
 import { museumContent } from "@/data/museumContent";
 import { ledgerHouseContent } from "@/data/ledgerHouseContent";
@@ -194,14 +196,14 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
       <main className="flex flex-1 flex-col gap-6 p-6">
         <h1 className="text-heading font-bold text-ink">{building.titleKo}</h1>
         <NpcDialogue
-          speakerName="촌장님"
-          message="이 구역은 아직 잠겨 있어요. 다른 구역부터 열어보자!"
+          speakerName={commonContent.villageChiefSpeakerKo}
+          message={buildingViewContent.districtLockedKo}
         />
         <Link
           href="/town"
           className="min-h-touch min-w-touch self-start rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
         >
-          마을로 돌아가기
+          {commonContent.backToTownKo}
         </Link>
       </main>
     );
@@ -217,6 +219,7 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
       <StorySceneViewer
         scenes={storyContent.storyScenes}
         metaphorLineKo={storyContent.metaphorLineKo}
+        realExampleKo={storyContent.realExampleKo}
         bridgeLineKo={storyContent.bridgeLineKo}
         onComplete={handleStoryDone}
         onSkip={handleStoryDone}
@@ -228,10 +231,10 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
     <main className="flex flex-1 flex-col gap-6 p-6">
       <h1 className="text-heading font-bold text-ink">{building.titleKo}</h1>
       <NpcDialogue
-        speakerName="촌장님"
+        speakerName={commonContent.villageChiefSpeakerKo}
         message={
           completedAt
-            ? "벌써 완료한 곳이네! 다시 놀러 와도 좋아."
+            ? buildingViewContent.alreadyCompletedIntroKo
             : (introContent?.messageKo ?? genericMinigameCopy.introMessageKo)
         }
         narrationSrc={completedAt ? undefined : introContent?.narrationSrc}
@@ -241,13 +244,13 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
           href={`/building/${building.id}/minigame`}
           className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
         >
-          미니게임 시작하기
+          {buildingViewContent.startMinigameKo}
         </Link>
         <Link
           href="/town"
           className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
         >
-          마을로 돌아가기
+          {commonContent.backToTownKo}
         </Link>
         {storyContent && (
           <button
@@ -255,7 +258,7 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
             onClick={() => setReplaying(true)}
             className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
           >
-            이야기 다시보기
+            {commonContent.replayStoryKo}
           </button>
         )}
       </div>

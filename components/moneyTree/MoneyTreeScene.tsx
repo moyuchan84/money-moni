@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 
 import { moneyTreeContent } from "@/data/moneyTreeContent";
+import { commonContent } from "@/data/commonContent";
 import { sfxSrc } from "@/data/soundContent";
 import { useGameStore } from "@/store/useGameStore";
 import { useGsapContext } from "@/hooks/useGsapContext";
@@ -97,7 +98,7 @@ export function MoneyTreeScene({ alreadyActedToday }: MoneyTreeSceneProps) {
 
       {justActed && (
         <NpcDialogue
-          speakerName="촌장님"
+          speakerName={commonContent.villageChiefSpeakerKo}
           message={moneyTreeContent.recapLineKo}
           character="none"
           onNext={() => setJustActed(false)}
