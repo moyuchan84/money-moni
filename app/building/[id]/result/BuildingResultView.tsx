@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 
 import type { BuildingId, BuildingMeta } from "@/data/buildings";
+import { commonContent } from "@/data/commonContent";
+import { buildingViewContent } from "@/data/buildingViewContent";
 import { genericMinigameCopy } from "@/data/genericMinigame";
 import { museumContent } from "@/data/museumContent";
 import { ledgerHouseContent } from "@/data/ledgerHouseContent";
@@ -88,14 +90,18 @@ export function BuildingResultView({ building }: { building: BuildingMeta }) {
       <p aria-hidden className="text-display">
         🎉
       </p>
-      <h1 className="text-heading font-bold text-ink">수고했어요!</h1>
-      <p className="text-body text-fg">지금 가진 코인은 {coins}개예요!</p>
+      <h1 className="text-heading font-bold text-ink">{buildingViewContent.resultHeadingKo}</h1>
+      <p className="text-body text-fg">{buildingViewContent.coinsLineKo(coins)}</p>
 
-      {recap && <NpcDialogue speakerName="촌장님" message={recap} character="none" />}
+      {recap && (
+        <NpcDialogue speakerName={commonContent.villageChiefSpeakerKo} message={recap} character="none" />
+      )}
 
       {reflectionAnswer ? (
         <p className="text-body text-fg">
-          {justAnswered ? "회고를 남겨줘서 고마워!" : "이미 회고를 남겼어요. 고마워!"}
+          {justAnswered
+            ? buildingViewContent.reflectionJustAnsweredKo
+            : buildingViewContent.reflectionAlreadyAnsweredKo}
         </p>
       ) : (
         <ReflectionPrompt question={reflection.questionKo} options={reflection.options} onAnswer={handleAnswer} />
@@ -105,7 +111,7 @@ export function BuildingResultView({ building }: { building: BuildingMeta }) {
         href="/town"
         className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
       >
-        마을로 돌아가기
+        {commonContent.backToTownKo}
       </Link>
     </main>
   );

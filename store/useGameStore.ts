@@ -103,6 +103,8 @@ export interface GameState {
   // 개발용 임시 액션 — 1구역을 실제로 플레이하지 않고도 2구역 콘텐츠를 확인할 수 있게 한다.
   // Phase 6에서 실사용자 배포 전 유지 여부를 재검토한다.
   debugUnlockDistrict2: () => void;
+  // 위와 동일한 이유 — 1·2구역을 다 깨지 않고도 3구역(투자 타워) 콘텐츠를 확인할 수 있게 한다.
+  debugUnlockDistrict3: () => void;
 }
 
 const defaultAvatarLook: AvatarLook = {
@@ -407,6 +409,9 @@ export const useGameStore = create<GameState>()(
 
       debugUnlockDistrict2: () =>
         set((state) => ({ districts: { ...state.districts, 2: { unlocked: true } } })),
+
+      debugUnlockDistrict3: () =>
+        set((state) => ({ districts: { ...state.districts, 3: { unlocked: true } } })),
     }),
     {
       name: "moneymoni-save",

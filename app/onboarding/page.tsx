@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 import { avatarPartCategories, freeOptions, type AvatarPartKey } from "@/data/avatarOptions";
+import { onboardingContent } from "@/data/onboardingContent";
 import { useGameStore, type AvatarLook } from "@/store/useGameStore";
 import { AvatarPartPicker } from "@/components/onboarding/AvatarPartPicker";
 
@@ -33,8 +34,8 @@ export default function OnboardingPage() {
 
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center">
-      <h1 className="font-jua text-display text-ink">머니타운에 온 걸 환영해!</h1>
-      <p className="text-body text-fg">나만의 모습을 만들고, 너를 부를 이름을 알려줘.</p>
+      <h1 className="font-jua text-display text-ink">{onboardingContent.titleKo}</h1>
+      <p className="text-body text-fg">{onboardingContent.subtitleKo}</p>
       <form onSubmit={handleSubmit} className="flex flex-col items-center gap-6">
         <div className="flex flex-wrap justify-center gap-4">
           {avatarPartCategories.map((category) => (
@@ -50,7 +51,7 @@ export default function OnboardingPage() {
         <input
           value={nickname}
           onChange={(event) => setNickname(event.target.value)}
-          placeholder="닉네임"
+          placeholder={onboardingContent.nicknamePlaceholderKo}
           maxLength={12}
           className="min-h-touch rounded-control border border-border px-4 py-2 text-body"
         />
@@ -58,7 +59,7 @@ export default function OnboardingPage() {
           type="submit"
           className="min-h-touch min-w-touch rounded-control bg-primary px-8 py-2 text-body text-white"
         >
-          시작하기
+          {onboardingContent.startButtonKo}
         </button>
       </form>
     </main>

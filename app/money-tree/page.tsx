@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { moneyTreeContent } from "@/data/moneyTreeContent";
+import { commonContent } from "@/data/commonContent";
 import type { StoryScene } from "@/data/storyScene";
 import { useGameStore } from "@/store/useGameStore";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
@@ -39,6 +40,7 @@ export default function MoneyTreePage() {
         <StorySceneViewer
           scenes={moneyTreeContent.storyScenes as StoryScene[]}
           metaphorLineKo={moneyTreeContent.metaphorLineKo}
+          realExampleKo={moneyTreeContent.realExampleKo}
           bridgeLineKo={moneyTreeContent.bridgeLineKo}
           onComplete={() => {
             if (!storySeen) setBuildingStorySeen("money-tree");
@@ -55,9 +57,9 @@ export default function MoneyTreePage() {
 
   return (
     <main className="flex flex-1 flex-col items-center gap-6 p-6 text-center">
-      <h1 className="text-heading font-bold text-ink">머니나무 마당</h1>
+      <h1 className="text-heading font-bold text-ink">{commonContent.pageTitles.moneyTree}</h1>
       <NpcDialogue
-        speakerName="촌장님"
+        speakerName={commonContent.villageChiefSpeakerKo}
         message={moneyTreeContent.introMessageKo}
         narrationSrc={
           alreadyActedToday ? moneyTreeContent.narrationSrc.dailyLimit : moneyTreeContent.narrationSrc.intro
@@ -70,14 +72,14 @@ export default function MoneyTreePage() {
           href="/town"
           className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
         >
-          마을로 돌아가기
+          {commonContent.backToTownKo}
         </Link>
         <button
           type="button"
           onClick={() => setReplaying(true)}
           className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
         >
-          이야기 다시보기
+          {commonContent.replayStoryKo}
         </button>
       </div>
     </main>

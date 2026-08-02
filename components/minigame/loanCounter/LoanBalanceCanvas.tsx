@@ -16,6 +16,11 @@ import { computeWeightSlotOffsetX, isTipped } from "./tiltMath";
 //
 // 별도의 Matter.Runner는 쓰지 않는다 — PixiStage의 app.ticker 콜백 하나에서 Matter.Engine.update와
 // Pixi 그래픽 동기화를 함께 처리해, 정리해야 할 애니메이션 루프가 하나만 존재하게 한다.
+//
+// reducedMotion 예외: 저울이 기우는 물리 회전은 "빌린 돈이 쌓이면 위험해진다"는 개념 자체를 보여주는
+// 핵심 게임 메커니즘이라 GSAP/Motion 트윈이 아니라 결정론적 물리 시뮬레이션이며, 끄거나 순간이동시키면
+// 개념 전달이 깨진다. 카메라 흔들림·파티클 같은 부가 연출은 이 화면에 없으므로 줄일 대상도 없다.
+// 따라서 다른 미니게임과 달리 이 캔버스는 settings.reducedMotion을 의도적으로 참조하지 않는다.
 
 export interface LoanBalanceCanvasProps {
   width: number;
