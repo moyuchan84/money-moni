@@ -5,6 +5,8 @@ import Link from "next/link";
 
 import { moneyTreeContent } from "@/data/moneyTreeContent";
 import { commonContent } from "@/data/commonContent";
+import { almanacContent } from "@/data/almanacContent";
+import { Button } from "@/components/ui/Button";
 import type { StoryScene } from "@/data/storyScene";
 import { useGameStore } from "@/store/useGameStore";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
@@ -82,6 +84,9 @@ export default function MoneyTreePage() {
           {commonContent.replayStoryKo}
         </button>
       </div>
+      <Button href="/almanac/money-tree" variant="secondary">
+        {almanacContent.goToAlmanacKo}
+      </Button>
     </main>
   );
 }

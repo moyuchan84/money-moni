@@ -10,6 +10,8 @@ export const commonContent = {
     questLog: "퀘스트 로그",
     shop: "상점",
     glossary: "용어 사전",
+    almanac: "도감",
+    credits: "고마운 자료들",
     parent: "보호자용",
   },
   pageTitles: {
@@ -17,6 +19,8 @@ export const commonContent = {
     shop: "상점",
     glossary: "용어 사전",
     moneyTree: "머니나무 마당",
+    almanac: "도감",
+    credits: "고마운 자료들",
   },
   // components/dialogue/StorySceneViewer.tsx가 모든 건물의 개념 스토리 씬에서 공통으로 쓰는 카피.
   storyViewer: {
