@@ -15,7 +15,7 @@ export function QuestBadge({ activeCount, onClick }: QuestBadgeProps) {
     >
       <span aria-hidden>📋</span>
       {activeCount > 0 && (
-        <span className="absolute -right-1 -top-1 rounded-pill bg-primary px-1.5 text-caption text-white">
+        <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-pill bg-primary px-1.5 text-caption text-white">
           {activeCount}
         </span>
       )}

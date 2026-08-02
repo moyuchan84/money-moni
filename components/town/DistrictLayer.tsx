@@ -28,7 +28,7 @@ export function DistrictLayer({
   return (
     <section className={`rounded-card p-4 ${DISTRICT_BG[district]} ${unlocked ? "" : "grayscale"}`}>
       <h2 className="mb-2 text-heading font-bold text-ink">{district}구역</h2>
-      <div className="flex flex-wrap gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {buildings.map((building) => (
           <BuildingHotspot
             key={building.id}

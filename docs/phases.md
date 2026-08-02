@@ -116,6 +116,23 @@
 
 ---
 
+## Phase 6.5 · 디자인/레이아웃 시스템 리비전
+
+**목표**: "PC에서 목업처럼 덩그러니 보인다", "모바일 버튼 텍스트 줄바꿈이 이상하다", "마을 지도 그리드가 들쭉날쭉하다"는 피드백을 해소한다. 상세 진단과 방향은 `docs/design-revision.md`, 실행 체크리스트는 `docs/tasks/design-system-revision.md` 참고. `design/layout-system-revision` 브랜치에서 진행했다.
+
+- [x] `app/globals.css`에 `word-break: keep-all`/`overflow-wrap: break-word`(한글 어절 단위 줄바꿈), `--container-app: 30rem`(`max-w-app` 유틸리티), `shadow-frame` 유틸리티 추가.
+- [x] `components/layout/AppShell.tsx` 신설 — 고정폭 게임 캔버스 컨테이너. `app/layout.tsx`에서 전역으로 한 번만 감싼다(`SoundProvider > AppShell > HydrationGuard > children` 순서 — 하이드레이션 로딩 중에도 프레임이 유지되도록 문서 원안에서 순서를 조정했다).
+- [x] (실사용 중 발견) `AppShell`의 `min-h-full`이 `body`가 명시적 높이를 갖지 않아 퍼센트 높이 체인이 끊겨, 콘텐츠가 짧은 화면(건물 인트로 등)에서 프레임이 자기 콘텐츠 높이로만 쪼그라들고 바탕 배경이 뷰포트를 다 못 채우는 버그가 있었다. `min-h-screen`(뷰포트 기준, 조상 체인에 의존하지 않음) + 안쪽 프레임 `flex-1`로 교체해 모든 화면에서 항상 전체 높이를 채우도록 고쳤다. 같은 맥락에서 `BuildingIntroView.tsx`의 `<main>`에도 `justify-center`를 추가해 짧은 콘텐츠가 프레임 위쪽에 쏠리지 않고 세로 중앙에 오도록 맞췄다(`BuildingResultView.tsx`/온보딩은 이미 `items-center justify-center`가 있어 그대로 두었다).
+- [x] `components/ui/Button.tsx`/`ButtonRow.tsx` 신설 — 건물 인트로/결과 화면, 온보딩 제출 버튼에 적용. `NpcDialogue`/`ReflectionPrompt`는 별도 스타일 계약(pill 모양)을 유지하고 대상에서 제외.
+- [x] `components/town/DistrictLayer.tsx`(`flex flex-wrap` → `grid grid-cols-2 sm:grid-cols-3`), `BuildingHotspot.tsx`(고정 높이 `h-24` + `line-clamp-2` + 캡션 `truncate`) — 마을 지도 카드 크기를 제목 길이와 무관하게 균일화.
+- [x] `components/hud/QuestBadge.tsx` 카운트 배지에 `min-w-5` 보강(두 자리 숫자 대비).
+- [x] `e2e/layout-viewports.spec.ts` 신규 — `/town`·`/onboarding`·`/building/museum`을 375/768/1440px 뷰포트로 방문해 AppShell 프레임 크기·가운데 정렬·버튼 텍스트 오버플로 없음을 검증(9개 테스트). 기존 3개 스펙(6개 테스트) 회귀 없음 확인.
+- [x] `CLAUDE.md` 아키텍처 맵에 `components/layout/`, `components/ui/` 추가, 절대 규칙 8("버튼은 Button/ButtonRow로만 만든다") 추가.
+
+**종료 조건**: `npm run lint`/`typecheck`/`test`/`build` 모두 통과, `npm run test:e2e`(Vitest와 별개로 Playwright 15개 테스트) 전체 통과 — 확인 완료.
+
+---
+
 ## Phase 7 · 배포 및 런칭 준비
 
 - [ ] 정적 호스팅 설정(Vercel/Netlify/정적 스토리지 등 — `output:'export'` 산출물 배포)

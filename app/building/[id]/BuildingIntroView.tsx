@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 import type { BuildingId, BuildingMeta } from "@/data/buildings";
 import { commonContent } from "@/data/commonContent";
@@ -26,6 +25,8 @@ import { useGameStore } from "@/store/useGameStore";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { StorySceneViewer } from "@/components/dialogue/StorySceneViewer";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
+import { Button } from "@/components/ui/Button";
+import { ButtonRow } from "@/components/ui/ButtonRow";
 
 // 15개 건물(1~3구역) 모두 전용 인트로 대사·내레이션을 쓴다. genericMinigameCopy는 이 맵에 없는
 // (정상 흐름에서는 없을) buildingId를 위한 fallback으로만 남겨둔다.
@@ -193,18 +194,17 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
 
   if (!districtUnlocked) {
     return (
-      <main className="flex flex-1 flex-col gap-6 p-6">
+      <main className="flex flex-1 flex-col justify-center gap-6 p-6">
         <h1 className="text-heading font-bold text-ink">{building.titleKo}</h1>
         <NpcDialogue
           speakerName={commonContent.villageChiefSpeakerKo}
           message={buildingViewContent.districtLockedKo}
         />
-        <Link
-          href="/town"
-          className="min-h-touch min-w-touch self-start rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
-        >
-          {commonContent.backToTownKo}
-        </Link>
+        <div className="self-start">
+          <Button href="/town" variant="secondary">
+            {commonContent.backToTownKo}
+          </Button>
+        </div>
       </main>
     );
   }
@@ -228,7 +228,7 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-6">
+    <main className="flex flex-1 flex-col justify-center gap-6 p-6">
       <h1 className="text-heading font-bold text-ink">{building.titleKo}</h1>
       <NpcDialogue
         speakerName={commonContent.villageChiefSpeakerKo}
@@ -239,29 +239,19 @@ export function BuildingIntroView({ building }: { building: BuildingMeta }) {
         }
         narrationSrc={completedAt ? undefined : introContent?.narrationSrc}
       />
-      <div className="flex gap-3">
-        <Link
-          href={`/building/${building.id}/minigame`}
-          className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
-        >
+      <ButtonRow>
+        <Button href={`/building/${building.id}/minigame`} variant="primary">
           {buildingViewContent.startMinigameKo}
-        </Link>
-        <Link
-          href="/town"
-          className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
-        >
+        </Button>
+        <Button href="/town" variant="secondary">
           {commonContent.backToTownKo}
-        </Link>
+        </Button>
         {storyContent && (
-          <button
-            type="button"
-            onClick={() => setReplaying(true)}
-            className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
-          >
+          <Button type="button" variant="secondary" onClick={() => setReplaying(true)}>
             {commonContent.replayStoryKo}
-          </button>
+          </Button>
         )}
-      </div>
+      </ButtonRow>
     </main>
   );
 }

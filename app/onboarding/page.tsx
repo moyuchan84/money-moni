@@ -7,6 +7,7 @@ import { avatarPartCategories, freeOptions, type AvatarPartKey } from "@/data/av
 import { onboardingContent } from "@/data/onboardingContent";
 import { useGameStore, type AvatarLook } from "@/store/useGameStore";
 import { AvatarPartPicker } from "@/components/onboarding/AvatarPartPicker";
+import { Button } from "@/components/ui/Button";
 
 function defaultLookFromCategories(): AvatarLook {
   return Object.fromEntries(
@@ -55,12 +56,7 @@ export default function OnboardingPage() {
           maxLength={12}
           className="min-h-touch rounded-control border border-border px-4 py-2 text-body"
         />
-        <button
-          type="submit"
-          className="min-h-touch min-w-touch rounded-control bg-primary px-8 py-2 text-body text-white"
-        >
-          {onboardingContent.startButtonKo}
-        </button>
+        <Button type="submit">{onboardingContent.startButtonKo}</Button>
       </form>
     </main>
   );
