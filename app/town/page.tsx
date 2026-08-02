@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { buildingList, type BuildingId } from "@/data/buildings";
+import { commonContent } from "@/data/commonContent";
 import { townContent } from "@/data/townContent";
 import { useGameStore } from "@/store/useGameStore";
 import { TownMap } from "@/components/town/TownMap";
@@ -30,13 +31,13 @@ export default function TownPage() {
   return (
     <div className="flex flex-col gap-4">
       <nav className="flex gap-3 text-caption">
-        <Link href="/quest-log">퀘스트 로그</Link>
-        <Link href="/shop">상점</Link>
-        <Link href="/glossary">용어 사전</Link>
-        <Link href="/parent">보호자용</Link>
+        <Link href="/quest-log">{commonContent.townNav.questLog}</Link>
+        <Link href="/shop">{commonContent.townNav.shop}</Link>
+        <Link href="/glossary">{commonContent.townNav.glossary}</Link>
+        <Link href="/parent">{commonContent.townNav.parent}</Link>
       </nav>
       <NpcDialogue
-        speakerName="촌장님"
+        speakerName={commonContent.villageChiefSpeakerKo}
         message={townContent.introMessageKo}
         narrationSrc={townContent.narrationSrc.intro}
       />

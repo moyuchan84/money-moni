@@ -2,29 +2,89 @@
 
 import Link from "next/link";
 
+import { buildingList, type District } from "@/data/buildings";
+import { dailyQuests, weeklyQuests } from "@/data/quests";
+import { parentContent } from "@/data/parentContent";
+import { commonContent } from "@/data/commonContent";
 import { useGameStore } from "@/store/useGameStore";
+import { SoundToggle } from "@/components/hud/SoundToggle";
+
+const DISTRICTS: District[] = [1, 2, 3];
 
 export default function ParentPage() {
   const nickname = useGameStore((state) => state.avatar.nickname);
+  const coins = useGameStore((state) => state.wallet.coins);
   const buildingProgress = useGameStore((state) => state.buildings);
+  const districts = useGameStore((state) => state.districts);
+  const daily = useGameStore((state) => state.quests.daily);
+  const weekly = useGameStore((state) => state.quests.weekly);
   const reducedMotion = useGameStore((state) => state.settings.reducedMotion);
   const setReducedMotion = useGameStore((state) => state.setReducedMotion);
-  const district2Unlocked = useGameStore((state) => state.districts[2].unlocked);
   const debugUnlockDistrict2 = useGameStore((state) => state.debugUnlockDistrict2);
+  const debugUnlockDistrict3 = useGameStore((state) => state.debugUnlockDistrict3);
 
-  const completedCount = Object.values(buildingProgress).filter((progress) =>
-    Boolean(progress.completedAt),
-  ).length;
+  const dailyClaimedCount = daily.filter((quest) => Boolean(quest.claimedAt)).length;
+  const weeklyClaimedCount = weekly.filter((quest) => Boolean(quest.claimedAt)).length;
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-6">
-      <h1 className="text-heading font-bold text-ink">보호자용 요약</h1>
-      <p className="text-body text-fg">
-        {nickname || "우리 아이"}가 지금까지 완료한 건물: {completedCount}개
-      </p>
-      <p className="text-caption text-muted">
-        이름과 학습 진행도(완료한 건물, 회고 답변) 외의 개인정보는 저장하지 않아요.
-      </p>
+    <main className="flex flex-1 flex-col gap-6 p-6">
+      <h1 className="text-heading font-bold text-ink">{parentContent.titleKo}</h1>
+      <p className="text-body text-fg">{parentContent.summaryLineKo(nickname)}</p>
+
+      <section className="flex flex-col gap-1 rounded-card border border-border bg-surface p-4">
+        <span className="text-caption text-muted">{parentContent.coinsLabelKo}</span>
+        <span className="text-heading font-bold text-ink">{coins}</span>
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <h2 className="text-body font-semibold text-ink">{parentContent.districtProgressTitleKo}</h2>
+        <ul className="flex flex-col gap-1">
+          {DISTRICTS.map((district) => {
+            const districtBuildings = buildingList.filter(
+              (building) => building.district === district && building.routeKind === "building",
+            );
+            const completedCount = districtBuildings.filter((building) =>
+              Boolean(buildingProgress[building.id]?.completedAt),
+            ).length;
+            const unlocked = districts[district].unlocked;
+            return (
+              <li key={district} className="flex items-center justify-between text-body text-fg">
+                <span>{parentContent.districtLabelKo(district)}</span>
+                <span>
+                  {unlocked
+                    ? `${completedCount}/${districtBuildings.length}`
+                    : parentContent.districtLockedKo}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <h2 className="text-body font-semibold text-ink">{parentContent.questProgressTitleKo}</h2>
+        <ul className="flex flex-col gap-1">
+          <li className="flex items-center justify-between text-body text-fg">
+            <span>{parentContent.dailyQuestLabelKo}</span>
+            <span>
+              {dailyClaimedCount}/{dailyQuests.length}
+            </span>
+          </li>
+          <li className="flex items-center justify-between text-body text-fg">
+            <span>{parentContent.weeklyQuestLabelKo}</span>
+            <span>
+              {weeklyClaimedCount}/{weeklyQuests.length}
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <p className="text-caption text-muted">{parentContent.privacyNoteKo}</p>
+
+      <div className="flex items-center gap-2 text-body">
+        <span>{parentContent.soundLabelKo}</span>
+        <SoundToggle />
+      </div>
 
       <label className="flex min-h-touch items-center gap-2 text-body">
         <input
@@ -33,22 +93,33 @@ export default function ParentPage() {
           onChange={(event) => setReducedMotion(event.target.checked)}
           className="h-6 w-6"
         />
-        움직임 줄이기 (미니게임 애니메이션을 줄여요)
+        {parentContent.reducedMotionLabelKo}
       </label>
 
-      {/* 개발용 임시 버튼 — 1구역을 실제로 다 깨지 않아도 2구역 콘텐츠를 확인할 수 있게 한다.
-          실사용자 배포 전 Phase 6에서 유지 여부를 재검토한다. */}
-      <button
-        type="button"
-        onClick={debugUnlockDistrict2}
-        disabled={district2Unlocked}
-        className="min-h-touch self-start rounded-control border border-border bg-surface px-4 py-2 text-caption text-primary disabled:opacity-40"
-      >
-        [개발용] {district2Unlocked ? "2구역 이미 열림" : "2구역 열기"}
-      </button>
+      {process.env.NODE_ENV === "development" && (
+        <section className="flex flex-col gap-2 rounded-card border border-dashed border-border p-4">
+          <h2 className="text-body font-semibold text-ink">{parentContent.devToolsTitleKo}</h2>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={debugUnlockDistrict2}
+              className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-4 py-2 text-body text-primary"
+            >
+              {parentContent.devUnlockDistrict2Ko}
+            </button>
+            <button
+              type="button"
+              onClick={debugUnlockDistrict3}
+              className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-4 py-2 text-body text-primary"
+            >
+              {parentContent.devUnlockDistrict3Ko}
+            </button>
+          </div>
+        </section>
+      )}
 
       <Link href="/town" className="min-h-touch min-w-touch self-start text-body underline">
-        마을로 돌아가기
+        {commonContent.backToTownKo}
       </Link>
     </main>
   );

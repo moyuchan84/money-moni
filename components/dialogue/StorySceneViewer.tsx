@@ -5,6 +5,7 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import type { StoryScene } from "@/data/storyScene";
+import { commonContent } from "@/data/commonContent";
 import { useSound } from "@/components/providers/SoundProvider";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { VillageChiefCharacter } from "@/components/rive/VillageChiefCharacter";
@@ -12,6 +13,7 @@ import { VillageChiefCharacter } from "@/components/rive/VillageChiefCharacter";
 export interface StorySceneViewerProps {
   scenes: StoryScene[];
   metaphorLineKo: string;
+  realExampleKo: string;
   bridgeLineKo: string;
   onComplete: () => void; // 마지막 컷에서 "시작하기" 클릭
   onSkip: () => void; // 건너뛰기 확정 시
@@ -50,15 +52,12 @@ export function storyViewerReducer(
 
 const SWIPE_THRESHOLD_PX = 50;
 
-const SPEAKER_LABEL: Record<StoryScene["speaker"], string> = {
-  narrator: "이야기꾼",
-  npc: "촌장님",
-  child: "나",
-};
+const SPEAKER_LABEL = commonContent.storyViewer.speakerLabel;
 
 export function StorySceneViewer({
   scenes,
   metaphorLineKo,
+  realExampleKo,
   bridgeLineKo,
   onComplete,
   onSkip,
@@ -118,7 +117,7 @@ export function StorySceneViewer({
           onClick={() => dispatch({ type: "requestSkip" })}
           className="min-h-touch min-w-touch rounded-pill bg-surface-muted px-3 py-1 text-caption text-muted"
         >
-          건너뛰기
+          {commonContent.storyViewer.skipKo}
         </button>
       </div>
 
@@ -148,8 +147,10 @@ export function StorySceneViewer({
 
       {isLastScene && (
         <div className="rounded-card bg-primary-light p-4 text-primary shadow-card">
-          <p className="text-caption font-semibold">오늘의 한 마디</p>
+          <p className="text-caption font-semibold">{commonContent.storyViewer.metaphorHeadingKo}</p>
           <p className="mt-1 text-body font-bold">{metaphorLineKo}</p>
+          <p className="mt-2 text-caption font-semibold">{commonContent.storyViewer.realExampleHeadingKo}</p>
+          <p className="mt-1 text-body text-ink">{realExampleKo}</p>
           <p className="mt-2 text-body text-ink">{bridgeLineKo}</p>
         </div>
       )}
@@ -175,7 +176,7 @@ export function StorySceneViewer({
             onClick={() => dispatch({ type: "prev" })}
             className="min-h-touch min-w-touch rounded-control bg-surface-muted px-4 py-2 text-body text-ink"
           >
-            이전
+            {commonContent.storyViewer.prevKo}
           </button>
         ) : (
           <span />
@@ -187,7 +188,7 @@ export function StorySceneViewer({
             onClick={onComplete}
             className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
           >
-            시작하기
+            {commonContent.storyViewer.startKo}
           </button>
         ) : (
           <button
@@ -195,7 +196,7 @@ export function StorySceneViewer({
             onClick={() => dispatch({ type: "next" })}
             className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
           >
-            다음
+            {commonContent.storyViewer.nextKo}
           </button>
         )}
       </div>
@@ -204,7 +205,7 @@ export function StorySceneViewer({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="flex flex-col items-center gap-3 rounded-card bg-surface p-6 text-center text-ink shadow-card">
             <p className="text-body font-semibold text-ink">
-              정말 건너뛸까요? 이야기를 보면 게임이 더 쉬워져요!
+              {commonContent.storyViewer.skipConfirmTitleKo}
             </p>
             <div className="flex gap-2">
               <button
@@ -212,14 +213,14 @@ export function StorySceneViewer({
                 onClick={() => dispatch({ type: "cancelSkip" })}
                 className="min-h-touch min-w-touch rounded-control bg-surface-muted px-4 py-2 text-body text-ink"
               >
-                아니요, 계속 볼래요
+                {commonContent.storyViewer.skipConfirmCancelKo}
               </button>
               <button
                 type="button"
                 onClick={onSkip}
                 className="min-h-touch min-w-touch rounded-control bg-primary px-4 py-2 text-body text-white"
               >
-                네, 건너뛸게요
+                {commonContent.storyViewer.skipConfirmOkKo}
               </button>
             </div>
           </div>

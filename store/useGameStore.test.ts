@@ -137,6 +137,11 @@ describe("useGameStore", () => {
 
       expect(useGameStore.getState().districts[3].unlocked).toBe(false);
     });
+
+    it("debugUnlockDistrict3으로 즉시 3구역을 열 수 있다", () => {
+      useGameStore.getState().debugUnlockDistrict3();
+      expect(useGameStore.getState().districts[3].unlocked).toBe(true);
+    });
   });
 
   it("addCoins/spendCoins가 지갑 잔액과 내역을 갱신한다", () => {
