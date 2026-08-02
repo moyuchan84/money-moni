@@ -35,4 +35,27 @@ export const commonContent = {
     nextKo: "다음",
     startKo: "시작하기",
   },
+  // app/glossary/page.tsx가 쓰는 카테고리 섹션 라벨/아이콘과 아코디언 카드 안 소제목.
+  glossary: {
+    categoryLabelKo: {
+      "money-basics": "돈의 기초",
+      "income-spending": "소득과 소비",
+      "saving-growth": "저축과 성장",
+      "capital-investment": "자본과 투자",
+      debt: "빚",
+      "big-picture": "큰 그림",
+    },
+    categoryIcon: {
+      "money-basics": "💰",
+      "income-spending": "💸",
+      "saving-growth": "🌱",
+      "capital-investment": "📈",
+      debt: "🤝",
+      "big-picture": "🌍",
+    },
+    metaphorHeadingKo: "오늘의 한 마디",
+    exampleHeadingKo: "우리 주변에서는",
+    relatedTermsHeadingKo: "관련 용어",
+    visitBuildingKo: "게임에서 만나보기",
+  },
 };
