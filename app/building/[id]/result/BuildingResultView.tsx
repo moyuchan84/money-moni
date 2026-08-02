@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 import type { BuildingId, BuildingMeta } from "@/data/buildings";
 import { commonContent } from "@/data/commonContent";
@@ -25,6 +24,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { ReflectionPrompt } from "@/components/dialogue/ReflectionPrompt";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
+import { Button } from "@/components/ui/Button";
 
 // 15개 건물(1~3구역) 모두 건물 맞춤 회고 질문을 쓴다. genericMinigameCopy는 이 맵에 없는
 // (정상 흐름에서는 없을) buildingId를 위한 fallback으로만 남겨둔다.
@@ -107,12 +107,9 @@ export function BuildingResultView({ building }: { building: BuildingMeta }) {
         <ReflectionPrompt question={reflection.questionKo} options={reflection.options} onAnswer={handleAnswer} />
       )}
 
-      <Link
-        href="/town"
-        className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
-      >
+      <Button href="/town" variant="primary">
         {commonContent.backToTownKo}
-      </Link>
+      </Button>
     </main>
   );
 }

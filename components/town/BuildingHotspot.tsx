@@ -15,13 +15,13 @@ export function BuildingHotspot({ building, locked, completed, onSelect }: Build
       type="button"
       disabled={locked}
       onClick={() => onSelect(building.id)}
-      className={`min-h-touch min-w-touch rounded-control px-4 py-3 text-left transition ${
+      className={`flex h-24 min-h-touch w-full min-w-touch flex-col justify-center rounded-control px-3 py-2 text-left transition ${
         locked ? "grayscale opacity-40" : "bg-surface text-ink shadow-card hover:scale-105"
       }`}
     >
-      <span className="block text-body font-semibold text-ink">{building.titleKo}</span>
-      {locked && <span className="block text-caption text-muted">🔒 곧 열려요</span>}
-      {!locked && completed && <span className="block text-caption text-success">✅ 완료</span>}
+      <span className="line-clamp-2 text-body font-semibold text-ink">{building.titleKo}</span>
+      {locked && <span className="truncate text-caption text-muted">🔒 곧 열려요</span>}
+      {!locked && completed && <span className="truncate text-caption text-success">✅ 완료</span>}
     </button>
   );
 }
