@@ -34,6 +34,8 @@ export default function TownPage() {
         <Link href="/quest-log">{commonContent.townNav.questLog}</Link>
         <Link href="/shop">{commonContent.townNav.shop}</Link>
         <Link href="/glossary">{commonContent.townNav.glossary}</Link>
+        <Link href="/almanac">{commonContent.townNav.almanac}</Link>
+        <Link href="/credits">{commonContent.townNav.credits}</Link>
         <Link href="/parent">{commonContent.townNav.parent}</Link>
       </nav>
       <NpcDialogue

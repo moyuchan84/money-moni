@@ -133,6 +133,23 @@
 
 ---
 
+## Phase 6.6 · 지식 도감(이론 심화) 레이어
+
+**목표**: 스토리 레이어·미니게임 위에, 건물 결과 화면에서 선택적으로 들어가는 3번째 레이어("지식 도감")를 추가한다. 실제 연도·인물·역사적 사실과 위키미디어 커먼즈 이미지를 곁들여 신뢰감을 주되, 필수 플로우(온보딩→마을→건물→미니게임→회고)는 바꾸지 않는다. 상세 자료조사·설계는 `docs/theory-deepdive.md`, 실행 체크리스트는 `docs/tasks/theory-deepdive.md` 참고. `docs/tasks/theory-deepdive.md`가 "8개 건물 우선"이라 적었던 것은 작성 시점 기준 안내였고, Phase 5가 이미 완료되어 15개 모듈 전체에 실제 콘텐츠가 있으므로 이번 Phase는 15개 전체(1~3구역 14개 building 라우트 + money-tree)를 대상으로 했다.
+
+- [x] `data/almanac/almanacTypes.ts` — `AlmanacTimelineEvent`/`ImageCredit`/`BuildingAlmanac` 타입 정의.
+- [x] 위키미디어 커먼즈 API(`commons.wikimedia.org/w/api.php`)를 `curl`/Node 스크립트로 직접 호출해 검색·라이선스(PD/CC-BY/CC-BY-SA) 확인 후 다운로드, `sharp`로 리사이즈·압축해 `public/images/almanac/{buildingId}/{imageKey}.jpg`로 저장(9개 건물 15장). 실제 좋은 사진 소재가 없는 `money-tree`(순수 수학 공식)/`seed-field`/`job-center`는 텍스트(이론 노트·연표)만 채우고 이미지는 생략했다.
+- [x] `data/almanac/{buildingId}Almanac.ts` × 15 — `docs/theory-deepdive.md` 2장의 사실을 아이 눈높이 문장으로 옮기고, 출처가 불확실한 내용(아인슈타인의 복리 명언 등)은 "~라고 알려져 있지만 확실하지 않다"를 명시. `data/almanac/index.ts`가 `Record<BuildingId, BuildingAlmanac>`로 조립하고 `isAlmanacUnlocked` 잠금 판정 헬퍼를 함께 export.
+- [x] `components/almanac/KnowledgeCard.tsx`(이론 노트+연표+이미지+출처), `AlmanacGrid.tsx`(`DistrictLayer`/`BuildingHotspot` 그리드·잠금 스타일 재사용), `ImageCreditFooter.tsx`.
+- [x] `app/almanac/page.tsx`(허브), `app/almanac/[id]/page.tsx`(`generateStaticParams`로 15개 전체 생성, `dynamicParams=false`, 미완료 시 잠금 안내), `app/credits/page.tsx`(전체 이미지 출처 목록).
+- [x] 진입 동선: `BuildingResultView.tsx`에 "🧠 더 깊이 알아보기" 버튼, `/money-tree`에도 도감 링크 추가. `data/commonContent.ts`의 `townNav`/`pageTitles`에 `almanac`/`credits` 추가하고 `/town` 상단 내비게이션에 반영.
+- [x] `data/almanac/almanac.test.ts` — 15개 건물 전체 커버, `credits`/`timeline`의 `imageKey` 상호 참조 무결성, 실제 이미지 파일 존재 여부까지 검증.
+- [x] `CLAUDE.md` 아키텍처 맵에 `data/almanac/`, `components/almanac/`, `app/almanac/`, `app/credits/` 추가.
+
+**종료 조건**: `npm run lint`/`typecheck`/`test`/`build` 모두 통과 — 확인 완료. `money-tree`는 결과 플로우가 없어 `completedAt`이 채워지지 않으므로, 도감 잠금 판정에서만 `districts[2].unlocked` 기준으로 예외 처리했다(코드 주석으로 이유 명시).
+
+---
+
 ## Phase 7 · 배포 및 런칭 준비
 
 - [ ] 정적 호스팅 설정(Vercel/Netlify/정적 스토리지 등 — `output:'export'` 산출물 배포)

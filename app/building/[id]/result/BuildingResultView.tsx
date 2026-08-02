@@ -24,6 +24,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { ReflectionPrompt } from "@/components/dialogue/ReflectionPrompt";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
+import { almanacContent } from "@/data/almanacContent";
 import { Button } from "@/components/ui/Button";
 
 // 15개 건물(1~3구역) 모두 건물 맞춤 회고 질문을 쓴다. genericMinigameCopy는 이 맵에 없는
@@ -106,6 +107,10 @@ export function BuildingResultView({ building }: { building: BuildingMeta }) {
       ) : (
         <ReflectionPrompt question={reflection.questionKo} options={reflection.options} onAnswer={handleAnswer} />
       )}
+
+      <Button href={`/almanac/${building.id}`} variant="secondary">
+        {almanacContent.goToAlmanacKo}
+      </Button>
 
       <Button href="/town" variant="primary">
         {commonContent.backToTownKo}
