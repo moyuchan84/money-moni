@@ -17,4 +17,7 @@ export const parentContent = {
   weeklyQuestLabelKo: "이번 주 퀘스트",
   soundLabelKo: "소리",
   reducedMotionLabelKo: "움직임 줄이기 (미니게임 애니메이션을 줄여요)",
+  devToolsTitleKo: "개발자 도구 (배포 빌드에는 보이지 않아요)",
+  devUnlockDistrict2Ko: "2구역 즉시 열기",
+  devUnlockDistrict3Ko: "3구역 즉시 열기",
 };
