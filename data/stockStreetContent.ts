@@ -20,6 +20,13 @@ export const stockStreetContent = {
     { id: "scene-2", speaker: "npc", textKo: "신제품이 인기를 끌면 회사가 잘돼서, 그 조각의 가치도 커져!" },
     { id: "scene-3", speaker: "npc", textKo: "근데 맛이 없으면? 조각도 작아지지…" },
     { id: "scene-4", speaker: "child", textKo: "그럼 내가 어떤 조각을 갖고 있으면, 그 회사가 잘되길 응원하게 되겠네!" },
+    {
+      id: "scene-5",
+      speaker: "npc",
+      characterId: "squirrel-grandpa",
+      textKo:
+        "나는 어릴 때부터 이 마을 가게들을 조금씩 응원해왔어. 회사가 자라는 걸 오래 지켜보는 것도 재밌단다 — 너무 빨리 부자가 되려고 조바심내지 않아도 괜찮아.",
+    },
   ],
   metaphorLineKo: "주식은 회사를 나눈 케이크 조각 하나야. 회사가 잘되면 내 조각도 커져.",
   realExampleKo:

@@ -20,4 +20,7 @@ export const parentContent = {
   devToolsTitleKo: "개발자 도구 (배포 빌드에는 보이지 않아요)",
   devUnlockDistrict2Ko: "2구역 즉시 열기",
   devUnlockDistrict3Ko: "3구역 즉시 열기",
+  newsSimplifierTitleKo: "오늘의 쉬운말 방울새",
+  newsSimplifierHardLabelKo: "어려운 말",
+  newsSimplifierEasyLabelKo: "쉬운 말",
 };

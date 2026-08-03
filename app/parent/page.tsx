@@ -8,6 +8,8 @@ import { parentContent } from "@/data/parentContent";
 import { commonContent } from "@/data/commonContent";
 import { useGameStore } from "@/store/useGameStore";
 import { SoundToggle } from "@/components/hud/SoundToggle";
+import { getTodayNewsSimplifierEntry } from "@/data/newsSimplifier";
+import { NewsSimplifierCard } from "@/components/parent/NewsSimplifierCard";
 
 const DISTRICTS: District[] = [1, 2, 3];
 
@@ -117,6 +119,8 @@ export default function ParentPage() {
           </div>
         </section>
       )}
+
+      <NewsSimplifierCard entry={getTodayNewsSimplifierEntry()} />
 
       <Link href="/town" className="min-h-touch min-w-touch self-start text-body underline">
         {commonContent.backToTownKo}

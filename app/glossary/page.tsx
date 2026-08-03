@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/Button";
 import { buildings } from "@/data/buildings";
 import { commonContent } from "@/data/commonContent";
 import { glossary, type GlossaryCategory, type GlossaryId } from "@/data/glossary";
+import { newsSimplifier } from "@/data/newsSimplifier";
+import { NewsSimplifierCard } from "@/components/parent/NewsSimplifierCard";
 
 const CATEGORY_ORDER: GlossaryCategory[] = [
   "money-basics",
@@ -51,6 +53,7 @@ export default function GlossaryPage() {
               <span aria-hidden>{commonContent.glossary.categoryIcon[category]}</span>
               {commonContent.glossary.categoryLabelKo[category]}
             </h2>
+            {category === "big-picture" && <NewsSimplifierCard entry={newsSimplifier[0]} />}
             <div className="flex flex-col gap-3">
               {entries.map((entry) => {
                 const open = openIds.has(entry.id);

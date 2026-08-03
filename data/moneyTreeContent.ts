@@ -26,10 +26,34 @@ export const moneyTreeContent = {
       speaker: "npc",
       textKo: "그래서 우리 마당의 이 나무도, 열매를 다시 심을 때마다 가지가 훨씬 빨리 갈라지는 거야.",
     },
+    {
+      id: "scene-5",
+      speaker: "npc",
+      characterId: "squirrel-grandpa",
+      textKo: "나도 너만 할 때 도토리 딱 하나로 시작했단다.",
+    },
+    {
+      id: "scene-6",
+      speaker: "child",
+      textKo: "근데 지금은 숲 전체가 할아버지 거잖아요! 비결이 뭐예요?",
+    },
+    {
+      id: "scene-7",
+      speaker: "npc",
+      characterId: "squirrel-grandpa",
+      textKo: "비결은… 없어! 그냥 매년 조금씩, 꾸준히 심었을 뿐이야. 급하게 한 번에 다 심으려 하지 않았지.",
+    },
+    {
+      id: "scene-8",
+      speaker: "npc",
+      characterId: "squirrel-grandpa",
+      textKo: "늦게 시작한 다람쥐는 서두르다가 도토리를 다 흘리기도 하더라고. 일찍, 꾸준히가 진짜 비결이란다.",
+    },
   ],
-  metaphorLineKo: "복리는 언덕에서 구르는 눈덩이야 — 커질수록 더 빨리 커져.",
+  metaphorLineKo:
+    "복리는 언덕에서 구르는 눈덩이야 — 커질수록 더 빨리 커져. 다람쥐 할아버지의 숲은 한 번에 심은 게 아니라, 해마다 조금씩 쌓인 거야.",
   realExampleKo:
-    "세뱃돈을 안 쓰고 계속 저금만 해도 늘지만, 이자까지 계속 다시 저금하면 몇 년 뒤엔 훨씬 큰 차이가 난다.",
+    "세뱃돈을 안 쓰고 계속 저금만 해도 늘지만, 이자까지 계속 다시 저금하면 몇 년 뒤엔 훨씬 큰 차이가 난다. 세뱃돈을 매년 조금씩이라도 꾸준히 모으고 불려나가면, 나중에 한꺼번에 많이 모으려는 것보다 마음도 편하고 결과도 좋다.",
   bridgeLineKo: "우리 마당의 머니나무도 한번 키워볼까? 열매를 먹을지, 다시 심을지는 네가 골라봐.",
   recapLineKo: "다시 심을 때마다 나무가 더 빨리 자랐지? 그게 눈덩이처럼 커지는 복리야.",
   harvestButtonKo: "열매 먹기 (코인으로 받기)",

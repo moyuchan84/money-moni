@@ -22,7 +22,11 @@ export type GlossaryId =
   | "capitalism"
   | "socialism-communism"
   | "digital-currency"
-  | "stablecoin";
+  | "stablecoin"
+  | "tax"
+  | "credit"
+  | "cost-profit"
+  | "value-spending";
 
 export type GlossaryCategory =
   | "money-basics"
@@ -104,7 +108,7 @@ export const glossary: GlossaryEntry[] = [
     metaphorKo: "가계부 지도 위의 빨간 화살표.",
     exampleKo: "문구점에서 500원짜리 지우개를 사는 순간 빨간 화살표가 하나 그려지는 것.",
     relatedBuildingId: "ledger-house",
-    relatedTermIds: ["income", "saving"],
+    relatedTermIds: ["income", "saving", "value-spending"],
   },
   {
     id: "saving",
@@ -212,7 +216,7 @@ export const glossary: GlossaryEntry[] = [
     metaphorKo: "친구에게 케이크를 빌리고 내일 조금 더 갚기로 하는 것.",
     exampleKo: "파티에 케이크를 더 크게 만들고 싶은데 재료가 모자랄 때 친구 것을 빌리는 것.",
     relatedBuildingId: "loan-counter",
-    relatedTermIds: ["leverage", "interest"],
+    relatedTermIds: ["leverage", "interest", "credit"],
   },
   {
     id: "leverage",
@@ -262,5 +266,61 @@ export const glossary: GlossaryEntry[] = [
     exampleKo: "조별 과제 점수를 다 같이 똑같이 나눠 받는 것과 비슷한 방식.",
     relatedBuildingId: "triple-village",
     relatedTermIds: ["capitalism"],
+  },
+  {
+    id: "tax",
+    term: "세금",
+    category: "big-picture",
+    shortDefinitionKo: "다 함께 쓰는 것(학교, 도로, 병원 등)을 위해 나라에 걷는 돈",
+    longDefinitionKo:
+      "세금은 나라 살림을 위해 사람들이 조금씩 나눠 내는 돈이야. 월급을 받을 때도, 물건을 살 때도 " +
+      "그 안에 조금씩 세금이 포함돼 있어. 이렇게 모인 돈으로 학교, 도로, 병원처럼 다 함께 쓰는 것들을 " +
+      "만들고 운영해. 그래서 세금을 내는 것만큼, 그 돈이 잘 쓰이고 있는지 관심을 갖는 것도 중요해.",
+    metaphorKo: "세금은 마을 사람들이 조금씩 걷어서 다 같이 쓰는 놀이터를 만드는 것과 같아.",
+    exampleKo: "우리 반이 학급 화폐로 나라 놀이를 하면서, 번 돈의 일부를 세금으로 걷어 학급 행사 비용으로 쓰는 것.",
+    relatedBuildingId: "job-center",
+    relatedTermIds: ["income"],
+  },
+  {
+    id: "credit",
+    term: "신용",
+    category: "debt",
+    shortDefinitionKo: "먼저 쓰고 나중에 갚을 거라는 믿음, 그리고 그 약속을 잘 지켜온 기록",
+    longDefinitionKo:
+      "신용카드는 지금 당장 돈을 안 내고 물건을 사고, 나중에(보통 한 달 뒤) 한꺼번에 갚는 카드야. " +
+      "'이 사람은 나중에 꼭 갚을 거야'라는 믿음이 있어야 쓸 수 있는데, 이 믿음을 '신용'이라고 해. " +
+      "약속을 잘 지킬수록 신용이 쌓이고, 안 지키면 신용이 깎여서 나중엔 아무도 믿어주지 않게 돼.",
+    metaphorKo: "신용은 '나중에 꼭 갚을게'라는 약속을 계속 지켜서 쌓은 믿음의 점수판이야.",
+    exampleKo: "문방구 아저씨가 자주 오는 단골에게 '다음에 와서 줘도 돼'라고 외상을 주는 것도 신용 덕분이야.",
+    relatedBuildingId: "loan-counter",
+    relatedTermIds: ["loan"],
+  },
+  {
+    id: "cost-profit",
+    term: "원가와 이윤",
+    category: "income-spending",
+    shortDefinitionKo: "물건을 만드는 데 든 돈(원가)과 판 값의 차이가 이윤",
+    longDefinitionKo:
+      "레모네이드를 만들 때 레몬, 설탕, 컵을 사는 데 든 돈이 '원가'야. 그걸 얼마에 파느냐에 따라 " +
+      "남는 돈, 즉 '이윤'이 달라져. 너무 비싸게 팔면 안 팔리고, 너무 싸게 팔면 남는 게 없어서 " +
+      "적당한 값을 찾는 게 중요해.",
+    metaphorKo: "이윤은 내가 산 가격과 판 가격 사이에 남는 틈이야.",
+    exampleKo: "500원짜리 재료로 레모네이드를 만들어 800원에 팔면, 300원이 이윤으로 남는 것.",
+    relatedBuildingId: "market",
+    relatedTermIds: ["capital", "spending"],
+  },
+  {
+    id: "value-spending",
+    term: "가치소비",
+    category: "income-spending",
+    shortDefinitionKo: "순간의 충동보다 내가 정말 아끼고 필요한 것에 돈을 쓰는 습관",
+    longDefinitionKo:
+      "가게에서 예쁜 걸 보면 당장 사고 싶어지는 마음을 '충동구매'라고 해. 가치소비는 그 순간의 " +
+      "충동보다 '이게 나한테 정말 필요할까? 내가 정말 좋아하는 걸까?'를 한 번 더 생각해보고 " +
+      "돈을 쓰는 습관이야. 사고 나서 후회하는 일을 줄여주고, 내가 진짜 원하는 걸 위해 돈을 아낄 수 있게 해줘.",
+    metaphorKo: "가치소비는 사기 전에 마음에게 한 번 더 물어보는 것이야 — '이거 진짜 나한테 필요해?'",
+    exampleKo: "장난감 가게에서 당장 사고 싶은 걸 참고, 집에 와서도 계속 생각나는지 하루 지켜본 뒤 결정하는 것.",
+    relatedBuildingId: "allowance-square",
+    relatedTermIds: ["spending"],
   },
 ];
