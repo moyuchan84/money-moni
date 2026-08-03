@@ -24,6 +24,13 @@ export const etfLabContent = {
       speaker: "narrator",
       textKo: "여러 회사(자산)를 한 바구니에 담아 나눠 갖는 방법을 ETF라고 해요.",
     },
+    {
+      id: "scene-5",
+      speaker: "npc",
+      characterId: "squirrel-grandpa",
+      textKo:
+        "나는 어릴 때부터 이 마을 가게들을 조금씩 응원해왔어. 회사가 자라는 걸 오래 지켜보는 것도 재밌단다 — 너무 빨리 부자가 되려고 조바심내지 않아도 괜찮아.",
+    },
   ],
   metaphorLineKo: "ETF는 여러 과자를 조금씩 섞은 종합선물세트야. 하나가 별로여도 바구니 전체는 덜 흔들려.",
   realExampleKo:

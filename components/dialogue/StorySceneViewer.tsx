@@ -9,6 +9,7 @@ import { commonContent } from "@/data/commonContent";
 import { useSound } from "@/components/providers/SoundProvider";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { VillageChiefCharacter } from "@/components/rive/VillageChiefCharacter";
+import { SquirrelGrandpaCharacter } from "@/components/rive/SquirrelGrandpaCharacter";
 
 export interface StorySceneViewerProps {
   scenes: StoryScene[];
@@ -136,7 +137,12 @@ export function StorySceneViewer({
             transition={{ duration: reducedMotion ? 0 : 0.3 }}
             className="flex flex-col items-center gap-3"
           >
-            {scene.speaker === "npc" && <VillageChiefCharacter mood="neutral" />}
+            {scene.speaker === "npc" &&
+              (scene.characterId === "squirrel-grandpa" ? (
+                <SquirrelGrandpaCharacter mood="neutral" />
+              ) : (
+                <VillageChiefCharacter mood="neutral" />
+              ))}
             <div className="w-full rounded-card bg-surface p-4 text-ink shadow-card">
               <p className="text-caption font-semibold text-muted">{SPEAKER_LABEL[scene.speaker]}</p>
               <p className="text-body text-fg">{scene.textKo}</p>

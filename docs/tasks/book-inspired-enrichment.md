@@ -52,6 +52,8 @@
 - [ ] 아직 스토리 씬이 코드에 연결되지 않은 건물이라면, 이번 태스크에서는 문서(T3)까지만 하고
       코드 반영은 건너뛴다(빈 자리를 만들지 않는다)
 
+> ⚠️ T5~T7은 철회됨 — `docs/original-content-expansion.md`로 대체, 진행하지 않음.
+
 ## T5. `data/recommendedBooks.ts` 신규 작성
 
 - [ ] `docs/book-inspired-enrichment.md` 6-1의 스키마와 7개 항목 전체를 그대로 작성
