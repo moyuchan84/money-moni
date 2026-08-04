@@ -87,4 +87,11 @@ export const etfLabContent = {
       { id: "reflect-unsure", label: "잘 모르겠어요" },
     ],
   },
+  portfolioRoundContent: {
+    introMessageKo: "이번엔 과자가 아니라 진짜 농장에 씨앗(자산)을 심어보자!",
+    totalSeeds: 10,
+    roundCount: 4,
+    concentratedPresetAssetId: "stock" as const,
+    recapLineKo: "어떤 계절이 올지 몰라도, 골고루 심어두면 밭 전체가 크게 흔들리지 않아.",
+  },
 };

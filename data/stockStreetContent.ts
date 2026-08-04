@@ -2,11 +2,26 @@
 // docs/concept-story.md 7-10 참고.
 // 컴포넌트에 한글 문자열을 직접 하드코딩하지 않기 위해 이 파일을 통해서만 참조한다.
 
+// FOMO(우르르 몰림) 추격 매수·패닉(공포) 매도 연습 이벤트. dayMultipliers[afterDayIndex]가 이미
+// 그 날의 실제 가격 변화이고, eventDayMultiplier는 그 순간을 강조하는 추가 배수(급등/급락 체감용),
+// chaseOutcomeMultiplier는 "지금 살래요/팔래요"를 눌러 즉시 반응했을 때만 추가로 곱해지는 결과 배수다
+// (다음 날이 되어야 반영됨 — "그 순간엔 결과를 몰랐다"는 것을 체감시키기 위함).
+export interface PriceEvent {
+  afterDayIndex: number; // 이 날 이후에 이벤트 발생
+  kind: "hype" | "scare";
+  messageKo: string;
+  actionLabelKo: string; // "지금 살래요" / "지금 팔래요"
+  waitLabelKo: string; // "지켜볼래요"
+  eventDayMultiplier: number; // 이벤트 발생 순간의 그 날 배수
+  chaseOutcomeMultiplier: number; // 이벤트에 즉시 반응했을 때, 다음 날 반영되는 결과 배수
+}
+
 export interface StockIdeaCard {
   id: string;
   labelKo: string;
   emoji: string;
   dayMultipliers: number[]; // 투표 다음 며칠간의 하루 단위 케이크(주가) 크기 배수
+  events?: PriceEvent[];
 }
 
 export const stockStreetContent = {
@@ -55,8 +70,40 @@ export const stockStreetContent = {
   baseCakeSize: 10,
   ideas: [
     { id: "idea-cookie", labelKo: "초코 쿠키맛", emoji: "🍪", dayMultipliers: [1.2, 1.1, 1.15] },
-    { id: "idea-soda", labelKo: "톡톡 탄산맛", emoji: "🥤", dayMultipliers: [0.9, 1.3, 1.05] },
-    { id: "idea-spicy", labelKo: "매콤 불맛", emoji: "🌶️", dayMultipliers: [0.85, 0.95, 0.9] },
+    {
+      id: "idea-soda",
+      labelKo: "톡톡 탄산맛",
+      emoji: "🥤",
+      dayMultipliers: [0.9, 1.3, 1.05],
+      events: [
+        {
+          afterDayIndex: 1,
+          kind: "hype",
+          messageKo: "친구들이 다 톡톡 탄산맛 조각을 사고 있어! 🏃🏃🏃",
+          actionLabelKo: "지금 살래요",
+          waitLabelKo: "지켜볼래요",
+          eventDayMultiplier: 1.15,
+          chaseOutcomeMultiplier: 0.8,
+        },
+      ],
+    },
+    {
+      id: "idea-spicy",
+      labelKo: "매콤 불맛",
+      emoji: "🌶️",
+      dayMultipliers: [0.85, 0.95, 0.9],
+      events: [
+        {
+          afterDayIndex: 0,
+          kind: "scare",
+          messageKo: "안 좋은 소문이 돌아서 다들 팔고 있어! 😨",
+          actionLabelKo: "지금 팔래요",
+          waitLabelKo: "지켜볼래요",
+          eventDayMultiplier: 0.9,
+          chaseOutcomeMultiplier: 1.1,
+        },
+      ],
+    },
   ] as StockIdeaCard[],
   reflection: {
     questionKo: "케이크가 커질 때랑 작아질 때, 기분이 어땠어?",
