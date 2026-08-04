@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const museumAlmanac: BuildingAlmanac = {
   buildingId: "museum",
+  interactiveWidgetKey: "money-shape-timeline",
   theoryNoteKo:
     "기록에 남은 가장 오래된 동전은 기원전 7세기, 지금의 튀르키예 지역에 있던 리디아 왕국에서 금과 은이 섞인 '일렉트럼'이라는 금속으로 만들었어. 그 뒤 중국 송나라(10~11세기)는 '교자'라는 세계 최초의 지폐를 썼고, 20세기에는 나라들이 화폐 가치를 금에 딱 고정하는 '금본위제'를 오래 유지했어. 1944년 여러 나라 대표들이 미국 브레튼우즈에 모여 달러를 금에 연결하는 약속을 맺었지만, 1971년 닉슨 미국 대통령이 이 약속을 갑자기 멈추면서(닉슨 쇼크) 지금처럼 금과 상관없이 나라가 가치를 보증하는 '명목화폐' 시대가 시작됐어.",
   timeline: [

@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const stockStreetAlmanac: BuildingAlmanac = {
   buildingId: "stock-street",
+  interactiveWidgetKey: "stock-price",
   theoryNoteKo:
     "세계 최초로 '주식'을 사고팔 수 있었던 곳은 1602년 네덜란드야. 아주 큰 무역회사였던 '동인도회사(VOC)'가 회사를 작은 조각으로 나눠 누구나 조금씩 살 수 있게 했고, 이걸 사고파는 '암스테르담 증권거래소'도 함께 생겼어. 오늘날 우리나라의 코스피(KOSPI), 미국의 다우존스·나스닥도 모두 이런 증권거래소야.",
   timeline: [

@@ -2,6 +2,7 @@
 
 import type { BuildingId, BuildingMeta, District } from "@/data/buildings";
 import { almanacContent } from "@/data/almanacContent";
+import { almanacByBuildingId } from "@/data/almanac";
 
 // components/town/DistrictLayer.tsx/BuildingHotspot.tsx의 그리드·잠금 스타일을 그대로 재사용한다.
 const DISTRICT_BG: Record<District, string> = {
@@ -33,8 +34,13 @@ export function AlmanacGrid({ buildings, onSelect }: AlmanacGridProps) {
                   key={building.id}
                   type="button"
                   onClick={() => onSelect(building.id)}
-                  className="flex h-24 min-h-touch w-full min-w-touch flex-col justify-center rounded-control bg-surface px-3 py-2 text-left text-ink shadow-card transition hover:scale-105"
+                  className="relative flex h-24 min-h-touch w-full min-w-touch flex-col justify-center rounded-control bg-surface px-3 py-2 text-left text-ink shadow-card transition hover:scale-105"
                 >
+                  {almanacByBuildingId[building.id].interactiveWidgetKey && (
+                    <span aria-hidden className="absolute right-2 top-2 text-caption">
+                      ✨
+                    </span>
+                  )}
                   <span className="line-clamp-2 text-body font-semibold text-ink">{building.titleKo}</span>
                   <span className="truncate text-caption text-muted">{almanacContent.unlockedCaptionKo}</span>
                 </button>

@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const goldVaultAlmanac: BuildingAlmanac = {
   buildingId: "gold-vault",
+  interactiveWidgetKey: "gold-timeline",
   theoryNoteKo:
     "옛날에는 여러 나라가 자기 나라 돈의 가치를 금에 딱 고정해두는 '금본위제'라는 제도를 썼어(자세한 역사는 박물관 도감 참고). 지금은 돈의 가치가 금에 고정되어 있지 않지만, 오늘날에도 여러 나라 중앙은행은 만약을 대비해 금을 외환보유액의 일부로 계속 갖고 있어.",
   timeline: [

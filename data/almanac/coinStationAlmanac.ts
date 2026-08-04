@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const coinStationAlmanac: BuildingAlmanac = {
   buildingId: "coin-station",
+  interactiveWidgetKey: "coin-track",
   theoryNoteKo:
     "2008년, '사토시 나카모토'라는 이름으로 비트코인이라는 디지털 화폐의 설계도(백서)가 처음 발표됐고, 2009년에 첫 비트코인 블록이 만들어졌어. 스테이블코인은 이보다 조금 뒤인 2014년쯤부터 테더(USDT) 같은 종류가 나오면서 본격적으로 쓰이기 시작했어.",
   timeline: [

@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const bankAlmanac: BuildingAlmanac = {
   buildingId: "bank",
+  interactiveWidgetKey: "interest-simulator",
   theoryNoteKo:
     "지금까지 남아 문을 열고 있는 은행 중 가장 오래된 곳은 1472년 이탈리아에서 세워진 '몬테 데이 파스키 디 시에나'야. 550년도 더 된 은행이 지금도 있다는 게 신기하지? 오늘날에는 나라마다 '중앙은행'(우리나라는 한국은행)이 있어서, 다른 은행들이 이자를 얼마로 정할지에 영향을 주는 '기준금리'라는 걸 정해.",
   timeline: [
