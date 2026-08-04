@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { buildingList, type District } from "@/data/buildings";
 import { dailyQuests, weeklyQuests } from "@/data/quests";
 import { parentContent } from "@/data/parentContent";
@@ -10,6 +8,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { SoundToggle } from "@/components/hud/SoundToggle";
 import { getTodayNewsSimplifierEntry } from "@/data/newsSimplifier";
 import { NewsSimplifierCard } from "@/components/parent/NewsSimplifierCard";
+import { Button } from "@/components/ui/Button";
 
 const DISTRICTS: District[] = [1, 2, 3];
 
@@ -122,9 +121,9 @@ export default function ParentPage() {
 
       <NewsSimplifierCard entry={getTodayNewsSimplifierEntry()} />
 
-      <Link href="/town" className="min-h-touch min-w-touch self-start text-body underline">
+      <Button href="/town" variant="secondary">
         {commonContent.backToTownKo}
-      </Link>
+      </Button>
     </main>
   );
 }

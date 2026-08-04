@@ -9,6 +9,7 @@ import { isAlmanacUnlocked } from "@/data/almanac";
 import { useGameStore } from "@/store/useGameStore";
 import { AlmanacGrid } from "@/components/almanac/AlmanacGrid";
 import { Button } from "@/components/ui/Button";
+import { ButtonRow } from "@/components/ui/ButtonRow";
 
 export default function AlmanacPage() {
   const router = useRouter();
@@ -28,9 +29,14 @@ export default function AlmanacPage() {
         isUnlocked={(id) => isAlmanacUnlocked(id, buildingsProgress, district2Unlocked)}
         onSelect={handleSelect}
       />
-      <Button href="/town" variant="secondary">
-        {commonContent.backToTownKo}
-      </Button>
+      <ButtonRow>
+        <Button href="/town" variant="secondary">
+          {commonContent.backToTownKo}
+        </Button>
+        <Button href="/credits" variant="secondary">
+          {commonContent.townNav.credits}
+        </Button>
+      </ButtonRow>
     </main>
   );
 }

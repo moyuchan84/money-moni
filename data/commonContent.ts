@@ -22,6 +22,29 @@ export const commonContent = {
     almanac: "도감",
     credits: "고마운 자료들",
   },
+  // components/layout/BottomNav.tsx 전용 탭바 라벨. 좁은 5~6칸 탭에 들어가야 하므로
+  // townNav의 풀네임 대신 짧은 2글자 라벨을 별도로 둔다(풀네임은 각 페이지 h1에 남아있음).
+  bottomNav: {
+    home: "마을",
+    questLog: "퀘스트",
+    shop: "상점",
+    glossary: "사전",
+    almanac: "도감",
+    parent: "보호자",
+  },
+  // components/splash/SplashScreen.tsx 전용 카피. 제품명("머니모니")은
+  // app/layout.tsx의 metadata.title과 동일하게 유지한다.
+  splash: {
+    wordmarkKo: "머니모니",
+    captionKo: "자본주의 생존기, 머니타운",
+    skipKo: "건너뛰기",
+  },
+  // components/layout/AppHeader.tsx 전용 카피. wordmarkKo는 마을(세계관) 이름으로,
+  // splash.wordmarkKo(제품명)와는 의미가 다르다.
+  header: {
+    wordmarkKo: "머니타운",
+    backToTownAriaKo: "마을로 돌아가기",
+  },
   // components/dialogue/StorySceneViewer.tsx가 모든 건물의 개념 스토리 씬에서 공통으로 쓰는 카피.
   storyViewer: {
     speakerLabel: {

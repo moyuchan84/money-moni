@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 import { moneyTreeContent } from "@/data/moneyTreeContent";
 import { commonContent } from "@/data/commonContent";
 import { almanacContent } from "@/data/almanacContent";
 import { Button } from "@/components/ui/Button";
+import { ButtonRow } from "@/components/ui/ButtonRow";
 import type { StoryScene } from "@/data/storyScene";
 import { useGameStore } from "@/store/useGameStore";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
@@ -69,24 +69,17 @@ export default function MoneyTreePage() {
       />
       <PiggyPetCharacter mood={mood} />
       <MoneyTreeScene alreadyActedToday={alreadyActedToday} />
-      <div className="flex gap-3">
-        <Link
-          href="/town"
-          className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
-        >
+      <ButtonRow>
+        <Button href="/town" variant="primary">
           {commonContent.backToTownKo}
-        </Link>
-        <button
-          type="button"
-          onClick={() => setReplaying(true)}
-          className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-6 py-2 text-body text-primary"
-        >
+        </Button>
+        <Button variant="secondary" onClick={() => setReplaying(true)}>
           {commonContent.replayStoryKo}
-        </button>
-      </div>
-      <Button href="/almanac/money-tree" variant="secondary">
-        {almanacContent.goToAlmanacKo}
-      </Button>
+        </Button>
+        <Button href="/almanac/money-tree" variant="secondary">
+          {almanacContent.goToAlmanacKo}
+        </Button>
+      </ButtonRow>
     </main>
   );
 }

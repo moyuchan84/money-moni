@@ -120,7 +120,8 @@ test("museum 타임라인 미니게임 완료 시 코인 적립·퀘스트 진�
     page.getByRole("button", { name: "박물관 (화폐의 역사)" }).getByText("✅ 완료"),
   ).toBeVisible();
 
-  await page.getByRole("link", { name: "퀘스트 로그" }).click();
+  // 하단 내비의 "퀘스트" 탭으로 이동한다(town 인라인 nav는 BottomNav로 대체됨).
+  await page.getByRole("link", { name: "퀘스트", exact: true }).click();
   await page.waitForURL("**/quest-log");
   await expect(page.getByText(/오늘의 건물 아무 곳이나 클리어하기 \(1\/1\)/)).toBeVisible();
 
