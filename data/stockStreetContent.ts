@@ -27,6 +27,23 @@ export const stockStreetContent = {
       textKo:
         "나는 어릴 때부터 이 마을 가게들을 조금씩 응원해왔어. 회사가 자라는 걸 오래 지켜보는 것도 재밌단다 — 너무 빨리 부자가 되려고 조바심내지 않아도 괜찮아.",
     },
+    {
+      id: "scene-6",
+      speaker: "npc",
+      textKo:
+        "참, 하나만 조심해. 갑자기 다들 \"이거다!\" 하고 우르르 몰리는 조각은 조심해야 해. 이미 값이 잔뜩 오른 다음일 때가 많거든.",
+    },
+    { id: "scene-7", speaker: "child", textKo: "그럼 어떻게 해요?" },
+    {
+      id: "scene-8",
+      speaker: "npc",
+      textKo: "유행보다는, 이 회사가 진짜 좋아지고 있는지를 먼저 봐. 그리고 인기가 없어서 값이 쌀 때 눈여겨봐 두는 사람들도 있어.",
+    },
+    {
+      id: "scene-9",
+      speaker: "narrator",
+      textKo: "우르르 몰릴 때 같이 뛰기보다, 이미 잘 자라고 있는 나무를 미리 알아보는 게 더 지혜로워요.",
+    },
   ],
   metaphorLineKo: "주식은 회사를 나눈 케이크 조각 하나야. 회사가 잘되면 내 조각도 커져.",
   realExampleKo:

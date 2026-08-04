@@ -69,14 +69,16 @@ export type AlmanacWidgetKey =
   | "arrow-flow"            // ledger-house
   | "jar-ratio"             // allowance-square
   | "bread-split"           // triple-village
-  | "money-shape-timeline"; // museum
+  | "money-shape-timeline"  // museum
+  | "economic-seasons-wheel"; // etf-lab, docs/investment-mindset-and-cycles.md 6장
 
 export interface BuildingAlmanac {
   buildingId: BuildingId;
   theoryNoteKo: string;
   timeline: AlmanacTimelineEvent[];
   credits: ImageCredit[];
-  interactiveWidgetKey?: AlmanacWidgetKey; // 신규, 선택 필드 — 없으면 위젯 섹션 자체를 렌더링하지 않는다
+  // 선택 필드 — 없으면 위젯 섹션 자체를 렌더링하지 않는다. 위젯이 여러 개면(etf-lab) 배열로 둔다.
+  interactiveWidgetKey?: AlmanacWidgetKey | AlmanacWidgetKey[];
 }
 ```
 
@@ -287,6 +289,12 @@ components/almanac/
 
 P0~P1까지만 먼저 끝내도 사용자가 요청한 "애니메이션 + 인터랙티브"의 체감 효과 대부분을
 얻을 수 있다. P2~P3는 이후 이터레이션으로 넘겨도 무방하다.
+
+**16번째 위젯 `economic-seasons-wheel`(`etf-lab`)**은 `docs/investment-mindset-and-cycles.md`
+6장에서 P1급으로 승격되어 추가됐다. `etf-lab`은 이 위젯과 기존 `diversification-basket`을
+함께 가지므로, `BuildingAlmanac.interactiveWidgetKey`가 배열도 받을 수 있도록 확장했다(3장
+스키마와 `KnowledgeCard.tsx` 참고). 계절 예측 도구로 오인되지 않도록 "다음 계절은 미리 알 수
+없다"는 문구를 화면에 항상 고정 노출한다 — 콘텐츠 안전 원칙은 그 문서 1장 참고.
 
 ---
 

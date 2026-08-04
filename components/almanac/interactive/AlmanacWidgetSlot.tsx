@@ -16,6 +16,7 @@ import { GoldTimelineExplorer } from "./GoldTimelineExplorer";
 import { CoinTrackExplorer } from "./CoinTrackExplorer";
 import { BreadSplitExplorer } from "./BreadSplitExplorer";
 import { MoneyShapeTimelineExplorer } from "./MoneyShapeTimelineExplorer";
+import { EconomicSeasonsWheel } from "./EconomicSeasonsWheel";
 
 // interactiveWidgetKey → 실제 위젯 컴포넌트 매핑. 아직 구현되지 않은 키는 null을 반환해
 // "직접 만져보기" 섹션 자체가 죽은 자리로 남지 않게 한다(docs/almanac-interactive.md 4장).
@@ -35,6 +36,7 @@ const WIDGET_REGISTRY: Partial<Record<AlmanacWidgetKey, ComponentType>> = {
   "coin-track": CoinTrackExplorer,
   "bread-split": BreadSplitExplorer,
   "money-shape-timeline": MoneyShapeTimelineExplorer,
+  "economic-seasons-wheel": EconomicSeasonsWheel,
 };
 
 export function AlmanacWidgetSlot({ widgetKey }: { widgetKey: AlmanacWidgetKey }) {

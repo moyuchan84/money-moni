@@ -26,7 +26,12 @@ export type GlossaryId =
   | "tax"
   | "credit"
   | "cost-profit"
-  | "value-spending";
+  | "value-spending"
+  | "investor-mindset"
+  | "portfolio"
+  | "real-estate"
+  | "commodity"
+  | "economic-seasons";
 
 export type GlossaryCategory =
   | "money-basics"
@@ -156,7 +161,7 @@ export const glossary: GlossaryEntry[] = [
     metaphorKo: "나 대신 일을 더 많이 해주는 도구.",
     exampleKo: "빵집 아저씨가 손으로만 반죽할 때보다 오븐을 산 뒤 훨씬 많은 빵을 구울 수 있게 된 것.",
     relatedBuildingId: "capital-warehouse",
-    relatedTermIds: ["income", "investment"],
+    relatedTermIds: ["income", "investment", "real-estate"],
   },
   {
     id: "investment",
@@ -180,7 +185,7 @@ export const glossary: GlossaryEntry[] = [
     metaphorKo: "회사를 나눈 케이크 한 조각.",
     exampleKo: "내가 좋아하는 과자 회사가 신제품으로 큰 인기를 끌면, 그 회사 주식을 가진 사람들도 좋은 소식을 듣게 돼.",
     relatedBuildingId: "stock-street",
-    relatedTermIds: ["investment", "etf-etn"],
+    relatedTermIds: ["investment", "etf-etn", "investor-mindset"],
   },
   {
     id: "etf-etn",
@@ -204,7 +209,7 @@ export const glossary: GlossaryEntry[] = [
     metaphorKo: "오래도록 사람들이 지켜온 반짝이는 약속.",
     exampleKo: "결혼반지나 돌잔치 금반지처럼, 시간이 지나도 가치가 잘 사라지지 않는다고 여겨져 특별한 선물로도 쓰여.",
     relatedBuildingId: "gold-vault",
-    relatedTermIds: ["investment", "money"],
+    relatedTermIds: ["investment", "money", "commodity"],
   },
   {
     id: "loan",
@@ -322,5 +327,78 @@ export const glossary: GlossaryEntry[] = [
     exampleKo: "장난감 가게에서 당장 사고 싶은 걸 참고, 집에 와서도 계속 생각나는지 하루 지켜본 뒤 결정하는 것.",
     relatedBuildingId: "allowance-square",
     relatedTermIds: ["spending"],
+  },
+  {
+    id: "investor-mindset",
+    term: "투자자의 마음가짐",
+    category: "capital-investment",
+    shortDefinitionKo: "쌀 때 사서 비쌀 때 팔기, 급하게 몰리는 것 따라가지 않기, 여유자금으로만 하기",
+    longDefinitionKo:
+      "좋은 투자자가 되려면 몇 가지 마음가짐이 필요해. 첫째, 인기가 없어 값이 쌀 때 사서 " +
+      "인기가 많아져 값이 비싸질 때 팔아야지, 이미 값이 잔뜩 오른 다음에 몰려서 사면 늦어. " +
+      "둘째, 갑자기 확 유명해진 것('급등 테마')을 보고 조급하게 따라 사지 않아. 셋째, " +
+      "다음 달 학용품 살 돈처럼 꼭 써야 하는 돈이 아니라, 당장 안 써도 되는 '여유자금'으로만 해. " +
+      "넷째, 결과를 오래 기다릴 줄 아는 인내심이 필요해.",
+    metaphorKo: "투자는 급한 마음보다 꾸준한 마음이 이기는 게임이야.",
+    exampleKo: "친구들이 다 같은 장난감에 몰려갈 때 나도 급하게 따라가기보다, 정말 좋은 건지 한 번 더 생각해보는 것.",
+    relatedBuildingId: "stock-street",
+    relatedTermIds: ["stock", "value-spending"],
+  },
+  {
+    id: "portfolio",
+    term: "포트폴리오",
+    category: "capital-investment",
+    shortDefinitionKo: "주식, 부동산, 금, 원자재처럼 서로 다른 종류의 자산을 골고루 나눠 담는 것",
+    longDefinitionKo:
+      "ETF가 '여러 회사'를 한 바구니에 담는 거라면, 포트폴리오는 한 발 더 나아가 '아예 다른 " +
+      "종류'의 자산(주식, 부동산, 금, 원자재, 그리고 그냥 모아둔 돈)을 함께 담는 거야. 서로 " +
+      "다른 종류를 섞어두면, 하나가 흔들려도 다른 게 버텨줄 수 있어.",
+    metaphorKo: "포트폴리오는 종류가 다른 작물을 골고루 심어두는 큰 농장이야.",
+    exampleKo: "장난감, 책, 저금통에 나눠서 용돈을 쓰면 하나에 실망해도 다른 즐거움이 남는 것처럼.",
+    relatedBuildingId: "etf-lab",
+    relatedTermIds: ["etf-etn", "real-estate", "gold"],
+  },
+  {
+    id: "real-estate",
+    term: "부동산",
+    category: "capital-investment",
+    shortDefinitionKo: "땅이나 건물처럼 움직일 수 없지만, 오래 갖고 있으면 가치가 생기는 재산",
+    longDefinitionKo:
+      "부동산은 땅이나 집, 건물처럼 들고 다닐 수 없는 재산이야. 사람들이 그 공간에 살거나 " +
+      "장사를 하려고 돈을 내기 때문에(월세), 부동산을 가진 사람은 자본(돈을 더 버는 도구)을 " +
+      "하나 가진 셈이 돼.",
+    metaphorKo: "부동산은 그 자리에 딱 서서 매달 조금씩 고마움을 받는 든든한 땅이야.",
+    exampleKo: "건물 주인이 가게 주인에게 월세를 받는 것도 부동산이 자본 역할을 하는 예야.",
+    relatedBuildingId: "capital-warehouse",
+    relatedTermIds: ["capital", "portfolio"],
+  },
+  {
+    id: "commodity",
+    term: "원자재",
+    category: "capital-investment",
+    shortDefinitionKo: "금, 기름, 밀처럼 물건을 만드는 데 쓰이는 기본 재료",
+    longDefinitionKo:
+      "원자재는 다른 물건을 만드는 데 쓰이는 기본 재료야 — 기름, 밀, 구리 같은 것들. 금도 " +
+      "원자재의 한 종류인데, 오래도록 사람들이 특히 소중히 여겨온 특별한 원자재라서 이 마을에는 " +
+      "따로 금고(gold-vault)가 있어.",
+    metaphorKo: "원자재는 세상 모든 물건을 만드는 데 쓰이는 재료 창고야.",
+    exampleKo: "빵을 만들려면 밀이 필요하고, 자동차를 만들려면 철이 필요한 것처럼.",
+    relatedBuildingId: "gold-vault",
+    relatedTermIds: ["gold", "portfolio"],
+  },
+  {
+    id: "economic-seasons",
+    term: "경제 계절",
+    category: "big-picture",
+    shortDefinitionKo: "경제도 봄·여름·가을·겨울처럼 좋아졌다 나빠졌다를 반복한다는 생각",
+    longDefinitionKo:
+      "날씨에 봄·여름·가을·겨울이 있듯이, 경제도 좋아지는 때와 나빠지는 때를 반복해서 겪어. " +
+      "계절마다 잘 자라는 작물이 다르듯, 경제 계절마다 힘을 내는 자산도 조금씩 달라. 문제는 " +
+      "다음에 어떤 계절이 올지 미리 정확히 알 수는 없다는 거야 — 그래서 사람들은 한 가지 작물만 " +
+      "심지 않고, 여러 계절에 강한 작물들을 골고루 심어두는 방법을 써.",
+    metaphorKo: "경제 계절은 미리 맞히는 게 아니라, 어떤 계절이 와도 버티도록 미리 대비하는 것이야.",
+    exampleKo: "우산은 맑은 날에도 가방에 넣어두면, 갑자기 비가 와도 당황하지 않는 것처럼.",
+    relatedBuildingId: "etf-lab",
+    relatedTermIds: ["portfolio", "investor-mindset"],
   },
 ];

@@ -4,7 +4,7 @@
 export interface StoryScene {
   id: string; // 예: "scene-1"
   speaker: "narrator" | "npc" | "child";
-  characterId?: "village-chief" | "squirrel-grandpa"; // 생략 시 village-chief로 취급(기존 콘텐츠 하위호환)
+  characterId?: "village-chief" | "squirrel-grandpa" | "seasonal-farmer"; // 생략 시 village-chief로 취급(기존 콘텐츠 하위호환)
   textKo: string;
   narrationSrc?: string; // /content/audio/{buildingId}-story-{sceneId}.mp3, 음성 자산 없으면 생략
   illustrationKey?: string; // 일러스트/표정 힌트, 자산 없으면 생략

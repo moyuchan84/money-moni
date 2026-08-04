@@ -22,8 +22,8 @@ describe("glossary", () => {
     }
   });
 
-  it("22개 용어 모두 확장 필드(long/metaphor/example)를 빈 문자열 없이 갖는다", () => {
-    expect(glossary).toHaveLength(22);
+  it("27개 용어 모두 확장 필드(long/metaphor/example)를 빈 문자열 없이 갖는다", () => {
+    expect(glossary).toHaveLength(27);
     for (const entry of glossary) {
       expect(entry.longDefinitionKo.length).toBeGreaterThan(0);
       expect(entry.metaphorKo.length).toBeGreaterThan(0);
