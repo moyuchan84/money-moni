@@ -6,6 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 import { etfLabContent, type EtfSnackCard } from "@/data/etfLabContent";
 import { ComparisonBarChart } from "@/components/minigame/ComparisonBarChart";
+import { PortfolioRoundGame } from "./PortfolioRoundGame";
 
 const SNACKS = etfLabContent.snacks;
 
@@ -69,10 +70,12 @@ export interface EtfBasketGameProps {
   onComplete: (score: number) => void;
 }
 
+type Stage = "basket" | "basketCompare" | "portfolio";
+
 export function EtfBasketGame({ onComplete }: EtfBasketGameProps) {
   const [availableIds, setAvailableIds] = useState<string[]>(SNACKS.map((snack) => snack.id));
   const [basketIds, setBasketIds] = useState<string[]>([]);
-  const [comparing, setComparing] = useState(false);
+  const [stage, setStage] = useState<Stage>("basket");
 
   function handleDragEnd(event: DragEndEvent) {
     if (!event.over || event.over.id !== "basket") return;
@@ -87,7 +90,11 @@ export function EtfBasketGame({ onComplete }: EtfBasketGameProps) {
     ? Math.round(basketSnacks.reduce((sum, snack) => sum + snack.volatilityPct, 0) / basketSnacks.length)
     : 0;
 
-  if (comparing) {
+  if (stage === "portfolio") {
+    return <PortfolioRoundGame onComplete={onComplete} />;
+  }
+
+  if (stage === "basketCompare") {
     return (
       <div className="flex w-full max-w-sm flex-col items-center gap-4">
         <p className="text-body font-semibold text-ink">바구니 vs 한 종류만 샀을 때, 흔들림 비교</p>
@@ -106,10 +113,10 @@ export function EtfBasketGame({ onComplete }: EtfBasketGameProps) {
         />
         <button
           type="button"
-          onClick={() => onComplete(basketIds.length)}
+          onClick={() => setStage("portfolio")}
           className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white"
         >
-          완료
+          다음: 포트폴리오 라운드
         </button>
       </div>
     );
@@ -131,7 +138,7 @@ export function EtfBasketGame({ onComplete }: EtfBasketGameProps) {
       </DndContext>
       <button
         type="button"
-        onClick={() => setComparing(true)}
+        onClick={() => setStage("basketCompare")}
         disabled={!canCompare}
         className="min-h-touch min-w-touch rounded-control bg-primary px-6 py-2 text-body text-white disabled:opacity-40"
       >

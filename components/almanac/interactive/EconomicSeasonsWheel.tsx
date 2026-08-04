@@ -4,45 +4,14 @@ import { useState } from "react";
 import { motion } from "motion/react";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SEASONS, ASSETS, SEASON_REACTIONS, REACTION_LABEL, type Season, type ReactionLevel } from "@/data/almanac/economicSeasons";
 
 // 경제 사계절 바퀴(etf-lab 도감) — 포트폴리오/경제 계절 위젯.
 // docs/investment-mindset-and-cycles.md 6장 참고. 레이 달리오의 올웨더 포트폴리오 성장·물가
 // 4분면을 아이 눈높이로 단순화했다. 계절을 예측하는 도구가 아니라 "그래서 나눠 담는다"는
 // 결론으로만 귀결시켜야 해서(콘텐츠 안전 원칙 2), 하단 안내 문구는 계절 선택과 무관하게
-// 항상 고정으로 보인다.
-
-type Season = "spring" | "summer" | "autumn" | "winter";
-type ReactionLevel = "grow" | "steady" | "wilt";
-type AssetId = "stock" | "realEstate" | "gold" | "commodity" | "cash";
-
-const SEASONS: { id: Season; labelKo: string; emoji: string }[] = [
-  { id: "spring", labelKo: "봄", emoji: "🌱" },
-  { id: "summer", labelKo: "여름", emoji: "☀️" },
-  { id: "autumn", labelKo: "가을", emoji: "🍂" },
-  { id: "winter", labelKo: "겨울", emoji: "❄️" },
-];
-
-const ASSETS: { id: AssetId; labelKo: string; emoji: string }[] = [
-  { id: "stock", labelKo: "주식", emoji: "📈" },
-  { id: "realEstate", labelKo: "부동산", emoji: "🏠" },
-  { id: "gold", labelKo: "금", emoji: "🪙" },
-  { id: "commodity", labelKo: "원자재", emoji: "🌾" },
-  { id: "cash", labelKo: "현금", emoji: "💰" },
-];
-
-// 부동산은 특정 계절에 편향시키지 않고 항상 "보통"으로 고정한다(설계 문서 6-3 참고).
-const SEASON_REACTIONS: Record<Season, Record<AssetId, ReactionLevel>> = {
-  spring: { stock: "grow", realEstate: "steady", gold: "steady", commodity: "steady", cash: "steady" },
-  summer: { stock: "grow", realEstate: "steady", gold: "steady", commodity: "grow", cash: "wilt" },
-  autumn: { stock: "wilt", realEstate: "steady", gold: "grow", commodity: "grow", cash: "wilt" },
-  winter: { stock: "wilt", realEstate: "steady", gold: "grow", commodity: "wilt", cash: "grow" },
-};
-
-const REACTION_LABEL: Record<ReactionLevel, string> = {
-  grow: "쑥쑥 자람",
-  steady: "보통",
-  wilt: "시듦",
-};
+// 항상 고정으로 보인다. 계절-자산 반응 테이블은 data/almanac/economicSeasons.ts 공유 모듈 참고
+// (etf-lab 포트폴리오 라운드 미니게임과 같은 테이블을 쓴다).
 
 const REACTION_MOTION: Record<ReactionLevel, { scale: number; y: number; opacity: number }> = {
   grow: { scale: 1.3, y: -6, opacity: 1 },

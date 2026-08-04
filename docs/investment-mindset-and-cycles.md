@@ -258,6 +258,10 @@ export type AlmanacWidgetKey =
 위함). 이 표는 개발자 참고용 매핑이며, 화면에 "이 계절엔 이걸 사세요"라는 문장으로 절대
 노출하지 않는다 — 아이콘 반응 애니메이션으로만 보여준다(1장 원칙 3 참고).
 
+> **[각주]** 이 반응 테이블은 이후 `data/almanac/economicSeasons.ts`로 이동했다(`docs/fomo-portfolio-practice.md`
+> 4-3 참고). `EconomicSeasonsWheel.tsx`와 `EtfBasketGame.tsx`의 포트폴리오 라운드(`PortfolioRoundGame.tsx`)가
+> 함께 참조하며, 미니게임 채점용 `REACTION_MULTIPLIER`가 이 모듈에 추가로 정의되어 있다.
+
 ### 6-4. 배치
 
 `data/almanac/etfLabAlmanac.ts`에 `interactiveWidgetKey: "economic-seasons-wheel"` 추가.
