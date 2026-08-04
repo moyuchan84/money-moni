@@ -24,16 +24,11 @@ export type BuildingId =
 // money-tree는 아바타 개인 마당 위젯이라 /money-tree 단일 라우트만 갖는 예외다.
 export type BuildingRouteKind = "building" | "standalone";
 
-export type UnlockCondition =
-  | { type: "always" }
-  | { type: "district" }; // 소속 구역(district)이 열려야 함 — 실제 판정은 store의 districts[district].unlocked 참고
-
 export interface BuildingMeta {
   id: BuildingId;
   district: District;
   routeKind: BuildingRouteKind;
   titleKo: string;
-  unlockCondition: UnlockCondition;
   rewardCoins: number;
 }
 
@@ -43,7 +38,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 1,
     routeKind: "building",
     titleKo: "박물관 (화폐의 역사)",
-    unlockCondition: { type: "always" },
     rewardCoins: 30,
   },
   "ledger-house": {
@@ -51,7 +45,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 1,
     routeKind: "building",
     titleKo: "가계부 오두막",
-    unlockCondition: { type: "always" },
     rewardCoins: 30,
   },
   "allowance-square": {
@@ -59,7 +52,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 1,
     routeKind: "building",
     titleKo: "용돈 배분 광장",
-    unlockCondition: { type: "always" },
     rewardCoins: 30,
   },
   bank: {
@@ -67,7 +59,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 2,
     routeKind: "building",
     titleKo: "은행 (저축·이자)",
-    unlockCondition: { type: "district" },
     rewardCoins: 50,
   },
   "money-tree": {
@@ -75,7 +66,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 2,
     routeKind: "standalone",
     titleKo: "머니나무 마당",
-    unlockCondition: { type: "district" },
     rewardCoins: 50,
   },
   "job-center": {
@@ -83,7 +73,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 2,
     routeKind: "building",
     titleKo: "직업소개소",
-    unlockCondition: { type: "district" },
     rewardCoins: 50,
   },
   market: {
@@ -91,7 +80,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 2,
     routeKind: "building",
     titleKo: "시장 (인플레이션)",
-    unlockCondition: { type: "district" },
     rewardCoins: 50,
   },
   "capital-warehouse": {
@@ -99,7 +87,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 2,
     routeKind: "building",
     titleKo: "자본 도구창고",
-    unlockCondition: { type: "district" },
     rewardCoins: 50,
   },
   "seed-field": {
@@ -107,7 +94,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 3,
     routeKind: "building",
     titleKo: "투자 씨앗밭",
-    unlockCondition: { type: "district" },
     rewardCoins: 80,
   },
   "stock-street": {
@@ -115,7 +101,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 3,
     routeKind: "building",
     titleKo: "주식회사 거리",
-    unlockCondition: { type: "district" },
     rewardCoins: 80,
   },
   "etf-lab": {
@@ -123,7 +108,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 3,
     routeKind: "building",
     titleKo: "ETF 조합소",
-    unlockCondition: { type: "district" },
     rewardCoins: 80,
   },
   "gold-vault": {
@@ -131,7 +115,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 3,
     routeKind: "building",
     titleKo: "금고",
-    unlockCondition: { type: "district" },
     rewardCoins: 80,
   },
   "coin-station": {
@@ -139,7 +122,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 3,
     routeKind: "building",
     titleKo: "코인 정거장",
-    unlockCondition: { type: "district" },
     rewardCoins: 80,
   },
   "loan-counter": {
@@ -147,7 +129,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 3,
     routeKind: "building",
     titleKo: "대출 창구",
-    unlockCondition: { type: "district" },
     rewardCoins: 80,
   },
   "triple-village": {
@@ -155,7 +136,6 @@ export const buildings: Record<BuildingId, BuildingMeta> = {
     district: 3,
     routeKind: "building",
     titleKo: "세 갈래 실험마을",
-    unlockCondition: { type: "district" },
     rewardCoins: 80,
   },
 };

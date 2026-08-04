@@ -5,8 +5,6 @@ export const almanacContent = {
   hubIntroMessageKo:
     "완료한 건물을 골라보면, 그 안에 담긴 진짜 역사와 이론을 만날 수 있어요.",
   unlockedCaptionKo: "🧠 더 알아보기",
-  lockedCaptionKo: "🔒 완료하면 열려요",
-  lockedDetailMessageKo: "아직 이 지식카드가 잠겨 있어요. 건물을 먼저 완료해보세요!",
   goToAlmanacKo: "🧠 더 깊이 알아보기",
   backToAlmanacKo: "도감으로 돌아가기",
   imageCreditPrefixKo: "사진 출처: ",

@@ -16,9 +16,6 @@ describe("useGameStore", () => {
 
     expect(state.avatar.nickname).toBe("");
     expect(state.wallet.coins).toBe(0);
-    expect(state.districts[1].unlocked).toBe(true);
-    expect(state.districts[2].unlocked).toBe(false);
-    expect(state.districts[3].unlocked).toBe(false);
     expect(Object.keys(state.buildings)).toHaveLength(buildingList.length);
   });
 
@@ -68,80 +65,6 @@ describe("useGameStore", () => {
     const state = useGameStore.getState();
     expect(state.wallet.coins).toBe(buildings.museum.rewardCoins);
     expect(state.wallet.history).toHaveLength(1);
-  });
-
-  describe("2구역 잠금 해제", () => {
-    it("1구역 건물 3개 중 2개만 완료하면 아직 잠겨 있다", () => {
-      useGameStore.getState().completeBuilding("museum", { score: 1 });
-      useGameStore.getState().completeBuilding("ledger-house", { score: 1 });
-
-      expect(useGameStore.getState().districts[2].unlocked).toBe(false);
-    });
-
-    it("1구역 건물 3개를 모두 완료하면 2구역이 열린다", () => {
-      useGameStore.getState().completeBuilding("museum", { score: 1 });
-      useGameStore.getState().completeBuilding("ledger-house", { score: 1 });
-      useGameStore.getState().completeBuilding("allowance-square", { score: 1 });
-
-      expect(useGameStore.getState().districts[2].unlocked).toBe(true);
-    });
-
-    it("2구역이 열린 뒤 건물을 다시 클리어해도 잠금 상태로 되돌아가지 않는다", () => {
-      useGameStore.getState().completeBuilding("museum", { score: 1 });
-      useGameStore.getState().completeBuilding("ledger-house", { score: 1 });
-      useGameStore.getState().completeBuilding("allowance-square", { score: 1 });
-      useGameStore.getState().completeBuilding("museum", { score: 1 });
-
-      expect(useGameStore.getState().districts[2].unlocked).toBe(true);
-    });
-
-    it("debugUnlockDistrict2로 즉시 2구역을 열 수 있다", () => {
-      useGameStore.getState().debugUnlockDistrict2();
-      expect(useGameStore.getState().districts[2].unlocked).toBe(true);
-    });
-  });
-
-  describe("3구역 잠금 해제", () => {
-    // 2구역의 routeKind: "building" 건물은 bank/job-center/market/capital-warehouse 4개다.
-    // money-tree(routeKind: "standalone")는 completeBuilding을 호출하지 않으므로 판정에서 제외되어야 한다.
-    it("2구역 건물 4개 중 3개만 완료하면 3구역은 아직 잠겨 있다", () => {
-      useGameStore.getState().completeBuilding("bank", { score: 1 });
-      useGameStore.getState().completeBuilding("job-center", { score: 1 });
-      useGameStore.getState().completeBuilding("market", { score: 1 });
-
-      expect(useGameStore.getState().districts[3].unlocked).toBe(false);
-    });
-
-    it("2구역 building 건물 4개를 모두 완료하면 3구역이 열린다(money-tree는 건드리지 않아도 된다)", () => {
-      useGameStore.getState().completeBuilding("bank", { score: 1 });
-      useGameStore.getState().completeBuilding("job-center", { score: 1 });
-      useGameStore.getState().completeBuilding("market", { score: 1 });
-      useGameStore.getState().completeBuilding("capital-warehouse", { score: 1 });
-
-      expect(useGameStore.getState().districts[3].unlocked).toBe(true);
-    });
-
-    it("3구역이 열린 뒤 건물을 다시 클리어해도 잠금 상태로 되돌아가지 않는다", () => {
-      useGameStore.getState().completeBuilding("bank", { score: 1 });
-      useGameStore.getState().completeBuilding("job-center", { score: 1 });
-      useGameStore.getState().completeBuilding("market", { score: 1 });
-      useGameStore.getState().completeBuilding("capital-warehouse", { score: 1 });
-      useGameStore.getState().completeBuilding("bank", { score: 1 });
-
-      expect(useGameStore.getState().districts[3].unlocked).toBe(true);
-    });
-
-    it("1구역이나 3구역 건물을 완료해도 3구역 잠금 해제 판정에는 영향이 없다", () => {
-      useGameStore.getState().completeBuilding("museum", { score: 1 });
-      useGameStore.getState().completeBuilding("seed-field", { score: 1 });
-
-      expect(useGameStore.getState().districts[3].unlocked).toBe(false);
-    });
-
-    it("debugUnlockDistrict3으로 즉시 3구역을 열 수 있다", () => {
-      useGameStore.getState().debugUnlockDistrict3();
-      expect(useGameStore.getState().districts[3].unlocked).toBe(true);
-    });
   });
 
   it("addCoins/spendCoins가 지갑 잔액과 내역을 갱신한다", () => {
@@ -330,5 +253,29 @@ describe("useGameStore", () => {
     const state = useGameStore.getState();
     expect(state.buildings.museum.storySeen).toBe(false);
     expect(state.buildings.museum.completedAt).toBe("2026-01-01T00:00:00.000Z");
+  });
+
+  it("v3 저장 스키마를 v4로 마이그레이션하면 구역 잠금 상태가 제거되고 모든 건물에 접근할 수 있다", async () => {
+    localStorage.setItem(
+      "moneymoni-save",
+      JSON.stringify({
+        state: {
+          avatar: { nickname: "몽이", look: { skin: "light", hair: "brown", outfit: "default", pet: "piggy" }, level: 1, exp: 0 },
+          wallet: { coins: 30, history: [] },
+          districts: { 1: { unlocked: true }, 2: { unlocked: false }, 3: { unlocked: false } },
+          buildings: { museum: { introSeen: true, storySeen: true, completedAt: "2026-01-01T00:00:00.000Z" } },
+          moneyTree: { stage: 0, principal: moneyTreeContent.startingPrincipal, history: [] },
+          shop: { ownedItemIds: [] },
+          quests: { daily: [], weekly: [] },
+          settings: { soundOn: true, narrationOn: true, reducedMotion: false },
+        },
+        version: 3,
+      }),
+    );
+
+    await useGameStore.persist.rehydrate();
+
+    const state = useGameStore.getState();
+    expect(state).not.toHaveProperty("districts");
   });
 });

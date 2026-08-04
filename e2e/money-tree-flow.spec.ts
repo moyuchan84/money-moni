@@ -4,13 +4,12 @@ import { moneyTreeContent } from "../data/moneyTreeContent";
 import { seedGameState } from "./seedState";
 
 // money-tree는 CLAUDE.md 절대 규칙 6의 예외로 /building/[id] 3-라우트 구조를 따르지 않는
-// standalone 라우트다(docs/phases.md Phase 3 종료 조건). 2구역이 열려 있어야 접근할 수 있다는
-// 잠금 조건과, 이야기 씬 → 수확/다시심기 → 코인 보상까지의 개인 위젯 플로우를 검증한다.
+// standalone 라우트다(docs/phases.md Phase 3 종료 조건). 이야기 씬 → 수확/다시심기 →
+// 코인 보상까지의 개인 위젯 플로우를 검증한다.
 test("money-tree: 이야기 씬을 넘긴 뒤 열매를 수확하면 코인을 받는다", async ({ page }) => {
   await seedGameState(page, {
     avatar: { nickname: "몽이", look: { skin: "light", hair: "brown", outfit: "default", pet: "piggy" }, level: 1, exp: 0 },
     wallet: { coins: 0, history: [] },
-    districts: { 1: { unlocked: true }, 2: { unlocked: true }, 3: { unlocked: false } },
   });
 
   await page.goto("/town");

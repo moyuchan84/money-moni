@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { buildings, buildingList, type BuildingId, type District } from "@/data/buildings";
+import { buildings, buildingList, type BuildingId } from "@/data/buildings";
 import { dailyQuests, weeklyQuests, type QuestDefinition } from "@/data/quests";
 import { moneyTreeContent } from "@/data/moneyTreeContent";
 import type { AvatarPartKey } from "@/data/avatarOptions";
@@ -55,12 +55,6 @@ export interface GameState {
     history: WalletHistoryEntry[];
   };
 
-  districts: {
-    1: { unlocked: true };
-    2: { unlocked: boolean };
-    3: { unlocked: boolean };
-  };
-
   buildings: Record<BuildingId, BuildingProgress>;
 
   moneyTree: {
@@ -100,11 +94,6 @@ export interface GameState {
   setSoundOn: (value: boolean) => void;
   setNarrationOn: (value: boolean) => void;
   setReducedMotion: (value: boolean) => void;
-  // 개발용 임시 액션 — 1구역을 실제로 플레이하지 않고도 2구역 콘텐츠를 확인할 수 있게 한다.
-  // Phase 6에서 실사용자 배포 전 유지 여부를 재검토한다.
-  debugUnlockDistrict2: () => void;
-  // 위와 동일한 이유 — 1·2구역을 다 깨지 않고도 3구역(투자 타워) 콘텐츠를 확인할 수 있게 한다.
-  debugUnlockDistrict3: () => void;
 }
 
 const defaultAvatarLook: AvatarLook = {
@@ -118,20 +107,6 @@ function createInitialBuildingProgress(): Record<BuildingId, BuildingProgress> {
   return Object.fromEntries(
     buildingList.map((building) => [building.id, { introSeen: false, storySeen: false }]),
   ) as Record<BuildingId, BuildingProgress>;
-}
-
-// 어떤 구역의 건물이 전부 완료됐는지 판정한다 — 2구역 잠금 해제 조건(1구역 3개 건물 모두 완료)의
-// 단일 진실 소스. 3구역도 같은 방식(2구역 모두 완료)으로 재사용한다.
-// routeKind: "building"만 포함한다 — money-tree(district: 2, routeKind: "standalone")는
-// completeBuilding을 호출하는 미니게임 플로우가 없는 개인 위젯(CLAUDE.md 절대 규칙 6 예외)이라
-// completedAt이 채워질 일이 없다. 판정에 포함시키면 3구역이 영원히 열리지 않는다.
-function isDistrictFullyCompleted(
-  buildingsProgress: Record<BuildingId, BuildingProgress>,
-  district: District,
-): boolean {
-  return buildingList
-    .filter((meta) => meta.district === district && meta.routeKind === "building")
-    .every((meta) => Boolean(buildingsProgress[meta.id]?.completedAt));
 }
 
 function createQuestProgressList(defs: QuestDefinition[]): QuestProgress[] {
@@ -177,11 +152,6 @@ function createInitialState() {
       coins: 0,
       history: [],
     },
-    districts: {
-      1: { unlocked: true as const },
-      2: { unlocked: false },
-      3: { unlocked: false },
-    },
     buildings: createInitialBuildingProgress(),
     moneyTree: {
       stage: 0,
@@ -204,7 +174,7 @@ function createInitialState() {
 }
 
 // 저장 스키마 버전. 필드 구조를 바꿀 때마다 올리고 아래 migrate에 변환 로직을 추가한다.
-const STORE_VERSION = 3;
+const STORE_VERSION = 4;
 
 export const useGameStore = create<GameState>()(
   persist(
@@ -275,18 +245,9 @@ export const useGameStore = create<GameState>()(
             },
           };
 
-          // 구역 잠금 해제는 false -> true로만 갱신한다(한 번 열리면 다시 잠기지 않음).
-          const nextDistricts = { ...state.districts };
-          if (!nextDistricts[2].unlocked && isDistrictFullyCompleted(nextBuildings, 1)) {
-            nextDistricts[2] = { unlocked: true };
-          }
-          if (!nextDistricts[3].unlocked && isDistrictFullyCompleted(nextBuildings, 2)) {
-            nextDistricts[3] = { unlocked: true };
-          }
-
           // 이미 완료된 건물을 다시 클리어해도 코인·퀘스트를 중복 지급하지 않는다.
           if (alreadyCompleted) {
-            return { buildings: nextBuildings, districts: nextDistricts };
+            return { buildings: nextBuildings };
           }
 
           const nextDaily = state.quests.daily.map((quest) => {
@@ -303,7 +264,6 @@ export const useGameStore = create<GameState>()(
 
           return {
             buildings: nextBuildings,
-            districts: nextDistricts,
             wallet: {
               coins: state.wallet.coins + building.rewardCoins,
               history: [
@@ -406,12 +366,6 @@ export const useGameStore = create<GameState>()(
 
       setReducedMotion: (value) =>
         set((state) => ({ settings: { ...state.settings, reducedMotion: value } })),
-
-      debugUnlockDistrict2: () =>
-        set((state) => ({ districts: { ...state.districts, 2: { unlocked: true } } })),
-
-      debugUnlockDistrict3: () =>
-        set((state) => ({ districts: { ...state.districts, 3: { unlocked: true } } })),
     }),
     {
       name: "moneymoni-save",
@@ -421,7 +375,6 @@ export const useGameStore = create<GameState>()(
       partialize: (state) => ({
         avatar: state.avatar,
         wallet: state.wallet,
-        districts: state.districts,
         buildings: state.buildings,
         moneyTree: state.moneyTree,
         shop: state.shop,
@@ -454,6 +407,11 @@ export const useGameStore = create<GameState>()(
               { ...progress, storySeen: progress.storySeen ?? false },
             ]),
           ) as Record<BuildingId, BuildingProgress>;
+        }
+
+        if (version < 4) {
+          // v3까지 있던 구역 잠금 상태를 제거한다 — 이제 1~3구역이 항상 모두 열려 있다.
+          delete state.districts;
         }
 
         return state as GameState;

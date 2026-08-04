@@ -16,13 +16,10 @@ export default function ParentPage() {
   const nickname = useGameStore((state) => state.avatar.nickname);
   const coins = useGameStore((state) => state.wallet.coins);
   const buildingProgress = useGameStore((state) => state.buildings);
-  const districts = useGameStore((state) => state.districts);
   const daily = useGameStore((state) => state.quests.daily);
   const weekly = useGameStore((state) => state.quests.weekly);
   const reducedMotion = useGameStore((state) => state.settings.reducedMotion);
   const setReducedMotion = useGameStore((state) => state.setReducedMotion);
-  const debugUnlockDistrict2 = useGameStore((state) => state.debugUnlockDistrict2);
-  const debugUnlockDistrict3 = useGameStore((state) => state.debugUnlockDistrict3);
 
   const dailyClaimedCount = daily.filter((quest) => Boolean(quest.claimedAt)).length;
   const weeklyClaimedCount = weekly.filter((quest) => Boolean(quest.claimedAt)).length;
@@ -47,14 +44,11 @@ export default function ParentPage() {
             const completedCount = districtBuildings.filter((building) =>
               Boolean(buildingProgress[building.id]?.completedAt),
             ).length;
-            const unlocked = districts[district].unlocked;
             return (
               <li key={district} className="flex items-center justify-between text-body text-fg">
                 <span>{parentContent.districtLabelKo(district)}</span>
                 <span>
-                  {unlocked
-                    ? `${completedCount}/${districtBuildings.length}`
-                    : parentContent.districtLockedKo}
+                  {completedCount}/{districtBuildings.length}
                 </span>
               </li>
             );
@@ -96,28 +90,6 @@ export default function ParentPage() {
         />
         {parentContent.reducedMotionLabelKo}
       </label>
-
-      {process.env.NODE_ENV === "development" && (
-        <section className="flex flex-col gap-2 rounded-card border border-dashed border-border p-4">
-          <h2 className="text-body font-semibold text-ink">{parentContent.devToolsTitleKo}</h2>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={debugUnlockDistrict2}
-              className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-4 py-2 text-body text-primary"
-            >
-              {parentContent.devUnlockDistrict2Ko}
-            </button>
-            <button
-              type="button"
-              onClick={debugUnlockDistrict3}
-              className="min-h-touch min-w-touch rounded-control border border-border bg-surface px-4 py-2 text-body text-primary"
-            >
-              {parentContent.devUnlockDistrict3Ko}
-            </button>
-          </div>
-        </section>
-      )}
 
       <NewsSimplifierCard entry={getTodayNewsSimplifierEntry()} />
 
