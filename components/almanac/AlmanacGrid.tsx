@@ -12,11 +12,10 @@ const DISTRICT_BG: Record<District, string> = {
 
 export interface AlmanacGridProps {
   buildings: BuildingMeta[];
-  isUnlocked: (buildingId: BuildingId) => boolean;
   onSelect: (buildingId: BuildingId) => void;
 }
 
-export function AlmanacGrid({ buildings, isUnlocked, onSelect }: AlmanacGridProps) {
+export function AlmanacGrid({ buildings, onSelect }: AlmanacGridProps) {
   const districts: District[] = [1, 2, 3];
 
   return (
@@ -29,25 +28,17 @@ export function AlmanacGrid({ buildings, isUnlocked, onSelect }: AlmanacGridProp
           <section key={district} className={`rounded-card p-4 ${DISTRICT_BG[district]}`}>
             <h2 className="mb-2 text-heading font-bold text-ink">{district}구역</h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {districtBuildings.map((building) => {
-                const unlocked = isUnlocked(building.id);
-                return (
-                  <button
-                    key={building.id}
-                    type="button"
-                    disabled={!unlocked}
-                    onClick={() => onSelect(building.id)}
-                    className={`flex h-24 min-h-touch w-full min-w-touch flex-col justify-center rounded-control px-3 py-2 text-left transition ${
-                      unlocked ? "bg-surface text-ink shadow-card hover:scale-105" : "grayscale opacity-40"
-                    }`}
-                  >
-                    <span className="line-clamp-2 text-body font-semibold text-ink">{building.titleKo}</span>
-                    <span className="truncate text-caption text-muted">
-                      {unlocked ? almanacContent.unlockedCaptionKo : almanacContent.lockedCaptionKo}
-                    </span>
-                  </button>
-                );
-              })}
+              {districtBuildings.map((building) => (
+                <button
+                  key={building.id}
+                  type="button"
+                  onClick={() => onSelect(building.id)}
+                  className="flex h-24 min-h-touch w-full min-w-touch flex-col justify-center rounded-control bg-surface px-3 py-2 text-left text-ink shadow-card transition hover:scale-105"
+                >
+                  <span className="line-clamp-2 text-body font-semibold text-ink">{building.titleKo}</span>
+                  <span className="truncate text-caption text-muted">{almanacContent.unlockedCaptionKo}</span>
+                </button>
+              ))}
             </div>
           </section>
         );

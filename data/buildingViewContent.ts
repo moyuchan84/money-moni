@@ -2,7 +2,6 @@
 // 건물별 대사는 data/{building}Content.ts에 따로 있다.
 
 export const buildingViewContent = {
-  districtLockedKo: "이 구역은 아직 잠겨 있어요. 다른 구역부터 열어보자!",
   alreadyCompletedIntroKo: "벌써 완료한 곳이네! 다시 놀러 와도 좋아.",
   startMinigameKo: "미니게임 시작하기",
   resultHeadingKo: "수고했어요!",

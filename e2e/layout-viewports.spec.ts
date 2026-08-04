@@ -14,8 +14,8 @@ const VIEWPORTS = {
 const APP_FRAME_MAX_WIDTH = 480; // --container-app: 30rem (app/globals.css)
 
 async function seedTownState(page: Page) {
-  // /town·/building/museum 모두 마을 지도 그리드(잠김/완료 카드가 섞인 상태)와 실제 코인 값을
-  // 함께 확인할 수 있도록 2구역까지 진행된 상태로 시드한다.
+  // /town·/building/museum 모두 마을 지도 그리드(완료/미완료 카드가 섞인 상태)와 실제 코인 값을
+  // 함께 확인할 수 있도록 일부 진행된 상태로 시드한다.
   await seedGameState(page, {
     avatar: {
       nickname: "몽이",
@@ -24,7 +24,6 @@ async function seedTownState(page: Page) {
       exp: 0,
     },
     wallet: { coins: 120, history: [] },
-    districts: { 1: { unlocked: true }, 2: { unlocked: true }, 3: { unlocked: false } },
     buildings: {
       museum: { introSeen: true, storySeen: true },
       "ledger-house": completedBuildingProgress(),

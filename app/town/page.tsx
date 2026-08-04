@@ -13,7 +13,6 @@ import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 export default function TownPage() {
   useDistrictBgm("town");
   const router = useRouter();
-  const districts = useGameStore((state) => state.districts);
   const buildingProgress = useGameStore((state) => state.buildings);
 
   const completedBuildingIds = Object.entries(buildingProgress)
@@ -36,11 +35,6 @@ export default function TownPage() {
       />
       <TownMap
         buildings={buildingList}
-        unlockedDistricts={{
-          1: districts[1].unlocked,
-          2: districts[2].unlocked,
-          3: districts[3].unlocked,
-        }}
         completedBuildingIds={completedBuildingIds}
         onSelectBuilding={handleSelectBuilding}
       />

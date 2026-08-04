@@ -12,7 +12,6 @@ const DISTRICT_BG: Record<District, string> = {
 
 export interface DistrictLayerProps {
   district: District;
-  unlocked: boolean;
   buildings: BuildingMeta[];
   completedBuildingIds: BuildingId[];
   onSelectBuilding: (buildingId: BuildingId) => void;
@@ -20,20 +19,18 @@ export interface DistrictLayerProps {
 
 export function DistrictLayer({
   district,
-  unlocked,
   buildings,
   completedBuildingIds,
   onSelectBuilding,
 }: DistrictLayerProps) {
   return (
-    <section className={`rounded-card p-4 ${DISTRICT_BG[district]} ${unlocked ? "" : "grayscale"}`}>
+    <section className={`rounded-card p-4 ${DISTRICT_BG[district]}`}>
       <h2 className="mb-2 text-heading font-bold text-ink">{district}구역</h2>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {buildings.map((building) => (
           <BuildingHotspot
             key={building.id}
             building={building}
-            locked={!unlocked}
             completed={completedBuildingIds.includes(building.id)}
             onSelect={onSelectBuilding}
           />

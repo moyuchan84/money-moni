@@ -184,30 +184,12 @@ const STORY_CONTENT: Partial<Record<BuildingId, BuildingStoryContent>> = {
 
 export function BuildingIntroView({ building }: { building: BuildingMeta }) {
   useDistrictBgm(building.district);
-  const districtUnlocked = useGameStore((state) => state.districts[building.district].unlocked);
   const completedAt = useGameStore((state) => state.buildings[building.id].completedAt);
   const storySeen = useGameStore((state) => state.buildings[building.id].storySeen);
   const setBuildingStorySeen = useGameStore((state) => state.setBuildingStorySeen);
   const introContent = INTRO_CONTENT[building.id];
   const storyContent = STORY_CONTENT[building.id];
   const [replaying, setReplaying] = useState(false);
-
-  if (!districtUnlocked) {
-    return (
-      <main className="flex flex-1 flex-col justify-center gap-6 p-6">
-        <h1 className="text-heading font-bold text-ink">{building.titleKo}</h1>
-        <NpcDialogue
-          speakerName={commonContent.villageChiefSpeakerKo}
-          message={buildingViewContent.districtLockedKo}
-        />
-        <div className="self-start">
-          <Button href="/town" variant="secondary">
-            {commonContent.backToTownKo}
-          </Button>
-        </div>
-      </main>
-    );
-  }
 
   if (storyContent && (!storySeen || replaying)) {
     const handleStoryDone = () => {
