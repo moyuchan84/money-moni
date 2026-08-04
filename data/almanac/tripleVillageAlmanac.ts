@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const tripleVillageAlmanac: BuildingAlmanac = {
   buildingId: "triple-village",
+  interactiveWidgetKey: "bread-split",
   theoryNoteKo:
     "1776년, 애덤 스미스라는 학자는 『국부론』이라는 책에서 사람들이 각자 자유롭게 경쟁하는 시장이 마치 '보이지 않는 손'처럼 사회를 이롭게 만든다고 설명했어(자본주의). 반대로 칼 마르크스는 1848년 『공산당 선언』, 1867년 『자본론』에서 다르게 생각했어 — 만든 것을 다 함께 나누는 게 더 낫다고 봤지(공산주의). 20세기에는 미국(자본주의)과 소련(공산주의)이 실제로 서로 다른 체제로 오래 경쟁했고, 오늘날 대부분의 나라는 두 생각을 조금씩 섞은 '혼합경제'를 쓰고 있어. 이건 정답이 정해진 문제가 아니라, 지금도 나라마다 다르게 선택하고 있는 부분이야.",
   timeline: [

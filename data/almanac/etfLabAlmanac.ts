@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const etfLabAlmanac: BuildingAlmanac = {
   buildingId: "etf-lab",
+  interactiveWidgetKey: "diversification-basket",
   theoryNoteKo:
     "'여러 자산에 나눠 담으면 위험을 줄일 수 있다'는 생각을 수학으로 증명한 사람이 해리 마코위츠야. 1952년에 발표한 논문에서 이 이론(현대 포트폴리오 이론)을 정리했고, 1990년에 노벨 경제학상을 받았어. 이 이론 덕분에 여러 회사를 한 바구니에 담는 최초의 ETF(SPDR S&P 500, 줄여서 SPY)가 1993년 미국에서 태어났어.",
   timeline: [

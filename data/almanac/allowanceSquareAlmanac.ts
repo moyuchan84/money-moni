@@ -2,6 +2,7 @@ import type { BuildingAlmanac } from "./almanacTypes";
 
 export const allowanceSquareAlmanac: BuildingAlmanac = {
   buildingId: "allowance-square",
+  interactiveWidgetKey: "jar-ratio",
   theoryNoteKo:
     "행동경제학자 리처드 세일러는 사람들이 같은 돈이라도 어느 '마음속 계좌'에 넣었는지에 따라 다르게 쓴다는 '심리적 회계' 이론을 제시했어. 용돈을 항아리별로 나누는 것 자체가 이 이론을 실생활에 적용한 예야. 리처드 세일러는 2017년에 이 연구로 노벨 경제학상을 받았어.",
   timeline: [
