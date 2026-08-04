@@ -40,6 +40,22 @@ export const capitalWarehouseContent = {
       speaker: "narrator",
       textKo: "트랙터, 가게, 심지어 저금해둔 돈도 다 자본이 될 수 있어요.",
     },
+    {
+      id: "scene-5",
+      speaker: "npc",
+      textKo: "나는 오븐 대신 이 건물을 갖고 있어. 가게 하는 사람들이 여기서 장사하는 대가로 매달 조금씩 나한테 줘.",
+    },
+    { id: "scene-6", speaker: "child", textKo: "그것도 오븐처럼, 아주머니 대신 돈을 벌어다 주는 거네요!" },
+    {
+      id: "scene-7",
+      speaker: "npc",
+      textKo: "맞아. 땅이나 건물처럼 그 자리에 딱 있는 재산도 자본이 될 수 있어.",
+    },
+    {
+      id: "scene-8",
+      speaker: "narrator",
+      textKo: "부동산은 그 자리에 딱 서서 매달 조금씩 고마움을 받는 든든한 땅이에요.",
+    },
   ],
   metaphorLineKo: "자본은 나 대신 일을 더 많이 해주는 도구야.",
   realExampleKo: "배달 아저씨의 오토바이, 농부의 트랙터, 우리 마을 은행에 모인 저축도 모두 자본의 예다.",

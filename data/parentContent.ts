@@ -6,6 +6,8 @@ export const parentContent = {
     return `${nickname || "우리 아이"}가 지금까지 모은 코인과 진행 상황이에요.`;
   },
   privacyNoteKo: "이름과 학습 진행도(완료한 건물, 회고 답변) 외의 개인정보는 저장하지 않아요.",
+  investmentDisclaimerKo:
+    "이 앱은 실제 투자 조언이 아니라, 투자의 기본 개념과 마음가짐을 다루는 교육용 콘텐츠입니다.",
   coinsLabelKo: "모은 코인",
   districtProgressTitleKo: "구역별 진행도",
   districtLabelKo(district: 1 | 2 | 3) {

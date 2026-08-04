@@ -10,6 +10,7 @@ import { useSound } from "@/components/providers/SoundProvider";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { VillageChiefCharacter } from "@/components/rive/VillageChiefCharacter";
 import { SquirrelGrandpaCharacter } from "@/components/rive/SquirrelGrandpaCharacter";
+import { SeasonalFarmerCharacter } from "@/components/rive/SeasonalFarmerCharacter";
 
 export interface StorySceneViewerProps {
   scenes: StoryScene[];
@@ -140,6 +141,8 @@ export function StorySceneViewer({
             {scene.speaker === "npc" &&
               (scene.characterId === "squirrel-grandpa" ? (
                 <SquirrelGrandpaCharacter mood="neutral" />
+              ) : scene.characterId === "seasonal-farmer" ? (
+                <SeasonalFarmerCharacter mood="neutral" />
               ) : (
                 <VillageChiefCharacter mood="neutral" />
               ))}

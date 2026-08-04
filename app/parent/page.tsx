@@ -75,6 +75,7 @@ export default function ParentPage() {
       </section>
 
       <p className="text-caption text-muted">{parentContent.privacyNoteKo}</p>
+      <p className="text-caption text-muted">{parentContent.investmentDisclaimerKo}</p>
 
       <div className="flex items-center gap-2 text-body">
         <span>{parentContent.soundLabelKo}</span>

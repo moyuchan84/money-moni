@@ -36,12 +36,14 @@ export type AlmanacWidgetKey =
   | "arrow-flow" // ledger-house
   | "jar-ratio" // allowance-square
   | "bread-split" // triple-village
-  | "money-shape-timeline"; // museum
+  | "money-shape-timeline" // museum
+  | "economic-seasons-wheel"; // etf-lab
 
 export interface BuildingAlmanac {
   buildingId: BuildingId;
   theoryNoteKo: string; // 조금 더 심화된 설명(공식/개념명 포함)
   timeline: AlmanacTimelineEvent[];
   credits: ImageCredit[];
-  interactiveWidgetKey?: AlmanacWidgetKey; // 없으면 "직접 만져보기" 섹션 자체를 렌더링하지 않는다
+  // 없으면 "직접 만져보기" 섹션 자체를 렌더링하지 않는다. etf-lab처럼 위젯이 여러 개면 배열로 둔다.
+  interactiveWidgetKey?: AlmanacWidgetKey | AlmanacWidgetKey[];
 }

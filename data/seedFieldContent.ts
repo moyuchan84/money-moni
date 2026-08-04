@@ -26,6 +26,22 @@ export const seedFieldContent = {
       textKo: "항아리에 두면 그대로지만 안전해. 밭에 심으면 크게 자랄 수도 있지만, 날씨가 나쁘면 시들 수도 있어.",
     },
     { id: "scene-3", speaker: "child", textKo: "그럼 다 심는 것도, 다 항아리에 두는 것도 아니고… 나눠서 해볼래!" },
+    {
+      id: "scene-4",
+      speaker: "npc",
+      textKo: "참, 한 가지만 꼭 기억해. 이 씨앗은 내일 밥 지을 쌀이 아니라, \"당분간 안 써도 되는\" 여유 씨앗이어야 해.",
+    },
+    { id: "scene-5", speaker: "child", textKo: "왜요?" },
+    {
+      id: "scene-6",
+      speaker: "npc",
+      textKo: "밭에 심으면 언제 열매가 열릴지 몰라. 당장 필요한 걸 심어버리면, 열매가 늦게 열렸을 때 곤란해지거든.",
+    },
+    {
+      id: "scene-7",
+      speaker: "narrator",
+      textKo: "투자는 당장 필요 없는 여유 씨앗으로 하는 거예요 — 내일 먹을 쌀로 하면 안 돼요.",
+    },
   ],
   metaphorLineKo: "저축은 안전한 항아리, 투자는 결과를 알 수 없는 씨앗을 심는 것과 같아.",
   realExampleKo:

@@ -11,15 +11,22 @@ import { AlmanacWidgetSlot } from "./interactive/AlmanacWidgetSlot";
 export function KnowledgeCard({ almanac }: { almanac: BuildingAlmanac }) {
   const reducedMotion = useReducedMotion();
   const creditByImageKey = new Map(almanac.credits.map((credit) => [credit.imageKey, credit]));
+  const widgetKeys = almanac.interactiveWidgetKey
+    ? Array.isArray(almanac.interactiveWidgetKey)
+      ? almanac.interactiveWidgetKey
+      : [almanac.interactiveWidgetKey]
+    : [];
 
   return (
     <div className="flex flex-col gap-4 rounded-card bg-surface p-4 text-ink shadow-card">
       <p className="text-body text-fg">{almanac.theoryNoteKo}</p>
 
-      {almanac.interactiveWidgetKey && (
-        <section className="flex flex-col gap-3 rounded-card bg-primary-light p-4">
+      {widgetKeys.length > 0 && (
+        <section className="flex flex-col gap-4 rounded-card bg-primary-light p-4">
           <p className="text-body font-semibold text-primary">{almanacContent.interactiveHeadingKo}</p>
-          <AlmanacWidgetSlot widgetKey={almanac.interactiveWidgetKey} />
+          {widgetKeys.map((widgetKey) => (
+            <AlmanacWidgetSlot key={widgetKey} widgetKey={widgetKey} />
+          ))}
         </section>
       )}
 
