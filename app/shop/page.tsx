@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { shopContent } from "@/data/shopContent";
 import { shopItems } from "@/data/shopItems";
 import { commonContent } from "@/data/commonContent";
@@ -10,6 +8,7 @@ import { useDistrictBgm } from "@/hooks/useDistrictBgm";
 import { CoinWallet } from "@/components/hud/CoinWallet";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { ShopItemCard } from "@/components/shop/ShopItemCard";
+import { Button } from "@/components/ui/Button";
 
 export default function ShopPage() {
   useDistrictBgm("town");
@@ -48,9 +47,9 @@ export default function ShopPage() {
         </div>
       )}
 
-      <Link href="/town" className="min-h-touch min-w-touch self-start text-body text-primary underline">
+      <Button href="/town" variant="secondary">
         {commonContent.backToTownKo}
-      </Link>
+      </Button>
     </main>
   );
 }

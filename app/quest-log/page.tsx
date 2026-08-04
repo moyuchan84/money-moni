@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { dailyQuests, weeklyQuests } from "@/data/quests";
 import { questLogContent } from "@/data/questLogContent";
 import { commonContent } from "@/data/commonContent";
@@ -9,6 +7,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { ProgressBadge } from "@/components/feedback/ProgressBadge";
 import { NpcDialogue } from "@/components/dialogue/NpcDialogue";
 import { useDistrictBgm } from "@/hooks/useDistrictBgm";
+import { Button } from "@/components/ui/Button";
 
 export default function QuestLogPage() {
   useDistrictBgm("town");
@@ -63,9 +62,9 @@ export default function QuestLogPage() {
         )}
       </section>
 
-      <Link href="/town" className="min-h-touch min-w-touch self-start text-body underline">
+      <Button href="/town" variant="secondary">
         {commonContent.backToTownKo}
-      </Link>
+      </Button>
     </main>
   );
 }

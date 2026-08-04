@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 import { buildingList, type BuildingId } from "@/data/buildings";
 import { commonContent } from "@/data/commonContent";
@@ -29,15 +28,7 @@ export default function TownPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <nav className="flex gap-3 text-caption">
-        <Link href="/quest-log">{commonContent.townNav.questLog}</Link>
-        <Link href="/shop">{commonContent.townNav.shop}</Link>
-        <Link href="/glossary">{commonContent.townNav.glossary}</Link>
-        <Link href="/almanac">{commonContent.townNav.almanac}</Link>
-        <Link href="/credits">{commonContent.townNav.credits}</Link>
-        <Link href="/parent">{commonContent.townNav.parent}</Link>
-      </nav>
+    <main className="flex flex-1 flex-col gap-4 p-6">
       <NpcDialogue
         speakerName={commonContent.villageChiefSpeakerKo}
         message={townContent.introMessageKo}
@@ -53,6 +44,6 @@ export default function TownPage() {
         completedBuildingIds={completedBuildingIds}
         onSelectBuilding={handleSelectBuilding}
       />
-    </div>
+    </main>
   );
 }
